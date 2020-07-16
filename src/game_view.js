@@ -9,9 +9,11 @@ class GameView {
     this.mousePosition = [0, 0];
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
-    this.startGame = this.startGame.bind(this)
+    this.startGame = this.startGame.bind(this);
     this.setup = this.setup.bind(this);
+    // this.checkCollision = this.checkCollision.bind(this);
     this.playing = false;
+    this.tracking = []
   }
 
   listenForMove() {
@@ -19,14 +21,14 @@ class GameView {
   }
 
   startup() {
-    console.log('waiting')
+    console.log("waiting");
     // if (!this.playing) {
-      this.start.addEventListener("click", this.startGame);
+    this.start.addEventListener("click", this.startGame);
     //   this.playing = !this.playing;
     // } else {
     //   this.playing = !this.playing;
     // }
-    console.log(this.playing)
+    console.log(this.playing);
   }
 
   handleMove(event) {
@@ -51,11 +53,11 @@ class GameView {
   startGame() {
     this.setup();
     this.animate();
-    
   }
 
   animate() {
     this.game.drawElements(this.context, this.mousePosition);
+    // this.checkCollision();
     if (!this.game.gameOver()) {
       requestAnimationFrame(this.animate.bind(this));
     }
