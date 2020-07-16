@@ -11,9 +11,37 @@ class GameView {
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
     this.setup = this.setup.bind(this);
-    // this.checkCollision = this.checkCollision.bind(this);
     this.playing = false;
-    this.tracking = []
+    this.tracking = [];
+    this.checkCollision = this.checkCollision.bind(this);
+  }
+
+  getDistance(x1, y1, x2, y2) {
+    const xDist = x2 - x1;
+    const yDist = y2 - y1;
+    return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+  }
+  checkCollision() {
+    for (let i = 0; i < this.game.projectiles.length; i++) {
+      for (let j = 1; j < this.game.targets.length; j++) {
+        if (
+          this.getDistance(
+            this.game.projectiles[i].aimX,
+            this.game.projectiles[i].aimY,
+            this.game.targets[j].x,
+            this.game.targets[j].y
+          ) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
+          //collision response 
+          this.game.projectiles[i].collided = true
+          this.game.targets.push(this.game.projectiles[i])
+          this.game.projectiles[i].dx = 0;
+          this.game.projectiles[i].dy = 0;
+         
+          // this.game.projectiles[i].aimX = tempX;
+          // this.game.projectiles[i].aimY = tempY;
+        }
+      }
+    }
   }
 
   listenForMove() {
@@ -57,10 +85,10 @@ class GameView {
 
   animate() {
     this.game.drawElements(this.context, this.mousePosition);
-    // this.checkCollision();
-    if (!this.game.gameOver()) {
+    this.checkCollision();
+    // if (!this.game.gameOver()) {
       requestAnimationFrame(this.animate.bind(this));
-    }
+    // }
   }
 };
 

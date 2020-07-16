@@ -10,34 +10,7 @@ class Game {
     this.turret = new Turret(this);
     this.targets = [];
     // this.playing = true
-    this.checkCollision = this.checkCollision.bind(this);
     this.offsetRow = false;
-  }
-
-  getDistance(x1, y1, x2, y2) {
-    const xDist = x2 - x1;
-    const yDist = y2 - y1;
-    return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-  }
-  checkCollision() {
-    for (let i = 0; i < this.projectiles.length; i++) {
-      for (let j = 1; j < this.targets.length; j++) {
-        if (
-          this.getDistance(
-            this.projectiles[i].aimX,
-            this.projectiles[i].aimY,
-            this.targets[j].x,
-            this.targets[j].y
-          ) <
-          this.projectiles[i].radius + this.targets[j].radius
-        ) {
-             let tempX = this.projectile[i].aimX;
-             let tempY = this.projectile[i].aimY;
-          this.projectiles[i].aimX = this.tempX;
-          this.projectiles[i].aimY = this.tempY;
-        }
-      }
-    }
   }
 
   movingObjects() {
@@ -47,17 +20,30 @@ class Game {
   /// TESTING? UNCOMMENT OUT INTERVAL FOR TESTING A ROW
   moveTargets() {
     setInterval(() => {
-    this.targets.forEach((target) => {
-      target.move();
-    });
+      this.targets.forEach((target) => {
+        if (target instanceof Target) {
+          target.y += 35;
+        } else if (target instanceof Projectile) {
+          target.aimY += 35;
+        } 
+      });
     }, 2000);
   }
 
   addTargets() {
     setInterval(() => {
-    for (let i = 1; i <= 8; i++) {
-      this.targets.push(new Target(i));
-      console.log(this.targets);
+      if (!this.offsetRow) {
+        for (let i = 1; i <= 8; i++) {
+          this.targets.push(new Target(i, this.offsetRow));
+          this.offsetRow = true;
+        //   console.log(this.targets);
+        }
+    } else {
+        for (let i = 1; i <= 7; i++) {
+          this.targets.push(new Target(i, this.offsetRow));
+          this.offsetRow = false;
+        //   console.log(this.targets);
+        }
     }
     }, 2000);
   }
@@ -68,14 +54,14 @@ class Game {
     return projectile;
   }
 
-  gameOver() {
-    this.targets.forEach((target) => {
-      if (target.gameOver()) {
+//   gameOver() {
+    // this.targets.forEach((target) => {
+    //   if (target.gameOver()) {
         //   this.playing = false
         //  this.projectiles = []
-      }
-    });
-  }
+    //   }
+    // });
+//   }
 
   // remove(obj) {
   //   console.log(this.projectiles)
@@ -95,7 +81,6 @@ class Game {
       
     this.movingObjects().forEach((obj) => {
         obj.draw(context);
-        // this.checkCollision();
         
         if (obj instanceof Turret) {
             obj.swivelTurret(mousePosition);
