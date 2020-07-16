@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Ball</title>
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+            /* margin-left: 35%; */
+            /* margin-top: 50px; */
+            /* margin-left: 10px; */
+        }
+        #start {
+            margin: 10px;
+            font-size: 30px;
+            height: -webkit-fill-available;
+            display: table;
+            padding: 10px;
+            padding-bottom: 15px;
+            padding-right: 15px;
+            padding-left: 15px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+    
+        body {
+            margin: 0px;
+            display: flex;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id='canvas'></canvas>
+    <div class='menu-buttons'>
+        <button id='start'>start!</button>
+        <button id='pause'>pause</button>
+        <button id='reset'>reset</button>
+    </div>
+    <script src='./dist/bundle.js'></script>
+</body>
+</html>
