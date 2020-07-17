@@ -37,17 +37,19 @@ class Game {
   addTargets() {
     setInterval(() => {
       if (!this.offsetRow) {
-        for (let i = 1; i <= 8; i++) {
-          this.targets.push(new Target(i, this.offsetRow));
-          this.offsetRow = true;
-        //   console.log(this.targets);
+        for (let i = 1; i <= 4; i++) {
+          //normally 8
+          this.targets.push(new Target(i, false));
+          // console.log(this.targets);
+          // debugger
         }
+        this.offsetRow = true;
     } else {
-        for (let i = 1; i <= 7; i++) {
-          this.targets.push(new Target(i, this.offsetRow));
-          this.offsetRow = false;
-        //   console.log(this.targets);
+        for (let i = 1; i <= 3; i++) {
+          this.targets.push(new Target(i, true));
+          // console.log(this.targets);
         }
+        this.offsetRow = false;
     }
     }, 2000);
   }

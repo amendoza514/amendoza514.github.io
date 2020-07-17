@@ -16,7 +16,7 @@ class GameView {
     this.playing = false;
     this.tracking = [];
     this.checkCollision = this.checkCollision.bind(this);
-    this.approx = this.approx.bind(this)
+    this.approxY = this.approxY.bind(this)
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -36,23 +36,55 @@ class GameView {
               this.game.targets[j].y
             ) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
             //collision response
-
             this.game.projectiles[i].collided = true
-            // this.game.targets.push(this.game.projectiles[i])
+            let tempX = this.game.targets[j].x;
+
+            // projectile instructions
+            this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY);
+            this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].offset, tempX);
             this.game.projectiles[i].dx = 0;
             this.game.projectiles[i].dy = 0;
-            this.game.projectiles[i].aimX = this.game.targets[j].x;
-            this.game.projectiles[i].aimY = this.approx(this.game.projectiles[i].aimY)
+            // this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY)
+            // this.game.projectiles[i].aimX = this.approxX(
+            //   this.game.projectiles[i],
+            //   this.game.targets[j]
+            // );
           }
         }
       }
     }
   }
 
-  approx(input) {
-    let counts = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
-    let output = counts.reduce((previous, current) => Math.abs(current - input) < Math.abs(previous - input) ? current : previous);
-    return output + 5;
+  // approxX(projectile, target) {
+  //   if (projectile.aimX > target.x) {
+  //     return target.x + 20;
+  //   } else {
+  //     return target.x - 20;
+  //   }
+  // }
+
+  // approxY(projectile, target) {
+  //   if (projectile.aimY > target.y) {
+  //     return target.y + 20;
+  //   } else {
+  //     return target.y - 20;
+  //   }
+  // }
+
+  approxY(yInput) {
+    let yPositions = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
+    let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
+    return yOutput;
+  }
+  approxX(xInput, offset, tempX) {
+    let xPositions;
+    if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
+      xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
+    } else {
+      xPositions = [40, 80, 120, 160, 200, 240, 280];
+    }
+    let xOutput = xPositions.reduce((previous, current) => Math.abs(current - xInput) < Math.abs(previous - xInput) ? current : previous);
+    return xOutput
   }
 
   listenForMove() {

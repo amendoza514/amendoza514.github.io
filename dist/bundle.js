@@ -176,17 +176,21 @@ var Game = /*#__PURE__*/function () {
 
       setInterval(function () {
         if (!_this2.offsetRow) {
-          for (var i = 1; i <= 8; i++) {
-            _this2.targets.push(new Target(i, _this2.offsetRow));
+          for (var i = 1; i <= 4; i++) {
+            //normally 8
+            _this2.targets.push(new Target(i, false)); // console.log(this.targets);
+            // debugger
 
-            _this2.offsetRow = true; //   console.log(this.targets);
           }
+
+          _this2.offsetRow = true;
         } else {
-          for (var _i = 1; _i <= 7; _i++) {
-            _this2.targets.push(new Target(_i, _this2.offsetRow));
+          for (var _i = 1; _i <= 3; _i++) {
+            _this2.targets.push(new Target(_i, true)); // console.log(this.targets);
 
-            _this2.offsetRow = false; //   console.log(this.targets);
           }
+
+          _this2.offsetRow = false;
         }
       }, 2000);
     } // END TESTING
@@ -279,7 +283,7 @@ var GameView = /*#__PURE__*/function () {
     this.playing = false;
     this.tracking = [];
     this.checkCollision = this.checkCollision.bind(this);
-    this.approx = this.approx.bind(this);
+    this.approxY = this.approxY.bind(this);
   }
 
   _createClass(GameView, [{
@@ -297,25 +301,60 @@ var GameView = /*#__PURE__*/function () {
           for (var j = 1; j < this.game.targets.length; j++) {
             if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
               //collision response
-              this.game.projectiles[i].collided = true; // this.game.targets.push(this.game.projectiles[i])
+              this.game.projectiles[i].collided = true;
+              var tempX = this.game.targets[j].x; // projectile instructions
 
+              this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY);
+              this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].offset, tempX);
               this.game.projectiles[i].dx = 0;
-              this.game.projectiles[i].dy = 0;
-              this.game.projectiles[i].aimX = this.game.targets[j].x;
-              this.game.projectiles[i].aimY = this.approx(this.game.projectiles[i].aimY);
+              this.game.projectiles[i].dy = 0; // this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY)
+              // this.game.projectiles[i].aimX = this.approxX(
+              //   this.game.projectiles[i],
+              //   this.game.targets[j]
+              // );
             }
           }
         }
       }
+    } // approxX(projectile, target) {
+    //   if (projectile.aimX > target.x) {
+    //     return target.x + 20;
+    //   } else {
+    //     return target.x - 20;
+    //   }
+    // }
+    // approxY(projectile, target) {
+    //   if (projectile.aimY > target.y) {
+    //     return target.y + 20;
+    //   } else {
+    //     return target.y - 20;
+    //   }
+    // }
+
+  }, {
+    key: "approxY",
+    value: function approxY(yInput) {
+      var yPositions = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
+      var yOutput = yPositions.reduce(function (previous, current) {
+        return Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous;
+      });
+      return yOutput;
     }
   }, {
-    key: "approx",
-    value: function approx(input) {
-      var counts = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
-      var output = counts.reduce(function (previous, current) {
-        return Math.abs(current - input) < Math.abs(previous - input) ? current : previous;
+    key: "approxX",
+    value: function approxX(xInput, offset, tempX) {
+      var xPositions;
+
+      if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === -1) {
+        xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
+      } else {
+        xPositions = [40, 80, 120, 160, 200, 240, 280];
+      }
+
+      var xOutput = xPositions.reduce(function (previous, current) {
+        return Math.abs(current - xInput) < Math.abs(previous - xInput) ? current : previous;
       });
-      return output + 5;
+      return xOutput;
     }
   }, {
     key: "listenForMove",
@@ -514,9 +553,9 @@ var Target = /*#__PURE__*/function () {
       } else if (this.position === 1 && !this.offset) {
         context.arc(20, this.y, this.radius, 0, Math.PI * 2, false);
       } else if (this.offset) {
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      } else {
         context.arc(this.x + 20, this.y, this.radius, 0, Math.PI * 2, false);
+      } else {
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       }
 
       context.fillStyle = this.color;

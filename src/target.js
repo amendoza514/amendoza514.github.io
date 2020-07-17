@@ -36,9 +36,9 @@ class Target {
     } else if (this.position === 1 && !this.offset) {
         context.arc(20, this.y, this.radius, 0, Math.PI * 2, false);
     } else if (this.offset) {
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    } else {
         context.arc(this.x + 20, this.y, this.radius, 0, Math.PI * 2, false);
+    } else {
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     }
     context.fillStyle = this.color;
     context.fill();
