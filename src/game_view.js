@@ -137,6 +137,7 @@ class GameView {
   setup() {
     this.listenForMove();
     this.listenForClick();
+    this.game.turret.setColors();
     this.game.addTargets();
     this.game.moveTargets();
   }

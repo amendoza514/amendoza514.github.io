@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.height = 540;
 
     const game = new Game(canvas.width, canvas.height)
-    new GameView(game, context, canvas, start, reset, pause).startup();
-    //incase of emergency, go back to just start()
+    new GameView(game, context, canvas, start, reset, pause).startGame();
+    //for testing use .startGame()
+    //for produciton use .startUp()
 });

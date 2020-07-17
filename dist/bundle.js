@@ -106,7 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = 320;
   canvas.height = 540;
   var game = new Game(canvas.width, canvas.height);
-  new GameView(game, context, canvas, start, reset, pause).startup(); //incase of emergency, go back to just start()
+  new GameView(game, context, canvas, start, reset, pause).startGame(); //for testing use .startGame()
+  //for produciton use .startUp()
 });
 
 /***/ }),
@@ -418,6 +419,7 @@ var GameView = /*#__PURE__*/function () {
     value: function setup() {
       this.listenForMove();
       this.listenForClick();
+      this.game.turret.setColors();
       this.game.addTargets();
       this.game.moveTargets();
     }
@@ -623,12 +625,21 @@ var Turret = /*#__PURE__*/function () {
 
     this.game = game;
     this.projectiles = 0;
-    this.color = this.randomColor(); // this.nextShot = asd;
-
-    this.currentShot = this.color;
+    this.setColors = this.setColors.bind(this);
+    this.shots = [];
+    this.color = this.shots[0];
+    this.nextShot = this.shots[1];
+    this.nextNextShot = this.shots[2];
   }
 
   _createClass(Turret, [{
+    key: "setColors",
+    value: function setColors() {
+      for (var i = 0; i < 3; i++) {
+        this.shots.push(this.randomColor());
+      }
+    }
+  }, {
     key: "randomColor",
     value: function randomColor() {
       var colors = ["red", "green", "blue", "orange", "gray"];
@@ -664,15 +675,23 @@ var Turret = /*#__PURE__*/function () {
         slope: [this.speedX, this.speedY],
         aimX: this.aimX,
         aimY: this.aimY,
-        color: this.color
+        color: this.shots[0]
       });
       this.game.addProjectiles(projectile);
-      this.color = this.randomColor();
+      this.shots.shift();
+      this.shots.push(this.randomColor());
     }
   }, {
     key: "draw",
     value: function draw(context) {
-      //turret line
+      //turrent base
+      context.beginPath();
+      context.rect(180, 530, 50, 5); // context.strokeStyle= 'gray'
+
+      context.fillStyle = 'gray';
+      context.fill();
+      context.stroke(); //turret line
+
       context.beginPath();
       context.moveTo(160, 540);
       context.lineTo(this.cheatX, this.cheatY);
@@ -683,13 +702,26 @@ var Turret = /*#__PURE__*/function () {
       context.beginPath();
       context.moveTo(160, 540);
       context.lineTo(this.aimX, this.aimY);
-      context.strokeStyle = this.color;
+      context.strokeStyle = this.shots[0];
       context.lineWidth = 45;
       context.stroke(); //turret base
 
       context.beginPath();
-      context.arc(160, 540, 30, 0, Math.PI * 2, false);
-      context.fillStyle = this.color;
+      context.arc(160, 560, 50, 0, Math.PI * 2, false);
+      context.fillStyle = this.shots[0];
+      context.fill();
+      context.lineWidth = 1;
+      context.strokeStyle = "black";
+      context.stroke(); //next shot
+
+      context.beginPath();
+      context.arc(210, 525, 5, 0, Math.PI * 2, false);
+      context.fillStyle = this.shots[1];
+      context.fill(); // next next shot
+
+      context.beginPath();
+      context.arc(222, 525, 5, 0, Math.PI * 2, false);
+      context.fillStyle = this.shots[2];
       context.fill();
     }
   }]);
