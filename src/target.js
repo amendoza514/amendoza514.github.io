@@ -1,12 +1,19 @@
 class Target {
-  constructor(position, offset) {
+  constructor(position, offset, x, y) {
     this.position = position;
     this.offset = offset;
     this.x = this.position * 40 - 20;
     this.y = 20;
     this.radius = 20;
     this.color = this.randomColor();
+    this.move = this.move.bind(this);
+    this.count = 0;
+    this.currentY = this.y + (35 * this.count);
     // this.gameOver = this.gameOver.bind(this)
+  }
+
+  move() {
+      this.y += 35; 
   }
 
   randomColor() {

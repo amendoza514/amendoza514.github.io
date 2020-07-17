@@ -1,3 +1,5 @@
+const Target = require("./target");
+
 class GameView {
   constructor(game, context, canvas, start, pause, reset) {
     this.game = game;
@@ -14,6 +16,7 @@ class GameView {
     this.playing = false;
     this.tracking = [];
     this.checkCollision = this.checkCollision.bind(this);
+    this.approx = this.approx.bind(this)
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -23,25 +26,33 @@ class GameView {
   }
   checkCollision() {
     for (let i = 0; i < this.game.projectiles.length; i++) {
-      for (let j = 1; j < this.game.targets.length; j++) {
-        if (
-          this.getDistance(
-            this.game.projectiles[i].aimX,
-            this.game.projectiles[i].aimY,
-            this.game.targets[j].x,
-            this.game.targets[j].y
-          ) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
-          //collision response 
-          this.game.projectiles[i].collided = true
-          this.game.targets.push(this.game.projectiles[i])
-          this.game.projectiles[i].dx = 0;
-          this.game.projectiles[i].dy = 0;
-         
-          // this.game.projectiles[i].aimX = tempX;
-          // this.game.projectiles[i].aimY = tempY;
+      for (let k = 0; k < this.game.projectiles.length; k ++) {
+        for (let j = 1; j < this.game.targets.length; j++) {
+          if (
+            this.getDistance(
+              this.game.projectiles[i].aimX,
+              this.game.projectiles[i].aimY,
+              this.game.targets[j].x,
+              this.game.targets[j].y
+            ) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
+            //collision response
+
+            this.game.projectiles[i].collided = true
+            // this.game.targets.push(this.game.projectiles[i])
+            this.game.projectiles[i].dx = 0;
+            this.game.projectiles[i].dy = 0;
+            this.game.projectiles[i].aimX = this.game.targets[j].x;
+            this.game.projectiles[i].aimY = this.approx(this.game.projectiles[i].aimY)
+          }
         }
       }
     }
+  }
+
+  approx(input) {
+    let counts = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
+    let output = counts.reduce((previous, current) => Math.abs(current - input) < Math.abs(previous - input) ? current : previous);
+    return output + 5;
   }
 
   listenForMove() {

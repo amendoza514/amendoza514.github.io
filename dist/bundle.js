@@ -93,7 +93,21 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Game = __webpack_require__(/*! ./game.js */ \"./src/game.js\");\nconst GameView = __webpack_require__(/*! ./game_view.js */ \"./src/game_view.js\");\n\n\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n    let canvas = document.querySelector(\"canvas\");\n    let start = document.getElementById(\"start\");\n    let pause = document.getElementById(\"pause\");\n    let reset = document.getElementById(\"reset\");\n    let context = canvas.getContext(\"2d\");\n    canvas.width = 320;\n    canvas.height = 540;\n\n    const game = new Game(canvas.width, canvas.height)\n    new GameView(game, context, canvas, start, reset, pause).startup();\n    //incase of emergency, go back to just start()\n});\n\n\n//# sourceURL=webpack:///./src/entry.js?");
+var Game = __webpack_require__(/*! ./game.js */ "./src/game.js");
+
+var GameView = __webpack_require__(/*! ./game_view.js */ "./src/game_view.js");
+
+document.addEventListener("DOMContentLoaded", function () {
+  var canvas = document.querySelector("canvas");
+  var start = document.getElementById("start");
+  var pause = document.getElementById("pause");
+  var reset = document.getElementById("reset");
+  var context = canvas.getContext("2d");
+  canvas.width = 320;
+  canvas.height = 540;
+  var game = new Game(canvas.width, canvas.height);
+  new GameView(game, context, canvas, start, reset, pause).startup(); //incase of emergency, go back to just start()
+});
 
 /***/ }),
 
@@ -104,7 +118,131 @@ eval("const Game = __webpack_require__(/*! ./game.js */ \"./src/game.js\");\ncon
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Projectile = __webpack_require__(/*! ./projectile */ \"./src/projectile.js\");\nconst Target = __webpack_require__(/*! ./target */ \"./src/target.js\")\nconst Turret = __webpack_require__(/*! ./turret */ \"./src/turret.js\")\n\nclass Game {\n  constructor(width, height) {\n    this.width = width;\n    this.height = height;\n    this.projectiles = [];\n    this.turret = new Turret(this);\n    this.targets = [];\n    // this.playing = true\n    this.offsetRow = false;\n  }\n\n  movingObjects() {\n    return [].concat(this.projectiles, this.turret, this.targets);\n  }\n\n  /// TESTING? UNCOMMENT OUT INTERVAL FOR TESTING A ROW\n  moveTargets() {\n    setInterval(() => {\n      this.targets.forEach((target) => {\n        if (target instanceof Target) {\n          target.y += 35;\n        } else if (target instanceof Projectile) {\n          target.aimY += 35;\n        } \n      });\n    }, 2000);\n  }\n\n  addTargets() {\n    setInterval(() => {\n      if (!this.offsetRow) {\n        for (let i = 1; i <= 8; i++) {\n          this.targets.push(new Target(i, this.offsetRow));\n          this.offsetRow = true;\n        //   console.log(this.targets);\n        }\n    } else {\n        for (let i = 1; i <= 7; i++) {\n          this.targets.push(new Target(i, this.offsetRow));\n          this.offsetRow = false;\n        //   console.log(this.targets);\n        }\n    }\n    }, 2000);\n  }\n  // END TESTING\n\n  addProjectiles(projectile) {\n    this.projectiles.push(projectile);\n    return projectile;\n  }\n\n//   gameOver() {\n    // this.targets.forEach((target) => {\n    //   if (target.gameOver()) {\n        //   this.playing = false\n        //  this.projectiles = []\n    //   }\n    // });\n//   }\n\n  // remove(obj) {\n  //   console.log(this.projectiles)\n  //     if (obj instanceof Projectile) {\n  //         this.projectiles = this.projectiles.filter(projectile => {\n  //             obj !== projectile\n  //         })\n  //         obj = undefined\n  //     }\n  //     console.log(this.projectiles);\n  // }\n\n  drawElements(context, mousePosition) {\n      context.clearRect(0, 0, this.width, this.height);\n      context.fillStyle = \"white\";\n      context.fillRect(0, 0, this.width, this.height);\n      \n    this.movingObjects().forEach((obj) => {\n        obj.draw(context);\n        \n        if (obj instanceof Turret) {\n            obj.swivelTurret(mousePosition);\n        }\n    });\n  }\n\n  //   clearElements(context) {\n  //       this.projectiles = [];\n  //       this.targets = []\n  //       this.turret = null;\n  //     context.clearRect(0, 0, this.width, this.height);\n  //     context.fillStyle = \"white\";\n  //     context.fillRect(0, 0, this.width, this.height);\n  //   }\n}\n\nmodule.exports = Game;\n\n//# sourceURL=webpack:///./src/game.js?");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Projectile = __webpack_require__(/*! ./projectile */ "./src/projectile.js");
+
+var Target = __webpack_require__(/*! ./target */ "./src/target.js");
+
+var Turret = __webpack_require__(/*! ./turret */ "./src/turret.js");
+
+var Game = /*#__PURE__*/function () {
+  function Game(width, height) {
+    _classCallCheck(this, Game);
+
+    this.width = width;
+    this.height = height;
+    this.projectiles = [];
+    this.turret = new Turret(this);
+    this.targets = []; // this.playing = true
+
+    this.offsetRow = false;
+  }
+
+  _createClass(Game, [{
+    key: "movingObjects",
+    value: function movingObjects() {
+      return [].concat(this.projectiles, this.turret, this.targets);
+    } /// TESTING? UNCOMMENT OUT INTERVAL FOR TESTING A ROW
+
+  }, {
+    key: "moveTargets",
+    value: function moveTargets() {
+      var _this = this;
+
+      setInterval(function () {
+        _this.targets.forEach(function (target) {
+          if (target instanceof Target) {
+            target.count += 1;
+            target.y += 35;
+          }
+        });
+
+        _this.projectiles.forEach(function (target) {
+          if (target instanceof Projectile) {
+            target.aimY += 35;
+          }
+        });
+      }, 2000);
+    }
+  }, {
+    key: "addTargets",
+    value: function addTargets() {
+      var _this2 = this;
+
+      setInterval(function () {
+        if (!_this2.offsetRow) {
+          for (var i = 1; i <= 8; i++) {
+            _this2.targets.push(new Target(i, _this2.offsetRow));
+
+            _this2.offsetRow = true; //   console.log(this.targets);
+          }
+        } else {
+          for (var _i = 1; _i <= 7; _i++) {
+            _this2.targets.push(new Target(_i, _this2.offsetRow));
+
+            _this2.offsetRow = false; //   console.log(this.targets);
+          }
+        }
+      }, 2000);
+    } // END TESTING
+
+  }, {
+    key: "addProjectiles",
+    value: function addProjectiles(projectile) {
+      this.projectiles.push(projectile);
+      return projectile;
+    } //   gameOver() {
+    // this.targets.forEach((target) => {
+    //   if (target.gameOver()) {
+    //   this.playing = false
+    //  this.projectiles = []
+    //   }
+    // });
+    //   }
+    // remove(obj) {
+    //   console.log(this.projectiles)
+    //     if (obj instanceof Projectile) {
+    //         this.projectiles = this.projectiles.filter(projectile => {
+    //             obj !== projectile
+    //         })
+    //         obj = undefined
+    //     }
+    //     console.log(this.projectiles);
+    // }
+
+  }, {
+    key: "drawElements",
+    value: function drawElements(context, mousePosition) {
+      context.clearRect(0, 0, this.width, this.height);
+      context.fillStyle = "white";
+      context.fillRect(0, 0, this.width, this.height);
+      this.movingObjects().forEach(function (obj) {
+        obj.draw(context);
+
+        if (obj instanceof Turret) {
+          obj.swivelTurret(mousePosition);
+        }
+      });
+    } //   clearElements(context) {
+    //       this.projectiles = [];
+    //       this.targets = []
+    //       this.turret = null;
+    //     context.clearRect(0, 0, this.width, this.height);
+    //     context.fillStyle = "white";
+    //     context.fillRect(0, 0, this.width, this.height);
+    //   }
+
+  }]);
+
+  return Game;
+}();
+
+module.exports = Game;
 
 /***/ }),
 
@@ -113,9 +251,133 @@ eval("const Projectile = __webpack_require__(/*! ./projectile */ \"./src/project
   !*** ./src/game_view.js ***!
   \**************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("class GameView {\n  constructor(game, context, canvas, start, pause, reset) {\n    this.game = game;\n    this.start = start;\n    this.pause = pause;\n    this.reset = reset;\n    this.context = context;\n    this.canvas = canvas;\n    this.mousePosition = [0, 0];\n    this.handleClick = this.handleClick.bind(this);\n    this.handleMove = this.handleMove.bind(this);\n    this.startGame = this.startGame.bind(this);\n    this.setup = this.setup.bind(this);\n    this.playing = false;\n    this.tracking = [];\n    this.checkCollision = this.checkCollision.bind(this);\n  }\n\n  getDistance(x1, y1, x2, y2) {\n    const xDist = x2 - x1;\n    const yDist = y2 - y1;\n    return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));\n  }\n  checkCollision() {\n    for (let i = 0; i < this.game.projectiles.length; i++) {\n      for (let j = 1; j < this.game.targets.length; j++) {\n        if (\n          this.getDistance(\n            this.game.projectiles[i].aimX,\n            this.game.projectiles[i].aimY,\n            this.game.targets[j].x,\n            this.game.targets[j].y\n          ) < this.game.projectiles[i].radius + this.game.targets[j].radius) {\n          //collision response \n          this.game.projectiles[i].collided = true\n          this.game.targets.push(this.game.projectiles[i])\n          this.game.projectiles[i].dx = 0;\n          this.game.projectiles[i].dy = 0;\n         \n          // this.game.projectiles[i].aimX = tempX;\n          // this.game.projectiles[i].aimY = tempY;\n        }\n      }\n    }\n  }\n\n  listenForMove() {\n    this.canvas.addEventListener(\"mousemove\", this.handleMove);\n  }\n\n  startup() {\n    console.log(\"waiting\");\n    // if (!this.playing) {\n    this.start.addEventListener(\"click\", this.startGame);\n    //   this.playing = !this.playing;\n    // } else {\n    //   this.playing = !this.playing;\n    // }\n    console.log(this.playing);\n  }\n\n  handleMove(event) {\n    this.mousePosition = [event.clientX, event.clientY];\n  }\n\n  listenForClick() {\n    this.canvas.addEventListener(\"click\", this.handleClick);\n  }\n\n  handleClick() {\n    this.game.turret.fire();\n  }\n\n  setup() {\n    this.listenForMove();\n    this.listenForClick();\n    this.game.addTargets();\n    this.game.moveTargets();\n  }\n\n  startGame() {\n    this.setup();\n    this.animate();\n  }\n\n  animate() {\n    this.game.drawElements(this.context, this.mousePosition);\n    this.checkCollision();\n    // if (!this.game.gameOver()) {\n      requestAnimationFrame(this.animate.bind(this));\n    // }\n  }\n};\n\nmodule.exports = GameView;\n\n//# sourceURL=webpack:///./src/game_view.js?");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Target = __webpack_require__(/*! ./target */ "./src/target.js");
+
+var GameView = /*#__PURE__*/function () {
+  function GameView(game, context, canvas, start, pause, reset) {
+    _classCallCheck(this, GameView);
+
+    this.game = game;
+    this.start = start;
+    this.pause = pause;
+    this.reset = reset;
+    this.context = context;
+    this.canvas = canvas;
+    this.mousePosition = [0, 0];
+    this.handleClick = this.handleClick.bind(this);
+    this.handleMove = this.handleMove.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.setup = this.setup.bind(this);
+    this.playing = false;
+    this.tracking = [];
+    this.checkCollision = this.checkCollision.bind(this);
+    this.approx = this.approx.bind(this);
+  }
+
+  _createClass(GameView, [{
+    key: "getDistance",
+    value: function getDistance(x1, y1, x2, y2) {
+      var xDist = x2 - x1;
+      var yDist = y2 - y1;
+      return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+    }
+  }, {
+    key: "checkCollision",
+    value: function checkCollision() {
+      for (var i = 0; i < this.game.projectiles.length; i++) {
+        for (var k = 0; k < this.game.projectiles.length; k++) {
+          for (var j = 1; j < this.game.targets.length; j++) {
+            if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
+              //collision response
+              this.game.projectiles[i].collided = true; // this.game.targets.push(this.game.projectiles[i])
+
+              this.game.projectiles[i].dx = 0;
+              this.game.projectiles[i].dy = 0;
+              this.game.projectiles[i].aimX = this.game.targets[j].x;
+              this.game.projectiles[i].aimY = this.approx(this.game.projectiles[i].aimY);
+            }
+          }
+        }
+      }
+    }
+  }, {
+    key: "approx",
+    value: function approx(input) {
+      var counts = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
+      var output = counts.reduce(function (previous, current) {
+        return Math.abs(current - input) < Math.abs(previous - input) ? current : previous;
+      });
+      return output + 5;
+    }
+  }, {
+    key: "listenForMove",
+    value: function listenForMove() {
+      this.canvas.addEventListener("mousemove", this.handleMove);
+    }
+  }, {
+    key: "startup",
+    value: function startup() {
+      console.log("waiting"); // if (!this.playing) {
+
+      this.start.addEventListener("click", this.startGame); //   this.playing = !this.playing;
+      // } else {
+      //   this.playing = !this.playing;
+      // }
+
+      console.log(this.playing);
+    }
+  }, {
+    key: "handleMove",
+    value: function handleMove(event) {
+      this.mousePosition = [event.clientX, event.clientY];
+    }
+  }, {
+    key: "listenForClick",
+    value: function listenForClick() {
+      this.canvas.addEventListener("click", this.handleClick);
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick() {
+      this.game.turret.fire();
+    }
+  }, {
+    key: "setup",
+    value: function setup() {
+      this.listenForMove();
+      this.listenForClick();
+      this.game.addTargets();
+      this.game.moveTargets();
+    }
+  }, {
+    key: "startGame",
+    value: function startGame() {
+      this.setup();
+      this.animate();
+    }
+  }, {
+    key: "animate",
+    value: function animate() {
+      this.game.drawElements(this.context, this.mousePosition);
+      this.checkCollision(); // if (!this.game.gameOver()) {
+
+      requestAnimationFrame(this.animate.bind(this)); // }
+    }
+  }]);
+
+  return GameView;
+}();
+
+;
+module.exports = GameView;
 
 /***/ }),
 
@@ -126,7 +388,73 @@ eval("class GameView {\n  constructor(game, context, canvas, start, pause, reset
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("class Projectile {\n  constructor(props) {\n    this.aimX = props.aimX;\n    this.aimY = props.aimY;\n    this.dx = props.slope[0];\n    this.dy = props.slope[1];\n    this.radius = 20;\n    this.slope = props.slope;\n    this.game = props.game;\n    this.collided = false;\n  }\n \n \n  move() {\n    if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {\n      this.dx = -this.dx;\n    }\n    if (this.aimY - this.radius < 0) {\n      this.dy = -this.dy;\n    }\n    // if (this.aimY + this.radius > 500) {\n    // this.destroy();\n    // console.log('FIX THIS')\n    // }\n    this.aimX += this.dx;\n    this.aimY += this.dy;\n  }\n\n  //   destroy() {\n  //     this.game.remove(this)\n  //     console.log('gone?')\n  //   }\n\n  draw(context) {\n    context.beginPath();\n    context.arc(this.aimX, this.aimY, this.radius, 0, Math.PI * 2, false);\n    context.fillStyle = \"black\";\n    context.fill();\n    context.closePath();\n\n      this.move();\n  }\n}\n\nmodule.exports = Projectile;\n\n//# sourceURL=webpack:///./src/projectile.js?");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Projectile = /*#__PURE__*/function () {
+  function Projectile(props) {
+    _classCallCheck(this, Projectile);
+
+    this.aimX = props.aimX;
+    this.aimY = props.aimY;
+    this.dx = props.slope[0];
+    this.dy = props.slope[1];
+    this.radius = 20;
+    this.slope = props.slope;
+    this.game = props.game;
+    this.collided = false;
+    this.targetMove = this.targetMove.bind(this);
+  }
+
+  _createClass(Projectile, [{
+    key: "targetMove",
+    value: function targetMove() {
+      this.aimY += 35;
+    }
+  }, {
+    key: "move",
+    value: function move() {
+      if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
+        this.dx = -this.dx;
+      }
+
+      if (this.aimY - this.radius < 0) {
+        this.dy = -this.dy;
+      } // if (this.aimY + this.radius > 500) {
+      // this.destroy();
+      // console.log('FIX THIS')
+      // }
+
+
+      this.aimX += this.dx;
+      this.aimY += this.dy;
+    } //   destroy() {
+    //     this.game.remove(this)
+    //     console.log('gone?')
+    //   }
+
+  }, {
+    key: "draw",
+    value: function draw(context) {
+      context.beginPath();
+      context.arc(this.aimX, this.aimY, this.radius, 0, Math.PI * 2, false);
+      context.fillStyle = "black";
+      context.fill();
+      context.closePath();
+
+      if (this.collided === false) {
+        this.move();
+      }
+    }
+  }]);
+
+  return Projectile;
+}();
+
+module.exports = Projectile;
 
 /***/ }),
 
@@ -137,7 +465,69 @@ eval("class Projectile {\n  constructor(props) {\n    this.aimX = props.aimX;\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("class Target {\n  constructor(position, offset) {\n    this.position = position;\n    this.offset = offset;\n    this.x = this.position * 40 - 20;\n    this.y = 20;\n    this.radius = 20;\n    this.color = this.randomColor();\n    // this.gameOver = this.gameOver.bind(this)\n  }\n\n  randomColor() {\n    let colors = [\"red\", \"green\", \"blue\", \"orange\"];\n    // console.log(colors[Math.floor(Math.random() * colors.length)]);\n    return colors[Math.floor(Math.random() * colors.length)];\n  }\n\n//   gameOver() {\n//       if (this.y + this.radius > 540) {\n//         return true\n//       }\n//   }\n\n  draw(context) {\n    // this.gameOver()\n    context.beginPath();\n    if (this.position === 1 && this.offset) {\n      context.arc(40, this.y, this.radius, 0, Math.PI * 2, false);\n    } else if (this.position === 1 && !this.offset) {\n        context.arc(20, this.y, this.radius, 0, Math.PI * 2, false);\n    } else if (this.offset) {\n        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);\n    } else {\n        context.arc(this.x + 20, this.y, this.radius, 0, Math.PI * 2, false);\n    }\n    context.fillStyle = this.color;\n    context.fill();\n\n    // this.update();\n  }\n}\n\nmodule.exports = Target;\n\n\n//# sourceURL=webpack:///./src/target.js?");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Target = /*#__PURE__*/function () {
+  function Target(position, offset, x, y) {
+    _classCallCheck(this, Target);
+
+    this.position = position;
+    this.offset = offset;
+    this.x = this.position * 40 - 20;
+    this.y = 20;
+    this.radius = 20;
+    this.color = this.randomColor();
+    this.move = this.move.bind(this);
+    this.count = 0;
+    this.currentY = this.y + 35 * this.count; // this.gameOver = this.gameOver.bind(this)
+  }
+
+  _createClass(Target, [{
+    key: "move",
+    value: function move() {
+      this.y += 35;
+    }
+  }, {
+    key: "randomColor",
+    value: function randomColor() {
+      var colors = ["red", "green", "blue", "orange"]; // console.log(colors[Math.floor(Math.random() * colors.length)]);
+
+      return colors[Math.floor(Math.random() * colors.length)];
+    } //   gameOver() {
+    //       if (this.y + this.radius > 540) {
+    //         return true
+    //       }
+    //   }
+
+  }, {
+    key: "draw",
+    value: function draw(context) {
+      // this.gameOver()
+      context.beginPath();
+
+      if (this.position === 1 && this.offset) {
+        context.arc(40, this.y, this.radius, 0, Math.PI * 2, false);
+      } else if (this.position === 1 && !this.offset) {
+        context.arc(20, this.y, this.radius, 0, Math.PI * 2, false);
+      } else if (this.offset) {
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      } else {
+        context.arc(this.x + 20, this.y, this.radius, 0, Math.PI * 2, false);
+      }
+
+      context.fillStyle = this.color;
+      context.fill(); // this.update();
+    }
+  }]);
+
+  return Target;
+}();
+
+module.exports = Target;
 
 /***/ }),
 
@@ -148,8 +538,86 @@ eval("class Target {\n  constructor(position, offset) {\n    this.position = pos
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Projectile = __webpack_require__(/*! ./projectile */ \"./src/projectile.js\");\n\nclass Turret {\n  constructor(game) {\n    this.game = game;\n    this.projectiles = 0;\n    // this.slope = [1, -4];\n  }\n\n  swivelTurret(mousePosition) {\n    this.dx = mousePosition[0] - 160;\n    this.dy = 540 - mousePosition[1];\n    let swivel = Math.atan2(this.dy, this.dx) + Math.PI;\n    let hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);\n\n    this.aimX = 160 - Math.cos(swivel) * 50;\n    this.aimY = 540 + Math.sin(swivel) * 50;\n    this.cheatX = 160 - Math.cos(swivel) * 550;\n    this.cheatY = 540 + Math.sin(swivel) * 550;\n\n    this.speedX = -Math.cos(swivel) * 15;\n    this.speedY = Math.sin(swivel) * 15;\n  }\n\n  //   swivelTurret(mousePosition) {\n  //     this.dx = mousePosition[0] - 160;\n  //     this.dy = 540 - mousePosition[1];\n  //     let swivel = Math.atan2(this.dy, this.dx) + Math.PI;\n  //     let hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);\n\n  //     this.aimX = 160 - 50 * Math.cos(swivel);\n  //     this.aimY = 540 + 50 * Math.sin(swivel);\n  //   }\n\n  fire() {\n    const projectile = new Projectile({\n      game: this.game,\n      slope: [this.speedX, this.speedY],\n      aimX: this.aimX,\n      aimY: this.aimY,\n    });\n    this.game.addProjectiles(projectile);\n  }\n\n  draw(context) {\n    //turret line\n    context.beginPath();\n    context.moveTo(160, 540);\n    context.lineTo(this.cheatX, this.cheatY);\n    context.strokeStyle = \"grey\";\n    context.lineWidth = 1;\n    context.stroke();\n\n    //turret cannon\n    context.beginPath();\n    context.moveTo(160, 540);\n    context.lineTo(this.aimX, this.aimY);\n    context.strokeStyle = \"purple\";\n    context.lineWidth = 45;\n    context.stroke();\n\n    //turret base\n    context.beginPath();\n    context.arc(160, 540, 30, 0, Math.PI * 2, false);\n    context.fillStyle = \"purple\";\n    context.fill();\n  }\n}\n\nmodule.exports = Turret;\n\n//# sourceURL=webpack:///./src/turret.js?");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Projectile = __webpack_require__(/*! ./projectile */ "./src/projectile.js");
+
+var Turret = /*#__PURE__*/function () {
+  function Turret(game) {
+    _classCallCheck(this, Turret);
+
+    this.game = game;
+    this.projectiles = 0; // this.slope = [1, -4];
+  }
+
+  _createClass(Turret, [{
+    key: "swivelTurret",
+    value: function swivelTurret(mousePosition) {
+      this.dx = mousePosition[0] - 160;
+      this.dy = 540 - mousePosition[1];
+      var swivel = Math.atan2(this.dy, this.dx) + Math.PI;
+      var hyp = Math.sqrt(Math.pow(this.dy, 2) + Math.pow(this.dx, 2));
+      this.aimX = 160 - Math.cos(swivel) * 50;
+      this.aimY = 540 + Math.sin(swivel) * 50;
+      this.cheatX = 160 - Math.cos(swivel) * 550;
+      this.cheatY = 540 + Math.sin(swivel) * 550;
+      this.speedX = -Math.cos(swivel) * 10;
+      this.speedY = Math.sin(swivel) * 10;
+    } //   swivelTurret(mousePosition) {
+    //     this.dx = mousePosition[0] - 160;
+    //     this.dy = 540 - mousePosition[1];
+    //     let swivel = Math.atan2(this.dy, this.dx) + Math.PI;
+    //     let hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);
+    //     this.aimX = 160 - 50 * Math.cos(swivel);
+    //     this.aimY = 540 + 50 * Math.sin(swivel);
+    //   }
+
+  }, {
+    key: "fire",
+    value: function fire() {
+      var projectile = new Projectile({
+        game: this.game,
+        slope: [this.speedX, this.speedY],
+        aimX: this.aimX,
+        aimY: this.aimY
+      });
+      this.game.addProjectiles(projectile);
+    }
+  }, {
+    key: "draw",
+    value: function draw(context) {
+      //turret line
+      context.beginPath();
+      context.moveTo(160, 540);
+      context.lineTo(this.cheatX, this.cheatY);
+      context.strokeStyle = "grey";
+      context.lineWidth = 1;
+      context.stroke(); //turret cannon
+
+      context.beginPath();
+      context.moveTo(160, 540);
+      context.lineTo(this.aimX, this.aimY);
+      context.strokeStyle = "purple";
+      context.lineWidth = 45;
+      context.stroke(); //turret base
+
+      context.beginPath();
+      context.arc(160, 540, 30, 0, Math.PI * 2, false);
+      context.fillStyle = "purple";
+      context.fill();
+    }
+  }]);
+
+  return Turret;
+}();
+
+module.exports = Turret;
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=bundle.js.map

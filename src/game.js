@@ -22,10 +22,14 @@ class Game {
     setInterval(() => {
       this.targets.forEach((target) => {
         if (target instanceof Target) {
-          target.y += 35;
-        } else if (target instanceof Projectile) {
-          target.aimY += 35;
+          target.count += 1
+            target.y += 35;
         } 
+      })
+      this.projectiles.forEach((target) => {
+        if (target instanceof Projectile) {
+          target.aimY += 35
+        }
       });
     }, 2000);
   }

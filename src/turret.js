@@ -18,8 +18,8 @@ class Turret {
     this.cheatX = 160 - Math.cos(swivel) * 550;
     this.cheatY = 540 + Math.sin(swivel) * 550;
 
-    this.speedX = -Math.cos(swivel) * 15;
-    this.speedY = Math.sin(swivel) * 15;
+    this.speedX = -Math.cos(swivel) * 10;
+    this.speedY = Math.sin(swivel) * 10;
   }
 
   //   swivelTurret(mousePosition) {

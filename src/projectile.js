@@ -8,9 +8,13 @@ class Projectile {
     this.slope = props.slope;
     this.game = props.game;
     this.collided = false;
+    this.targetMove = this.targetMove.bind(this);
   }
- 
- 
+
+  targetMove() {
+    this.aimY += 35;
+  }
+
   move() {
     if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
       this.dx = -this.dx;
@@ -38,7 +42,9 @@ class Projectile {
     context.fill();
     context.closePath();
 
+    if (this.collided === false) {
       this.move();
+    }
   }
 }
 
