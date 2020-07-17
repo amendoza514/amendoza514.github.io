@@ -27,6 +27,26 @@ class GameView {
   checkCollision() {
     for (let i = 0; i < this.game.projectiles.length; i++) {
       for (let k = 0; k < this.game.projectiles.length; k ++) {
+        if (i !== k) {
+          let pX = this.game.projectiles[i].aimX;
+          let pY = this.game.projectiles[i].aimY;
+          let pRadius = this.game.projectiles[i].radius;
+          let tX = this.game.projectiles[k].aimX;
+          let tY = this.game.projectiles[k].aimY;
+          let tRadius = this.game.projectiles[i].radius;
+         if (
+           this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+           this.game.projectiles[i].aimY = this.approxY(pY);
+           this.game.projectiles[i].aimX = this.approxX(pX, tX);
+           this.game.projectiles[i].dx = 0;
+           this.game.projectiles[i].dy = 0;
+           if (this.game.projectiles[i].color === this.game.projectiles[k].color) {
+             this.game.projectiles[i].hit = true;
+             this.game.projectiles[k].hit = true;
+           }
+          //  console.log(this.game.projectiles[k])
+          //  debugger
+         }}
         for (let j = 1; j < this.game.targets.length; j++) {
           if (
             this.getDistance(
@@ -44,6 +64,12 @@ class GameView {
             this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].offset, tempX);
             this.game.projectiles[i].dx = 0;
             this.game.projectiles[i].dy = 0;
+             if (
+               this.game.projectiles[i].color === this.game.targets[j].color
+             ) {
+               this.game.projectiles[i].hit = true;
+               this.game.targets[j].hit = true;
+             }
             // this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY)
             // this.game.projectiles[i].aimX = this.approxX(
             //   this.game.projectiles[i],
@@ -55,13 +81,6 @@ class GameView {
     }
   }
 
-  // approxX(projectile, target) {
-  //   if (projectile.aimX > target.x) {
-  //     return target.x + 20;
-  //   } else {
-  //     return target.x - 20;
-  //   }
-  // }
 
   // approxY(projectile, target) {
   //   if (projectile.aimY > target.y) {
@@ -76,14 +95,15 @@ class GameView {
     let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
     return yOutput;
   }
-  approxX(xInput, offset, tempX) {
-    let xPositions;
-    if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
-      xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
-    } else {
-      xPositions = [40, 80, 120, 160, 200, 240, 280];
-    }
-    let xOutput = xPositions.reduce((previous, current) => Math.abs(current - xInput) < Math.abs(previous - xInput) ? current : previous);
+  approxX(pX, tX) {
+    let xPositions = [40, 80, 120, 160, 200, 240, 280, 20, 60, 100, 140, 180, 220, 260, 300];
+    // if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
+    //   xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
+    // } else {
+    //   xPositions = [40, 80, 120, 160, 200, 240, 280];
+    // }
+    let xOutput = xPositions.reduce((previous, current) => Math.abs(current - pX) < Math.abs(previous - pX) ? current : previous);
+
     return xOutput
   }
 

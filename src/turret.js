@@ -4,7 +4,13 @@ class Turret {
   constructor(game) {
     this.game = game;
     this.projectiles = 0;
-    // this.slope = [1, -4];
+    this.color = this.randomColor()
+    // this.nextShot = asd;
+    this.currentShot = this.color;
+  }
+  randomColor() {
+    let colors = ["red", "green", "blue", "orange", "gray"];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 
   swivelTurret(mousePosition) {
@@ -38,8 +44,10 @@ class Turret {
       slope: [this.speedX, this.speedY],
       aimX: this.aimX,
       aimY: this.aimY,
+      color: this.color
     });
     this.game.addProjectiles(projectile);
+    this.color = this.randomColor();
   }
 
   draw(context) {
@@ -55,14 +63,14 @@ class Turret {
     context.beginPath();
     context.moveTo(160, 540);
     context.lineTo(this.aimX, this.aimY);
-    context.strokeStyle = "purple";
+    context.strokeStyle = this.color;
     context.lineWidth = 45;
     context.stroke();
 
     //turret base
     context.beginPath();
     context.arc(160, 540, 30, 0, Math.PI * 2, false);
-    context.fillStyle = "purple";
+    context.fillStyle = this.color;
     context.fill();
   }
 }

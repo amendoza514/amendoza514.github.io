@@ -1,7 +1,7 @@
 class Target {
   constructor(position, offset, x, y) {
     this.position = position;
-    this.offset = offset;
+    this.offset = offset ? offset : false;
     this.x = this.position * 40 - 20;
     this.y = 20;
     this.radius = 20;
@@ -9,6 +9,7 @@ class Target {
     this.move = this.move.bind(this);
     this.count = 0;
     this.currentY = this.y + (35 * this.count);
+    this.hit = false;
     // this.gameOver = this.gameOver.bind(this)
   }
 
@@ -17,7 +18,7 @@ class Target {
   }
 
   randomColor() {
-    let colors = ["red", "green", "blue", "orange"];
+    let colors = ["red", "green", "blue", "orange", "gray"];
     // console.log(colors[Math.floor(Math.random() * colors.length)]);
     return colors[Math.floor(Math.random() * colors.length)];
   }

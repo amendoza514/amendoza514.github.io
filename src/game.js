@@ -11,6 +11,7 @@ class Game {
     this.targets = [];
     // this.playing = true
     this.offsetRow = false;
+    this.remove = this.remove.bind(this)
   }
 
   movingObjects() {
@@ -31,27 +32,28 @@ class Game {
           target.aimY += 35
         }
       });
-    }, 2000);
+    }, 5000);
   }
 
   addTargets() {
     setInterval(() => {
       if (!this.offsetRow) {
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 8; i++) {
           //normally 8
           this.targets.push(new Target(i, false));
           // console.log(this.targets);
-          // debugger
         }
         this.offsetRow = true;
+        // debugger
     } else {
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 7; i++) {
           this.targets.push(new Target(i, true));
           // console.log(this.targets);
         }
         this.offsetRow = false;
+        // debugger
     }
-    }, 2000);
+    }, 5000);
   }
   // END TESTING
 
@@ -69,16 +71,13 @@ class Game {
     // });
 //   }
 
-  // remove(obj) {
-  //   console.log(this.projectiles)
-  //     if (obj instanceof Projectile) {
-  //         this.projectiles = this.projectiles.filter(projectile => {
-  //             obj !== projectile
-  //         })
-  //         obj = undefined
-  //     }
-  //     console.log(this.projectiles);
-  // }
+  remove(obj) {
+      if (obj instanceof Projectile) {
+        this.projectiles.splice(this.projectiles.indexOf(obj), 1);
+      } else if (obj instanceof Target) {
+        this.targets.splice(this.targets.indexOf(obj), 1);
+      }
+  }
 
   drawElements(context, mousePosition) {
       context.clearRect(0, 0, this.width, this.height);
@@ -87,9 +86,11 @@ class Game {
       
     this.movingObjects().forEach((obj) => {
         obj.draw(context);
-        
         if (obj instanceof Turret) {
             obj.swivelTurret(mousePosition);
+        } else if (obj.hit) {
+          console.log('hit')
+          this.remove(obj);
         }
     });
   }

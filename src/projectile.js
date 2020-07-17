@@ -1,5 +1,6 @@
 class Projectile {
   constructor(props) {
+    this.color = props.color;
     this.aimX = props.aimX;
     this.aimY = props.aimY;
     this.dx = props.slope[0];
@@ -9,7 +10,13 @@ class Projectile {
     this.game = props.game;
     this.collided = false;
     this.targetMove = this.targetMove.bind(this);
+    this.hit = false;
   }
+
+  // randomColor() {
+  //   let colors = ["red", "green", "blue", "orange", "gray"];
+  //   return colors[Math.floor(Math.random() * colors.length)];
+  // }
 
   targetMove() {
     this.aimY += 35;
@@ -38,7 +45,7 @@ class Projectile {
   draw(context) {
     context.beginPath();
     context.arc(this.aimX, this.aimY, this.radius, 0, Math.PI * 2, false);
-    context.fillStyle = "black";
+    context.fillStyle = this.color;
     context.fill();
     context.closePath();
 
