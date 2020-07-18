@@ -32,19 +32,9 @@ class Turret {
     this.cheatX = 160 - Math.cos(swivel) * 550;
     this.cheatY = 540 + Math.sin(swivel) * 550;
 
-    this.speedX = -Math.cos(swivel) * 10;
-    this.speedY = Math.sin(swivel) * 10;
+    this.speedX = -Math.cos(swivel) * 15;
+    this.speedY = Math.sin(swivel) * 15;
   }
-
-  //   swivelTurret(mousePosition) {
-  //     this.dx = mousePosition[0] - 160;
-  //     this.dy = 540 - mousePosition[1];
-  //     let swivel = Math.atan2(this.dy, this.dx) + Math.PI;
-  //     let hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);
-
-  //     this.aimX = 160 - 50 * Math.cos(swivel);
-  //     this.aimY = 540 + 50 * Math.sin(swivel);
-  //   }
 
   fire() {
     const projectile = new Projectile({

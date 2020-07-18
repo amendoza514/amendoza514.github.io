@@ -13,6 +13,7 @@ class Game {
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
     this.score = 0;
+    this.offset = false
   }
 
   
@@ -41,17 +42,29 @@ class Game {
   addTargets() {
     setInterval(() => {
       if (!this.offsetRow) {
+        let last;
         for (let i = 1; i <= 8; i++) {
-          //normally 8
-          this.targets.push(new Target(i, false));
+          let x;
+          if (i === 1) {
+            x = 20;
+          } else {
+            x = i * 40 - 20;
+          }
+          this.targets.push(new Target(i, false, x));
+          last = i
           // console.log(this.targets);
         }
         this.offsetRow = true;
         // debugger
     } else {
-        for (let i = 1; i <= 7; i++) {
-          this.targets.push(new Target(i, true));
-          // console.log(this.targets);
+        for (let j = 1; j <= 7; j++) {
+          let x;
+          if (j === 1) {
+            x = 40;
+          } else {
+            x = j * 40;
+          }
+          this.targets.push(new Target(j, false, x));
         }
         this.offsetRow = false;
         // debugger
@@ -76,11 +89,15 @@ class Game {
 
   remove(obj) {
       if (obj instanceof Projectile) {
-        this.projectiles.splice(this.projectiles.indexOf(obj), 1);
+        this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(
+        this.projectiles.slice(this.projectiles.indexOf(obj) + 1)); 
+        // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
       } else if (obj instanceof Target) {
-        this.targets.splice(this.targets.indexOf(obj), 1);
+        this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(
+        this.targets.slice(this.targets.indexOf(obj) + 1));
+        // this.targets.splice(this.targets.indexOf(obj), 1);
       }
-      this.score += 15
+      this.score += 23
   }
 
   drawElements(context, mousePosition) {
@@ -100,15 +117,6 @@ class Game {
         }
     });
   }
-
-  //   clearElements(context) {
-  //       this.projectiles = [];
-  //       this.targets = []
-  //       this.turret = null;
-  //     context.clearRect(0, 0, this.width, this.height);
-  //     context.fillStyle = "white";
-  //     context.fillRect(0, 0, this.width, this.height);
-  //   }
 }
 
 module.exports = Game;

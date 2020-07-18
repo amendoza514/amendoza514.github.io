@@ -5,7 +5,7 @@ class Projectile {
     this.aimY = props.aimY;
     this.dx = props.slope[0];
     this.dy = props.slope[1];
-    this.radius = 20;
+    this.radius = 15;
     this.slope = props.slope;
     this.game = props.game;
     this.collided = false;

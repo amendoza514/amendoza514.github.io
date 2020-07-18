@@ -144,6 +144,7 @@ var Game = /*#__PURE__*/function () {
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
     this.score = 0;
+    this.offset = false;
   }
 
   _createClass(Game, [{
@@ -179,17 +180,34 @@ var Game = /*#__PURE__*/function () {
 
       setInterval(function () {
         if (!_this2.offsetRow) {
-          for (var i = 1; i <= 8; i++) {
-            //normally 8
-            _this2.targets.push(new Target(i, false)); // console.log(this.targets);
+          var last;
 
+          for (var i = 1; i <= 8; i++) {
+            var x = void 0;
+
+            if (i === 1) {
+              x = 20;
+            } else {
+              x = i * 40 - 20;
+            }
+
+            _this2.targets.push(new Target(i, false, x));
+
+            last = i; // console.log(this.targets);
           }
 
           _this2.offsetRow = true; // debugger
         } else {
-          for (var _i = 1; _i <= 7; _i++) {
-            _this2.targets.push(new Target(_i, true)); // console.log(this.targets);
+          for (var j = 1; j <= 7; j++) {
+            var _x = void 0;
 
+            if (j === 1) {
+              _x = 40;
+            } else {
+              _x = j * 40;
+            }
+
+            _this2.targets.push(new Target(j, false, _x));
           }
 
           _this2.offsetRow = false; // debugger
@@ -215,12 +233,12 @@ var Game = /*#__PURE__*/function () {
     key: "remove",
     value: function remove(obj) {
       if (obj instanceof Projectile) {
-        this.projectiles.splice(this.projectiles.indexOf(obj), 1);
+        this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1)); // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
       } else if (obj instanceof Target) {
-        this.targets.splice(this.targets.indexOf(obj), 1);
+        this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1)); // this.targets.splice(this.targets.indexOf(obj), 1);
       }
 
-      this.score += 15;
+      this.score += 23;
     }
   }, {
     key: "drawElements",
@@ -243,15 +261,7 @@ var Game = /*#__PURE__*/function () {
           _this3.remove(obj);
         }
       });
-    } //   clearElements(context) {
-    //       this.projectiles = [];
-    //       this.targets = []
-    //       this.turret = null;
-    //     context.clearRect(0, 0, this.width, this.height);
-    //     context.fillStyle = "white";
-    //     context.fillRect(0, 0, this.width, this.height);
-    //   }
-
+    }
   }]);
 
   return Game;
@@ -293,7 +303,9 @@ var GameView = /*#__PURE__*/function () {
     this.setup = this.setup.bind(this);
     this.playing = false;
     this.tracking = [];
+    this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
+    this.chainReaction = this.chainReaction.bind(this);
     this.approxY = this.approxY.bind(this);
   }
 
@@ -318,74 +330,156 @@ var GameView = /*#__PURE__*/function () {
             var tRadius = this.game.projectiles[i].radius;
 
             if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
-              this.game.projectiles[i].aimY = this.approxY(pY);
-              this.game.projectiles[i].aimX = this.approxX(pX, tX);
               this.game.projectiles[i].dx = 0;
               this.game.projectiles[i].dy = 0;
+              this.game.projectiles[i].aimX = this.approxX(pX, tX);
+              this.game.projectiles[i].aimY = this.approxY(pY, tY);
+              pRadius = tRadius;
 
               if (this.game.projectiles[i].color === this.game.projectiles[k].color) {
                 this.game.projectiles[i].hit = true;
                 this.game.projectiles[k].hit = true;
-              } //  console.log(this.game.projectiles[k])
-              //  debugger
-
+                this.checkChain = true;
+              }
             }
           }
 
-          for (var j = 1; j < this.game.targets.length; j++) {
+          this.game.projectiles[i].radius = this.game.projectiles[k].radius;
+
+          for (var j = 0; j < this.game.targets.length; j++) {
             if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
               //collision response
               this.game.projectiles[i].collided = true;
               var tempX = this.game.targets[j].x; // projectile instructions
 
-              this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY);
-              this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].offset, tempX);
+              this.game.projectiles[i].radius = this.game.targets[j].radius;
               this.game.projectiles[i].dx = 0;
               this.game.projectiles[i].dy = 0;
+              this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].x);
+              this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY, this.game.targets[j].y);
 
               if (this.game.projectiles[i].color === this.game.targets[j].color) {
                 this.game.projectiles[i].hit = true;
                 this.game.targets[j].hit = true;
-              } // this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY)
-              // this.game.projectiles[i].aimX = this.approxX(
-              //   this.game.projectiles[i],
-              //   this.game.targets[j]
-              // );
-
+                this.checkChain = true;
+              }
             }
+
+            this.game.projectiles[i].radius = this.game.targets[j].radius;
           }
         }
       }
-    } // approxY(projectile, target) {
-    //   if (projectile.aimY > target.y) {
-    //     return target.y + 20;
-    //   } else {
-    //     return target.y - 20;
-    //   }
-    // }
-
-  }, {
-    key: "approxY",
-    value: function approxY(yInput) {
-      var yPositions = [55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
-      var yOutput = yPositions.reduce(function (previous, current) {
-        return Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous;
-      });
-      return yOutput;
     }
   }, {
     key: "approxX",
-    value: function approxX(pX, tX) {
-      var xPositions = [40, 80, 120, 160, 200, 240, 280, 20, 60, 100, 140, 180, 220, 260, 300]; // if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
-      //   xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
-      // } else {
-      //   xPositions = [40, 80, 120, 160, 200, 240, 280];
-      // }
+    value: function approxX(x1, x2) {
+      if (x1 > x2) {
+        return x2 + 20;
+      } else {
+        return x2 - 20;
+      }
+    }
+  }, {
+    key: "approxY",
+    value: function approxY(y1, y2) {
+      if (y1 > y2) {
+        return y2 + 35;
+      } else {
+        return y2 - 35;
+      }
+    } // approxY(yInput, y2) {
+    //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
+    //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
+    //   return yOutput;
+    // }
+    // approxX(pX, offset, tX) {
+    //   let xPositions = [40, 80, 120, 160, 200, 240, 280, 20, 60, 100, 140, 180, 220, 260, 300];
+    //   // if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
+    //   //   xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
+    //   // } else {
+    //   //   xPositions = [40, 80, 120, 160, 200, 240, 280];
+    //   // }
+    //   let xOutput = xPositions.reduce((previous, current) => Math.abs(current - pX) < Math.abs(previous - pX) ? current : previous);
+    //   return xOutput;
+    // }
+    //still need to add collision on ball ball and ball target
 
-      var xOutput = xPositions.reduce(function (previous, current) {
-        return Math.abs(current - pX) < Math.abs(previous - pX) ? current : previous;
-      });
-      return xOutput;
+  }, {
+    key: "chainReaction",
+    value: function chainReaction() {
+      while (this.checkChain === true) {
+        //target / target
+        for (var i = 0; i < this.game.targets.length; i++) {
+          console.log("checking");
+
+          for (var k = 0; k < this.game.targets.length; k++) {
+            if (i !== k) {
+              var pX = this.game.targets[i].x;
+              var pY = this.game.targets[i].y;
+              var pRadius = this.game.targets[i].radius;
+              var tX = this.game.targets[k].x;
+              var tY = this.game.targets[k].y;
+              var tRadius = this.game.targets[i].radius;
+
+              if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+                if (this.game.targets[i].color === this.game.targets[k].color && (this.game.targets[i].hit || this.game.targets[k].hit)) {
+                  this.game.targets[i].hit = true;
+                  this.game.targets[k].hit = true;
+                  this.checkChain = false;
+                }
+              }
+            }
+          }
+        } //projectile / target
+
+
+        for (var _i = 0; _i < this.game.projectiles.length; _i++) {
+          console.log("checking");
+
+          for (var _k = 0; _k < this.game.targets.length; _k++) {
+            var _pX = this.game.projectiles[_i].aimX;
+            var _pY = this.game.projectiles[_i].aimY;
+            var _pRadius = this.game.projectiles[_i].radius;
+            var _tX = this.game.targets[_k].x;
+            var _tY = this.game.targets[_k].y;
+            var _tRadius = this.game.targets[_i].radius;
+
+            if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
+              if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
+                this.game.projectiles[_i].hit = true;
+                this.game.targets[_k].hit = true;
+                this.checkChain = false;
+              }
+            }
+          }
+        } // projectile / projectile
+
+
+        for (var _i2 = 0; _i2 < this.game.projectiles.length; _i2++) {
+          console.log("checking");
+
+          for (var _k2 = 0; _k2 < this.game.projectiles.length; _k2++) {
+            if (_i2 !== _k2) {
+              var _pX2 = this.game.projectiles[_i2].aimX;
+              var _pY2 = this.game.projectiles[_i2].aimY;
+              var _pRadius2 = this.game.projectiles[_i2].radius;
+              var _tX2 = this.game.projectiles[_k2].aimX;
+              var _tY2 = this.game.projectiles[_k2].aimY;
+              var _tRadius2 = this.game.projectiles[_i2].radius;
+
+              if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
+                if (this.game.projectiles[_i2].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i2].hit || this.game.projectiles[_k2].hit)) {
+                  this.game.projectiles[_i2].hit = true;
+                  this.game.projectiles[_k2].hit = true;
+                  this.checkChain = false;
+                }
+              }
+            }
+          }
+        }
+
+        this.checkChain = false;
+      }
     }
   }, {
     key: "listenForMove",
@@ -408,7 +502,6 @@ var GameView = /*#__PURE__*/function () {
     key: "handleMove",
     value: function handleMove(event) {
       this.mousePosition = [event.offsetX, event.offsetY];
-      console.log(this.mousePosition);
     }
   }, {
     key: "listenForClick",
@@ -438,8 +531,9 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "animate",
     value: function animate() {
-      this.game.drawElements(this.context, this.mousePosition);
-      this.checkCollision(); // if (!this.game.gameOver()) {
+      this.checkCollision();
+      this.chainReaction();
+      this.game.drawElements(this.context, this.mousePosition); // if (!this.game.gameOver()) {
 
       requestAnimationFrame(this.animate.bind(this)); // }
     }
@@ -475,7 +569,7 @@ var Projectile = /*#__PURE__*/function () {
     this.aimY = props.aimY;
     this.dx = props.slope[0];
     this.dy = props.slope[1];
-    this.radius = 20;
+    this.radius = 15;
     this.slope = props.slope;
     this.game = props.game;
     this.collided = false;
@@ -554,8 +648,8 @@ var Target = /*#__PURE__*/function () {
     _classCallCheck(this, Target);
 
     this.position = position;
-    this.offset = offset ? offset : false;
-    this.x = this.position * 40 - 20;
+    this.offset = offset;
+    this.x = x;
     this.y = 20;
     this.radius = 20;
     this.color = this.randomColor();
@@ -563,7 +657,14 @@ var Target = /*#__PURE__*/function () {
     this.count = 0;
     this.currentY = this.y + 35 * this.count;
     this.hit = false; // this.gameOver = this.gameOver.bind(this)
-  }
+  } // if (this.position === 1 && !this.offset) {
+  //     this.x = 20
+  //   } else if (this.position === 1) {
+  //     this.x = 40
+  //   } else {
+  //     this.x = this.position * 40;
+  //   }
+
 
   _createClass(Target, [{
     key: "move",
@@ -587,17 +688,7 @@ var Target = /*#__PURE__*/function () {
     value: function draw(context) {
       // this.gameOver()
       context.beginPath();
-
-      if (this.position === 1 && this.offset) {
-        context.arc(40, this.y, this.radius, 0, Math.PI * 2, false);
-      } else if (this.position === 1 && !this.offset) {
-        context.arc(20, this.y, this.radius, 0, Math.PI * 2, false);
-      } else if (this.offset) {
-        context.arc(this.x + 20, this.y, this.radius, 0, Math.PI * 2, false);
-      } else {
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      }
-
+      context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       context.fillStyle = this.color;
       context.fill(); // this.update();
     }
@@ -662,17 +753,9 @@ var Turret = /*#__PURE__*/function () {
       this.aimY = 540 + Math.sin(swivel) * 50;
       this.cheatX = 160 - Math.cos(swivel) * 550;
       this.cheatY = 540 + Math.sin(swivel) * 550;
-      this.speedX = -Math.cos(swivel) * 10;
-      this.speedY = Math.sin(swivel) * 10;
-    } //   swivelTurret(mousePosition) {
-    //     this.dx = mousePosition[0] - 160;
-    //     this.dy = 540 - mousePosition[1];
-    //     let swivel = Math.atan2(this.dy, this.dx) + Math.PI;
-    //     let hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);
-    //     this.aimX = 160 - 50 * Math.cos(swivel);
-    //     this.aimY = 540 + 50 * Math.sin(swivel);
-    //   }
-
+      this.speedX = -Math.cos(swivel) * 15;
+      this.speedY = Math.sin(swivel) * 15;
+    }
   }, {
     key: "fire",
     value: function fire() {
