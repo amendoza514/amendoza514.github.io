@@ -123,7 +123,8 @@ class GameView {
   }
 
   handleMove(event) {
-    this.mousePosition = [event.clientX, event.clientY];
+    this.mousePosition = [event.offsetX, event.offsetY];
+    console.log(this.mousePosition);
   }
 
   listenForClick() {

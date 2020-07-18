@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let start = document.getElementById("start");
     let pause = document.getElementById("pause");
     let reset = document.getElementById("reset");
+
     let context = canvas.getContext("2d");
     canvas.width = 320;
     canvas.height = 540;

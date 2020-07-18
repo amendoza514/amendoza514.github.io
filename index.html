@@ -7,11 +7,9 @@
     <style type="text/css">
         canvas {
             border: 1px solid black;
-            /* margin-left: 35%; */
-            /* margin-top: 50px; */
-            /* margin-left: 10px; */
+            margin-left: 50px;
         }
-        #start {
+        #score {
             margin: 10px;
             font-size: 30px;
             height: -webkit-fill-available;
@@ -20,6 +18,55 @@
             padding-bottom: 15px;
             padding-right: 15px;
             padding-left: 15px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        #start {
+            margin: 10px;
+            font-size: 30px;
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            padding-bottom: 15px;
+            padding-right: 15px;
+            padding-left: 15px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        
+        .options {
+            display: flex;
+        }
+
+        .main-menu {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        #pause {
+            margin: 10px;
+            font-size: 12px;
+            height: -webkit-fill-available;
+            display: table;
+            padding: 10px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        #reset {
+            margin: 10px;
+            font-size: 12px;
+            float: right;
+            height: -webkit-fill-available;
+            display: table;
+            padding: 10px;
             font-family: sans-serif;
             text-transform: uppercase;
             border: 1px solid black;
@@ -35,10 +82,16 @@
 </head>
 <body>
     <canvas id='canvas'></canvas>
+    
     <div class='menu-buttons'>
+        <div id='score'>Score: </div>
         <button id='start'>start!</button>
-        <button id='pause'>pause</button>
-        <button id='reset'>reset</button>
+            <div class='main-menu'>
+            <div class='options'>
+                <button id='pause'>pause</button>
+                <button id='reset'>reset</button>
+            </div>
+        </div>
     </div>
     <script src='./dist/bundle.js'></script>
 </body>

@@ -143,6 +143,7 @@ var Game = /*#__PURE__*/function () {
 
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
+    this.score = 0;
   }
 
   _createClass(Game, [{
@@ -218,6 +219,8 @@ var Game = /*#__PURE__*/function () {
       } else if (obj instanceof Target) {
         this.targets.splice(this.targets.indexOf(obj), 1);
       }
+
+      this.score += 15;
     }
   }, {
     key: "drawElements",
@@ -227,6 +230,8 @@ var Game = /*#__PURE__*/function () {
       context.clearRect(0, 0, this.width, this.height);
       context.fillStyle = "white";
       context.fillRect(0, 0, this.width, this.height);
+      var score = document.getElementById("score");
+      score.innerHTML = "score: ".concat(this.score);
       this.movingObjects().forEach(function (obj) {
         obj.draw(context);
 
@@ -402,7 +407,8 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "handleMove",
     value: function handleMove(event) {
-      this.mousePosition = [event.clientX, event.clientY];
+      this.mousePosition = [event.offsetX, event.offsetY];
+      console.log(this.mousePosition);
     }
   }, {
     key: "listenForClick",
@@ -686,8 +692,7 @@ var Turret = /*#__PURE__*/function () {
     value: function draw(context) {
       //turrent base
       context.beginPath();
-      context.rect(180, 530, 50, 5); // context.strokeStyle= 'gray'
-
+      context.rect(180, 530, 50, 5);
       context.fillStyle = 'gray';
       context.fill();
       context.stroke(); //turret line

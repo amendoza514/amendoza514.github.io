@@ -63,7 +63,6 @@ class Turret {
     //turrent base
     context.beginPath();
     context.rect(180, 530, 50, 5);
-    // context.strokeStyle= 'gray'
     context.fillStyle = 'gray'
     context.fill()
     context.stroke()
@@ -98,6 +97,7 @@ class Turret {
     context.arc(210, 525, 5, 0, Math.PI * 2, false);
     context.fillStyle = this.shots[1];
     context.fill();
+
     // next next shot
     context.beginPath();
     context.arc(222, 525, 5, 0, Math.PI * 2, false);

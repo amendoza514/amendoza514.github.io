@@ -11,8 +11,11 @@ class Game {
     this.targets = [];
     // this.playing = true
     this.offsetRow = false;
-    this.remove = this.remove.bind(this)
+    this.remove = this.remove.bind(this);
+    this.score = 0;
   }
+
+  
 
   movingObjects() {
     return [].concat(this.projectiles, this.turret, this.targets);
@@ -77,12 +80,15 @@ class Game {
       } else if (obj instanceof Target) {
         this.targets.splice(this.targets.indexOf(obj), 1);
       }
+      this.score += 15
   }
 
   drawElements(context, mousePosition) {
       context.clearRect(0, 0, this.width, this.height);
       context.fillStyle = "white";
       context.fillRect(0, 0, this.width, this.height);
+      let score = document.getElementById("score");
+      score.innerHTML=`score: ${this.score}`;
       
     this.movingObjects().forEach((obj) => {
         obj.draw(context);
