@@ -111,10 +111,25 @@ class Game {
         obj.draw(context);
         if (obj instanceof Turret) {
             obj.swivelTurret(mousePosition);
-        } else if (obj.hit) {
-          console.log('hit')
-          this.remove(obj);
-        }
+        } 
+        if (obj instanceof Projectile) {
+          if (obj.hit) {
+            // console.log('hit')
+            this.remove(obj);
+          } else if (obj.aimY > 600) {
+            this.remove(obj);
+            //trash collection
+          }
+        } 
+        if (obj instanceof Target) {
+          if (obj.hit) {
+            // console.log('hit')
+            this.remove(obj);
+          } else if (obj.x > 600) {
+            this.remove(obj);
+            //trash collection
+          }
+        } 
     });
   }
 }

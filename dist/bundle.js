@@ -255,10 +255,26 @@ var Game = /*#__PURE__*/function () {
 
         if (obj instanceof Turret) {
           obj.swivelTurret(mousePosition);
-        } else if (obj.hit) {
-          console.log('hit');
+        }
 
-          _this3.remove(obj);
+        if (obj instanceof Projectile) {
+          if (obj.hit) {
+            // console.log('hit')
+            _this3.remove(obj);
+          } else if (obj.aimY > 600) {
+            _this3.remove(obj); //trash collection
+
+          }
+        }
+
+        if (obj instanceof Target) {
+          if (obj.hit) {
+            // console.log('hit')
+            _this3.remove(obj);
+          } else if (obj.x > 600) {
+            _this3.remove(obj); //trash collection
+
+          }
         }
       });
     }
@@ -301,12 +317,12 @@ var GameView = /*#__PURE__*/function () {
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
     this.setup = this.setup.bind(this);
+    this.approxY = this.approxY.bind(this);
     this.playing = false;
-    this.tracking = [];
     this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
     this.chainReaction = this.chainReaction.bind(this);
-    this.approxY = this.approxY.bind(this);
+    this.checkValidation = this.checkValidation.bind(this);
   }
 
   _createClass(GameView, [{
@@ -332,9 +348,9 @@ var GameView = /*#__PURE__*/function () {
             if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
               this.game.projectiles[i].dx = 0;
               this.game.projectiles[i].dy = 0;
+              pRadius = 20;
               this.game.projectiles[i].aimX = this.approxX(pX, tX);
               this.game.projectiles[i].aimY = this.approxY(pY, tY);
-              pRadius = tRadius;
 
               if (this.game.projectiles[i].color === this.game.projectiles[k].color) {
                 this.game.projectiles[i].hit = true;
@@ -342,19 +358,16 @@ var GameView = /*#__PURE__*/function () {
                 this.checkChain = true;
               }
             }
-          }
+          } // this.game.projectiles[i].radius = this.game.projectiles[k].radius;
 
-          this.game.projectiles[i].radius = this.game.projectiles[k].radius;
 
           for (var j = 0; j < this.game.targets.length; j++) {
             if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
               //collision response
-              this.game.projectiles[i].collided = true;
-              var tempX = this.game.targets[j].x; // projectile instructions
-
-              this.game.projectiles[i].radius = this.game.targets[j].radius;
+              // projectile instructions
               this.game.projectiles[i].dx = 0;
               this.game.projectiles[i].dy = 0;
+              this.game.projectiles[i].radius = 20;
               this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].x);
               this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY, this.game.targets[j].y);
 
@@ -363,9 +376,8 @@ var GameView = /*#__PURE__*/function () {
                 this.game.targets[j].hit = true;
                 this.checkChain = true;
               }
-            }
+            } // this.game.projectiles[i].radius = this.game.targets[j].radius;
 
-            this.game.projectiles[i].radius = this.game.targets[j].radius;
           }
         }
       }
@@ -387,7 +399,11 @@ var GameView = /*#__PURE__*/function () {
       } else {
         return y2 - 35;
       }
-    } // approxY(yInput, y2) {
+    }
+  }, {
+    key: "chainReaction",
+    //older aiming 
+    // approxY(yInput, y2) {
     //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
     //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
     //   return yOutput;
@@ -403,9 +419,6 @@ var GameView = /*#__PURE__*/function () {
     //   return xOutput;
     // }
     //still need to add collision on ball ball and ball target
-
-  }, {
-    key: "chainReaction",
     value: function chainReaction() {
       while (this.checkChain === true) {
         //target / target
@@ -482,6 +495,37 @@ var GameView = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "checkValidation",
+    value: function checkValidation() {
+      var shot = this.game.projectiles[this.game.projectiles.length - 1];
+
+      for (var i = 0; i < this.game.projectiles.length - 1; i++) {
+        var obj = this.game.projectiles[i];
+
+        if (this.getDistance(shot.aimX, shot.aimY, obj.aimX, obj.aimY) - 5 < shot.radius + obj.radius) {
+          if (shot.color === obj.color) {
+            shot.hit = true;
+            obj.hit = true;
+            this.checkChain = true;
+            console.log('saved');
+          }
+        }
+      }
+
+      for (var _i3 = 0; _i3 < this.game.targets.length; _i3++) {
+        var _obj = this.game.targets[_i3];
+
+        if (this.getDistance(shot.aimX, shot.aimY, _obj.x, _obj.y) - 5 < shot.radius + _obj.radius) {
+          if (shot.color === _obj.color) {
+            shot.hit = true;
+            _obj.hit = true;
+            this.checkChain = true;
+            console.log("saved");
+          }
+        }
+      }
+    }
+  }, {
     key: "listenForMove",
     value: function listenForMove() {
       this.canvas.addEventListener("mousemove", this.handleMove);
@@ -531,8 +575,16 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "animate",
     value: function animate() {
-      this.checkCollision();
-      this.chainReaction();
+      if (this.game.projectiles.length > 0) {
+        this.checkCollision();
+        this.chainReaction();
+        this.checkValidation();
+
+        if (this.checkChain === true) {
+          this.chainReaction();
+        }
+      }
+
       this.game.drawElements(this.context, this.mousePosition); // if (!this.game.gameOver()) {
 
       requestAnimationFrame(this.animate.bind(this)); // }

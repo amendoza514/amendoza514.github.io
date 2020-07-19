@@ -13,12 +13,12 @@ class GameView {
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
     this.setup = this.setup.bind(this);
+    this.approxY = this.approxY.bind(this);
     this.playing = false;
-    this.tracking = [];
     this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
     this.chainReaction = this.chainReaction.bind(this);
-    this.approxY = this.approxY.bind(this);
+    this.checkValidation = this.checkValidation.bind(this);
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -40,9 +40,9 @@ class GameView {
           if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
             this.game.projectiles[i].dx = 0;
             this.game.projectiles[i].dy = 0;
+            pRadius = 20;
             this.game.projectiles[i].aimX = this.approxX(pX, tX);
             this.game.projectiles[i].aimY = this.approxY(pY, tY);
-            pRadius = tRadius;
 
             if (
               this.game.projectiles[i].color === this.game.projectiles[k].color
@@ -53,7 +53,7 @@ class GameView {
             }
           }
         }
-        this.game.projectiles[i].radius = this.game.projectiles[k].radius;
+        // this.game.projectiles[i].radius = this.game.projectiles[k].radius;
         for (let j = 0; j < this.game.targets.length; j++) {
 
           if (
@@ -66,12 +66,10 @@ class GameView {
             this.game.projectiles[i].radius + this.game.targets[j].radius
           ) {
             //collision response
-            this.game.projectiles[i].collided = true;
-            let tempX = this.game.targets[j].x;
             // projectile instructions
-            this.game.projectiles[i].radius = this.game.targets[j].radius;
             this.game.projectiles[i].dx = 0;
             this.game.projectiles[i].dy = 0;
+            this.game.projectiles[i].radius = 20;
             this.game.projectiles[i].aimX = this.approxX(
               this.game.projectiles[i].aimX,
               this.game.targets[j].x
@@ -87,7 +85,7 @@ class GameView {
               this.checkChain = true;
             }
           }
-          this.game.projectiles[i].radius = this.game.targets[j].radius;
+          // this.game.projectiles[i].radius = this.game.targets[j].radius;
         }
       }
     }
@@ -106,7 +104,9 @@ class GameView {
     } else {
       return y2 - 35;
     }
-  }
+  };
+
+  //older aiming 
   // approxY(yInput, y2) {
   //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
   //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
@@ -142,7 +142,7 @@ class GameView {
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
 
               if (
-                this.game.targets[i].color === this.game.targets[k].color &&
+                (this.game.targets[i].color === this.game.targets[k].color) &&
                 (this.game.targets[i].hit || this.game.targets[k].hit)
               ) {
                 this.game.targets[i].hit = true;
@@ -167,7 +167,7 @@ class GameView {
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
 
               if (
-                this.game.projectiles[i].color === this.game.targets[k].color &&
+                (this.game.projectiles[i].color === this.game.targets[k].color) &&
                 (this.game.projectiles[i].hit)
               ) {
                 this.game.projectiles[i].hit = true;
@@ -191,7 +191,7 @@ class GameView {
             let tRadius = this.game.projectiles[i].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-              
+
               if (
                 this.game.projectiles[i].color ===
                   this.game.projectiles[k].color &&
@@ -207,6 +207,35 @@ class GameView {
       }
       this.checkChain = false;
     }
+  }
+
+  checkValidation() {
+      let shot = this.game.projectiles[this.game.projectiles.length -  1];
+      for (let i = 0; i < this.game.projectiles.length - 1; i++) {
+            let obj = this.game.projectiles[i];
+            if (this.getDistance(shot.aimX, shot.aimY, obj.aimX, obj.aimY) - 5 < shot.radius + obj.radius) {
+              if (shot.color === obj.color) {
+                shot.hit = true;
+                obj.hit = true;
+                this.checkChain = true;
+                console.log('saved')
+              }
+            }
+      }
+      for (let i = 0; i < this.game.targets.length; i++) {
+        let obj = this.game.targets[i];
+        if (
+          this.getDistance(shot.aimX, shot.aimY, obj.x, obj.y) - 5 <
+          shot.radius + obj.radius
+        ) {
+          if (shot.color === obj.color) {
+            shot.hit = true;
+            obj.hit = true;
+            this.checkChain = true;
+            console.log("saved");
+          }
+        }
+      }
   }
 
   listenForMove() {
@@ -250,8 +279,14 @@ class GameView {
   }
 
   animate() {
-    this.checkCollision();
-    this.chainReaction();
+    if (this.game.projectiles.length > 0) {
+      this.checkCollision();
+      this.chainReaction();
+      this.checkValidation() 
+      if (this.checkChain === true) {
+        this.chainReaction()
+      }
+    }
     this.game.drawElements(this.context, this.mousePosition);
     // if (!this.game.gameOver()) {
     requestAnimationFrame(this.animate.bind(this));
