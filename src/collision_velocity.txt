@@ -53,3 +53,49 @@
     }
   }
   // COLLISION LOGIC END
+
+
+  //OLD HAS_GRIP CODE 
+  hasGrip() {
+    let validProjectiles = this.game.projectiles.filter(p => p.radius >= 20 );
+    let validTargets = [this.game.targets.filter(t => t.y > 20)];
+    let neighborsOnly = [].concat(validProjectiles, validTargets);
+    // let sorted = false;
+    // while (sorted === false) {
+    //   sorted = true;
+        for (let i = 0; i < neighborsOnly.length; i++) {
+          let obj1 = neighborsOnly[i];
+          let x1;
+          let y1;
+          let r1;
+          if (obj1 instanceof Projectile) {
+            x1 = obj1.aimX;
+            y1 = obj1.aimY;
+            r1 = obj1.radius;
+          } else {
+            x1 = obj1.x;
+            y1 = obj1.y;
+            r1 = obj1.radius;
+          }
+          for (let j = i + 1; j < neighborsOnly.length; j++) {
+            // if (i !== j) {
+              let obj2 = neighborsOnly[j];
+              let x2 = obj2.x
+              let y2 = obj2.y
+              let r2 = obj2.radius
+              debugger
+              if ((y2 < y1)) {
+                console.log("trigger");
+                debugger
+                neighborsOnly =
+                  neighborsOnly.slice(0, i).concat(neighborsOnly.slice(i + 1));
+              }
+            // }
+          // }
+        }
+          
+        
+      }
+    neighborsOnly.forEach(e => e.hit = true)
+  }
+  // END OF HAS GRIP CODE

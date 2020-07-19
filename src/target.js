@@ -10,6 +10,8 @@ class Target {
     this.count = 0;
     this.currentY = this.y + (35 * this.count);
     this.hit = false;
+    this.grip = true;
+    this.drop  = false;
     // this.gameOver = this.gameOver.bind(this)
   }
 

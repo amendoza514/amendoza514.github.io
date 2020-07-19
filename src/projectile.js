@@ -5,12 +5,14 @@ class Projectile {
     this.aimY = props.aimY;
     this.dx = props.slope[0];
     this.dy = props.slope[1];
-    this.radius = 15;
+    this.radius = 16;
     this.slope = props.slope;
     this.game = props.game;
     this.collided = false;
     this.targetMove = this.targetMove.bind(this);
     this.hit = false;
+    this.grip = true;
+    this.drop = false;
   }
 
   // randomColor() {
@@ -26,9 +28,9 @@ class Projectile {
     if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
       this.dx = -this.dx;
     }
-    if (this.aimY - this.radius < 0) {
-      this.dy = -this.dy;
-    }
+    // if (this.aimY - this.radius < 0) {
+    //   this.dy = -this.dy;
+    // }
     // if (this.aimY + this.radius > 500) {
     // this.destroy();
     // console.log('FIX THIS')

@@ -1,4 +1,6 @@
 const Target = require("./target");
+const Turret = require("./turret");
+const Projectile = require("./projectile");
 
 class GameView {
   constructor(game, context, canvas, start, pause, reset) {
@@ -19,7 +21,7 @@ class GameView {
     this.checkCollision = this.checkCollision.bind(this);
     this.chainReaction = this.chainReaction.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
-  }
+ }
 
   getDistance(x1, y1, x2, y2) {
     const xDist = x2 - x1;
@@ -38,6 +40,7 @@ class GameView {
           let tRadius = this.game.projectiles[i].radius;
 
           if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+
             this.game.projectiles[i].dx = 0;
             this.game.projectiles[i].dy = 0;
             pRadius = 20;
@@ -101,9 +104,9 @@ class GameView {
   approxY(y1, y2) {
     if (y1 > y2) {
       return y2 + 35;
-    } else {
+    } else if (y1 < y2) {
       return y2 - 35;
-    }
+     } 
   };
 
   //older aiming 
@@ -129,6 +132,7 @@ class GameView {
       //target / target
       for (let i = 0; i < this.game.targets.length; i++) {
         console.log("checking");
+        let check = 0;
         for (let k = 0; k < this.game.targets.length; k++) {
 
           if (i !== k) {
@@ -140,7 +144,7 @@ class GameView {
             let tRadius = this.game.targets[i].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-
+              check += 1
               if (
                 (this.game.targets[i].color === this.game.targets[k].color) &&
                 (this.game.targets[i].hit || this.game.targets[k].hit)
@@ -151,6 +155,9 @@ class GameView {
               }
             }
           }
+        }
+        if (check === 0 ) {
+          this.game.targets[i].drop = true;
         }
       }
       //projectile / target
@@ -165,7 +172,7 @@ class GameView {
             let tRadius = this.game.targets[i].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-
+                // this.game.projectiles[i].neighbors += 1;
               if (
                 (this.game.projectiles[i].color === this.game.targets[k].color) &&
                 (this.game.projectiles[i].hit)
@@ -191,7 +198,7 @@ class GameView {
             let tRadius = this.game.projectiles[i].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-
+              // this.game.projectiles[i].neighbors += 1;
               if (
                 this.game.projectiles[i].color ===
                   this.game.projectiles[k].color &&
@@ -237,6 +244,7 @@ class GameView {
         }
       }
   }
+  //still need to add binding
 
   listenForMove() {
     this.canvas.addEventListener("mousemove", this.handleMove);
@@ -281,11 +289,12 @@ class GameView {
   animate() {
     if (this.game.projectiles.length > 0) {
       this.checkCollision();
-      this.chainReaction();
       this.checkValidation() 
+      this.chainReaction();
       if (this.checkChain === true) {
         this.chainReaction()
       }
+      // debugger
     }
     this.game.drawElements(this.context, this.mousePosition);
     // if (!this.game.gameOver()) {

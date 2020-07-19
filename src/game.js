@@ -13,10 +13,9 @@ class Game {
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
     this.score = 0;
-    this.offset = false
+    this.offset = false;
+    this.movingObjects = this.movingObjects.bind(this);
   }
-
-  
 
   movingObjects() {
     return [].concat(this.projectiles, this.turret, this.targets);
@@ -27,13 +26,13 @@ class Game {
     setInterval(() => {
       this.targets.forEach((target) => {
         if (target instanceof Target) {
-          target.count += 1
-            target.y += 35;
-        } 
-      })
+          target.count += 1;
+          target.y += 35;
+        }
+      });
       this.projectiles.forEach((target) => {
         if (target instanceof Projectile) {
-          target.aimY += 35
+          target.aimY += 35;
         }
       });
     }, 5000);
@@ -51,12 +50,12 @@ class Game {
             x = i * 40 - 20;
           }
           this.targets.push(new Target(i, false, x));
-          last = i
+          last = i;
           // console.log(this.targets);
         }
         this.offsetRow = true;
         // debugger
-    } else {
+      } else {
         for (let j = 1; j <= 7; j++) {
           let x;
           if (j === 1) {
@@ -68,7 +67,7 @@ class Game {
         }
         this.offsetRow = false;
         // debugger
-    }
+      }
     }, 5000);
   }
   // END TESTING
@@ -78,58 +77,79 @@ class Game {
     return projectile;
   }
 
-//   gameOver() {
-    // this.targets.forEach((target) => {
-    //   if (target.gameOver()) {
-        //   this.playing = false
-        //  this.projectiles = []
-    //   }
-    // });
-//   }
+  //   gameOver() {
+  // this.targets.forEach((target) => {
+  //   if (target.gameOver()) {
+  //   this.playing = false
+  //  this.projectiles = []
+  //   }
+  // });
+  //   }
 
   remove(obj) {
-      if (obj instanceof Projectile) {
-        this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(
-        this.projectiles.slice(this.projectiles.indexOf(obj) + 1)); 
-        // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
-      } else if (obj instanceof Target) {
-        this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(
-        this.targets.slice(this.targets.indexOf(obj) + 1));
-        // this.targets.splice(this.targets.indexOf(obj), 1);
-      }
-      this.score += 23
+    if (obj instanceof Projectile) {
+      this.projectiles = this.projectiles
+        .slice(0, this.projectiles.indexOf(obj))
+        .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+      // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
+    } else if (obj instanceof Target) {
+      this.targets = this.targets
+        .slice(0, this.targets.indexOf(obj))
+        .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
+      // this.targets.splice(this.targets.indexOf(obj), 1);
+      this.score += 23;
+    }
+  }
+
+  drop(obj) {
+    if (obj instanceof Projectile) {
+      this.projectiles = this.projectiles
+        .slice(0, this.projectiles.indexOf(obj))
+        .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+      // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
+    } else if (obj instanceof Target) {
+      this.targets = this.targets
+        .slice(0, this.targets.indexOf(obj))
+        .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
+      // this.targets.splice(this.targets.indexOf(obj), 1);
+    }
+    this.score += 23;
   }
 
   drawElements(context, mousePosition) {
-      context.clearRect(0, 0, this.width, this.height);
-      context.fillStyle = "white";
-      context.fillRect(0, 0, this.width, this.height);
-      let score = document.getElementById("score");
-      score.innerHTML=`score: ${this.score}`;
-      
+    context.clearRect(0, 0, this.width, this.height);
+    context.fillStyle = "white";
+    context.fillRect(0, 0, this.width, this.height);
+    let score = document.getElementById("score");
+    score.innerHTML = `score: ${this.score}`;
+
     this.movingObjects().forEach((obj) => {
-        obj.draw(context);
-        if (obj instanceof Turret) {
-            obj.swivelTurret(mousePosition);
-        } 
-        if (obj instanceof Projectile) {
-          if (obj.hit) {
-            // console.log('hit')
-            this.remove(obj);
-          } else if (obj.aimY > 600) {
-            this.remove(obj);
-            //trash collection
-          }
-        } 
-        if (obj instanceof Target) {
-          if (obj.hit) {
-            // console.log('hit')
-            this.remove(obj);
-          } else if (obj.x > 600) {
-            this.remove(obj);
-            //trash collection
-          }
-        } 
+      obj.draw(context);
+      if (obj instanceof Turret) {
+        obj.swivelTurret(mousePosition);
+      }
+      if (obj instanceof Projectile) {
+        if (obj.hit) {
+          // console.log('hit')
+          this.remove(obj);
+        } else if (obj.aimY > 600 || obj.aimY < 0) {
+          this.remove(obj);
+          //trash collection
+        } else if (obj.drop) {
+          obj.aimY += 10;
+        }
+      }
+      if (obj instanceof Target) {
+        if (obj.hit) {
+          // console.log('hit')
+          this.remove(obj);
+        } else if (obj.x > 600 || obj.y < 0) {
+          this.remove(obj);
+          //trash collection
+        } else if (obj.drop) {
+          obj.y += 10;
+        }
+      }
     });
   }
 }
