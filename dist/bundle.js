@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = 320;
   canvas.height = 540;
   var game = new Game(canvas.width, canvas.height);
-  new GameView(game, context, canvas, start, reset, pause).startGame(); //for testing use .startGame()
+  new GameView(game, context, canvas, start, reset, pause).startUp(); //for testing use .startGame()
   //for produciton use .startUp()
 });
 
@@ -139,27 +139,28 @@ var Game = /*#__PURE__*/function () {
     this.height = height;
     this.projectiles = [];
     this.turret = new Turret(this);
-    this.targets = []; // this.playing = true
-
+    this.targets = [];
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
+    this.gameOver = this.gameOver.bind(this);
+    this.playing = false;
     this.score = 0;
     this.offset = false;
     this.movingObjects = this.movingObjects.bind(this);
+    this.intervals = [];
   }
 
   _createClass(Game, [{
     key: "movingObjects",
     value: function movingObjects() {
       return [].concat(this.projectiles, this.turret, this.targets);
-    } /// TESTING? UNCOMMENT OUT INTERVAL FOR TESTING A ROW
-
+    }
   }, {
     key: "moveTargets",
     value: function moveTargets() {
       var _this = this;
 
-      setInterval(function () {
+      var moveInterval = setInterval(function () {
         _this.targets.forEach(function (target) {
           if (target instanceof Target) {
             target.count += 1;
@@ -172,14 +173,15 @@ var Game = /*#__PURE__*/function () {
             target.aimY += 35;
           }
         });
-      }, 5000);
+      }, 1000);
+      this.intervals.push(moveInterval);
     }
   }, {
     key: "addTargets",
     value: function addTargets() {
       var _this2 = this;
 
-      setInterval(function () {
+      var addInterval = setInterval(function () {
         if (!_this2.offsetRow) {
           var last;
 
@@ -194,10 +196,10 @@ var Game = /*#__PURE__*/function () {
 
             _this2.targets.push(new Target(i, false, x));
 
-            last = i; // console.log(this.targets);
+            last = i;
           }
 
-          _this2.offsetRow = true; // debugger
+          _this2.offsetRow = true;
         } else {
           for (var j = 1; j <= 7; j++) {
             var _x = void 0;
@@ -213,55 +215,68 @@ var Game = /*#__PURE__*/function () {
 
           _this2.offsetRow = false; // debugger
         }
-      }, 5000);
-    } // END TESTING
-
+      }, 1000);
+      this.intervals.push(addInterval);
+    }
   }, {
     key: "addProjectiles",
     value: function addProjectiles(projectile) {
       this.projectiles.push(projectile);
       return projectile;
-    } //   gameOver() {
-    // this.targets.forEach((target) => {
-    //   if (target.gameOver()) {
-    //   this.playing = false
-    //  this.projectiles = []
-    //   }
-    // });
-    //   }
+    }
+  }, {
+    key: "gameOver",
+    value: function gameOver() {
+      var _this3 = this;
 
+      this.targets.forEach(function (target) {
+        if (target.gameOver()) {
+          _this3.playing = false;
+        }
+      });
+    }
   }, {
     key: "remove",
     value: function remove(obj) {
-      if (obj instanceof Projectile) {
-        this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1)); // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
-      } else if (obj instanceof Target) {
-        this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1)); // this.targets.splice(this.targets.indexOf(obj), 1);
-
-        this.score += 23;
+      if (this.playing === true) {
+        if (obj instanceof Projectile) {
+          this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+        } else if (obj instanceof Target) {
+          this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1));
+          this.score += 23;
+        }
       }
     }
   }, {
     key: "drop",
     value: function drop(obj) {
-      if (obj instanceof Projectile) {
-        this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1)); // this.projectiles.splice(this.projectiles.indexOf(obj), 1);
-      } else if (obj instanceof Target) {
-        this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1)); // this.targets.splice(this.targets.indexOf(obj), 1);
+      if (this.playing === true) {
+        if (obj instanceof Projectile) {
+          this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+          this.score += 23;
+        } else if (obj instanceof Target) {
+          this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1));
+          this.score += 23;
+        }
       }
-
-      this.score += 23;
     }
   }, {
     key: "drawElements",
     value: function drawElements(context, mousePosition) {
-      var _this3 = this;
+      var _this4 = this;
 
       context.clearRect(0, 0, this.width, this.height);
       context.fillStyle = "white";
       context.fillRect(0, 0, this.width, this.height);
+      this.gameOver();
       var score = document.getElementById("score");
-      score.innerHTML = "score: ".concat(this.score);
+
+      if (this.playing === true) {
+        score.innerHTML = "score: ".concat(this.score);
+      } else {
+        score.innerHTML = "Your final score: ".concat(this.score);
+      }
+
       this.movingObjects().forEach(function (obj) {
         obj.draw(context);
 
@@ -271,10 +286,9 @@ var Game = /*#__PURE__*/function () {
 
         if (obj instanceof Projectile) {
           if (obj.hit) {
-            // console.log('hit')
-            _this3.remove(obj);
+            _this4.remove(obj);
           } else if (obj.aimY > 600 || obj.aimY < 0) {
-            _this3.remove(obj); //trash collection
+            _this4.remove(obj); //trash collection
 
           } else if (obj.drop) {
             obj.aimY += 10;
@@ -283,10 +297,9 @@ var Game = /*#__PURE__*/function () {
 
         if (obj instanceof Target) {
           if (obj.hit) {
-            // console.log('hit')
-            _this3.remove(obj);
+            _this4.remove(obj);
           } else if (obj.x > 600 || obj.y < 0) {
-            _this3.remove(obj); //trash collection
+            _this4.remove(obj); //trash collection
 
           } else if (obj.drop) {
             obj.y += 10;
@@ -336,9 +349,9 @@ var GameView = /*#__PURE__*/function () {
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.resetGame = this.resetGame.bind(this);
     this.setup = this.setup.bind(this);
     this.approxY = this.approxY.bind(this);
-    this.playing = false;
     this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
     this.chainReaction = this.chainReaction.bind(this);
@@ -368,7 +381,7 @@ var GameView = /*#__PURE__*/function () {
             if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
               this.game.projectiles[i].dx = 0;
               this.game.projectiles[i].dy = 0;
-              pRadius = 20;
+              this.game.projectiles[i].radius = 20;
               this.game.projectiles[i].aimX = this.approxX(pX, tX);
               this.game.projectiles[i].aimY = this.approxY(pY, tY);
 
@@ -378,8 +391,7 @@ var GameView = /*#__PURE__*/function () {
                 this.checkChain = true;
               }
             }
-          } // this.game.projectiles[i].radius = this.game.projectiles[k].radius;
-
+          }
 
           for (var j = 0; j < this.game.targets.length; j++) {
             if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
@@ -419,10 +431,7 @@ var GameView = /*#__PURE__*/function () {
       } else if (y1 < y2) {
         return y2 - 35;
       }
-    }
-  }, {
-    key: "chainReaction",
-    //older aiming 
+    } //older aiming
     // approxY(yInput, y2) {
     //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
     //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
@@ -439,11 +448,14 @@ var GameView = /*#__PURE__*/function () {
     //   return xOutput;
     // }
     //still need to add collision on ball ball and ball target
+
+  }, {
+    key: "chainReaction",
     value: function chainReaction() {
       while (this.checkChain === true) {
         //target / target
         for (var i = 0; i < this.game.targets.length; i++) {
-          console.log("checking");
+          // console.log("checking");
           var check = 0;
 
           for (var k = 0; k < this.game.targets.length; k++) {
@@ -474,8 +486,7 @@ var GameView = /*#__PURE__*/function () {
 
 
         for (var _i = 0; _i < this.game.projectiles.length; _i++) {
-          console.log("checking");
-
+          // console.log("checking");
           for (var _k = 0; _k < this.game.targets.length; _k++) {
             var _pX = this.game.projectiles[_i].aimX;
             var _pY = this.game.projectiles[_i].aimY;
@@ -485,7 +496,6 @@ var GameView = /*#__PURE__*/function () {
             var _tRadius = this.game.targets[_i].radius;
 
             if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
-              // this.game.projectiles[i].neighbors += 1;
               if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
                 this.game.projectiles[_i].hit = true;
                 this.game.targets[_k].hit = true;
@@ -497,8 +507,7 @@ var GameView = /*#__PURE__*/function () {
 
 
         for (var _i2 = 0; _i2 < this.game.projectiles.length; _i2++) {
-          console.log("checking");
-
+          // console.log("checking");
           for (var _k2 = 0; _k2 < this.game.projectiles.length; _k2++) {
             if (_i2 !== _k2) {
               var _pX2 = this.game.projectiles[_i2].aimX;
@@ -509,7 +518,6 @@ var GameView = /*#__PURE__*/function () {
               var _tRadius2 = this.game.projectiles[_i2].radius;
 
               if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
-                // this.game.projectiles[i].neighbors += 1;
                 if (this.game.projectiles[_i2].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i2].hit || this.game.projectiles[_k2].hit)) {
                   this.game.projectiles[_i2].hit = true;
                   this.game.projectiles[_k2].hit = true;
@@ -535,8 +543,7 @@ var GameView = /*#__PURE__*/function () {
           if (shot.color === obj.color) {
             shot.hit = true;
             obj.hit = true;
-            this.checkChain = true;
-            console.log('saved');
+            this.checkChain = true; // console.log("saved");
           }
         }
       }
@@ -548,29 +555,15 @@ var GameView = /*#__PURE__*/function () {
           if (shot.color === _obj.color) {
             shot.hit = true;
             _obj.hit = true;
-            this.checkChain = true;
-            console.log("saved");
+            this.checkChain = true; // console.log("saved");
           }
         }
       }
-    } //still need to add binding
-
+    }
   }, {
     key: "listenForMove",
     value: function listenForMove() {
       this.canvas.addEventListener("mousemove", this.handleMove);
-    }
-  }, {
-    key: "startup",
-    value: function startup() {
-      console.log("waiting"); // if (!this.playing) {
-
-      this.start.addEventListener("click", this.startGame); //   this.playing = !this.playing;
-      // } else {
-      //   this.playing = !this.playing;
-      // }
-
-      console.log(this.playing);
     }
   }, {
     key: "handleMove",
@@ -597,14 +590,43 @@ var GameView = /*#__PURE__*/function () {
       this.game.moveTargets();
     }
   }, {
+    key: "startUp",
+    value: function startUp() {
+      if (!this.game.playing) {
+        this.start.innerHTML = "start";
+        this.start.addEventListener("click", this.startGame);
+        this.game.playing = true;
+      }
+    }
+  }, {
     key: "startGame",
     value: function startGame() {
       this.setup();
       this.animate();
     }
   }, {
+    key: "resetGame",
+    value: function resetGame() {
+      this.game.playing = true;
+      this.game.intervals.forEach(function (interval) {
+        return clearInterval(interval);
+      }); // this.game.turret = new Turret(this)
+
+      this.game.intervals = [];
+      this.game.projectiles = [];
+      this.game.targets = [];
+      this.game.score = 0;
+      this.game.addTargets();
+      this.game.moveTargets();
+    }
+  }, {
     key: "animate",
     value: function animate() {
+      if (this.game.playing) {
+        this.start.innerHTML = "reset";
+        this.start.addEventListener("click", this.resetGame);
+      }
+
       if (this.game.projectiles.length > 0) {
         this.checkCollision();
         this.checkValidation();
@@ -612,20 +634,17 @@ var GameView = /*#__PURE__*/function () {
 
         if (this.checkChain === true) {
           this.chainReaction();
-        } // debugger
-
+        }
       }
 
-      this.game.drawElements(this.context, this.mousePosition); // if (!this.game.gameOver()) {
-
-      requestAnimationFrame(this.animate.bind(this)); // }
+      this.game.drawElements(this.context, this.mousePosition);
+      requestAnimationFrame(this.animate.bind(this));
     }
   }]);
 
   return GameView;
 }();
 
-;
 module.exports = GameView;
 
 /***/ }),
@@ -658,15 +677,20 @@ var Projectile = /*#__PURE__*/function () {
     this.collided = false;
     this.targetMove = this.targetMove.bind(this);
     this.hit = false;
-    this.grip = true;
     this.drop = false;
-  } // randomColor() {
-  //   let colors = ["red", "green", "blue", "orange", "gray"];
-  //   return colors[Math.floor(Math.random() * colors.length)];
-  // }
-
+    this.gameOver = this.gameOver.bind(this);
+  }
 
   _createClass(Projectile, [{
+    key: "gameOver",
+    value: function gameOver() {
+      if (!this.drop && this.aimY + this.radius >= 535) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
     key: "targetMove",
     value: function targetMove() {
       this.aimY += 35;
@@ -676,22 +700,11 @@ var Projectile = /*#__PURE__*/function () {
     value: function move() {
       if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
         this.dx = -this.dx;
-      } // if (this.aimY - this.radius < 0) {
-      //   this.dy = -this.dy;
-      // }
-      // if (this.aimY + this.radius > 500) {
-      // this.destroy();
-      // console.log('FIX THIS')
-      // }
-
+      }
 
       this.aimX += this.dx;
       this.aimY += this.dy;
-    } //   destroy() {
-    //     this.game.remove(this)
-    //     console.log('gone?')
-    //   }
-
+    }
   }, {
     key: "draw",
     value: function draw(context) {
@@ -728,29 +741,30 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Target = /*#__PURE__*/function () {
-  function Target(position, offset, x, y) {
+  function Target(position, offset, x, y, color) {
     _classCallCheck(this, Target);
 
     this.position = position;
     this.offset = offset;
     this.x = x;
+    this.y;
     this.y = 20;
     this.radius = 20;
-    this.color = this.randomColor();
+    this.color;
+
+    if (color) {
+      this.color = color;
+    } else {
+      this.color = this.randomColor();
+    }
+
     this.move = this.move.bind(this);
     this.count = 0;
     this.currentY = this.y + 35 * this.count;
     this.hit = false;
-    this.grip = true;
-    this.drop = false; // this.gameOver = this.gameOver.bind(this)
-  } // if (this.position === 1 && !this.offset) {
-  //     this.x = 20
-  //   } else if (this.position === 1) {
-  //     this.x = 40
-  //   } else {
-  //     this.x = this.position * 40;
-  //   }
-
+    this.drop = false;
+    this.gameOver = this.gameOver.bind(this);
+  }
 
   _createClass(Target, [{
     key: "move",
@@ -760,15 +774,18 @@ var Target = /*#__PURE__*/function () {
   }, {
     key: "randomColor",
     value: function randomColor() {
-      var colors = ["red", "green", "blue", "orange", "gray"]; // console.log(colors[Math.floor(Math.random() * colors.length)]);
-
+      var colors = ["red", "green", "blue", "orange", "gray"];
       return colors[Math.floor(Math.random() * colors.length)];
-    } //   gameOver() {
-    //       if (this.y + this.radius > 540) {
-    //         return true
-    //       }
-    //   }
-
+    }
+  }, {
+    key: "gameOver",
+    value: function gameOver() {
+      if (!this.drop && this.y + this.radius >= 535) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }, {
     key: "draw",
     value: function draw(context) {
@@ -839,8 +856,8 @@ var Turret = /*#__PURE__*/function () {
       this.aimY = 540 + Math.sin(swivel) * 50;
       this.cheatX = 160 - Math.cos(swivel) * 550;
       this.cheatY = 540 + Math.sin(swivel) * 550;
-      this.speedX = -Math.cos(swivel) * 15;
-      this.speedY = Math.sin(swivel) * 15;
+      this.speedX = -Math.cos(swivel) * 12;
+      this.speedY = Math.sin(swivel) * 12;
     }
   }, {
     key: "fire",
@@ -862,7 +879,7 @@ var Turret = /*#__PURE__*/function () {
       //turrent base
       context.beginPath();
       context.rect(180, 530, 50, 5);
-      context.fillStyle = 'gray';
+      context.fillStyle = "gray";
       context.fill();
       context.stroke(); //turret line
 

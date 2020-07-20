@@ -11,14 +11,17 @@ class Projectile {
     this.collided = false;
     this.targetMove = this.targetMove.bind(this);
     this.hit = false;
-    this.grip = true;
     this.drop = false;
+    this.gameOver = this.gameOver.bind(this);
   }
 
-  // randomColor() {
-  //   let colors = ["red", "green", "blue", "orange", "gray"];
-  //   return colors[Math.floor(Math.random() * colors.length)];
-  // }
+  gameOver() {
+    if ((!this.drop) && (this.aimY + this.radius >= 535)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   targetMove() {
     this.aimY += 35;
@@ -28,21 +31,9 @@ class Projectile {
     if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
       this.dx = -this.dx;
     }
-    // if (this.aimY - this.radius < 0) {
-    //   this.dy = -this.dy;
-    // }
-    // if (this.aimY + this.radius > 500) {
-    // this.destroy();
-    // console.log('FIX THIS')
-    // }
     this.aimX += this.dx;
     this.aimY += this.dy;
   }
-
-  //   destroy() {
-  //     this.game.remove(this)
-  //     console.log('gone?')
-  //   }
 
   draw(context) {
     context.beginPath();

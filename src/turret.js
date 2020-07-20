@@ -5,15 +5,15 @@ class Turret {
     this.game = game;
     this.projectiles = 0;
     this.setColors = this.setColors.bind(this);
-    this.shots = []
-    this.color = this.shots[0]
+    this.shots = [];
+    this.color = this.shots[0];
     this.nextShot = this.shots[1];
     this.nextNextShot = this.shots[2];
   }
 
   setColors() {
     for (let i = 0; i < 3; i++) {
-      this.shots.push(this.randomColor())
+      this.shots.push(this.randomColor());
     }
   }
   randomColor() {
@@ -32,8 +32,8 @@ class Turret {
     this.cheatX = 160 - Math.cos(swivel) * 550;
     this.cheatY = 540 + Math.sin(swivel) * 550;
 
-    this.speedX = -Math.cos(swivel) * 15;
-    this.speedY = Math.sin(swivel) * 15;
+    this.speedX = -Math.cos(swivel) * 12;
+    this.speedY = Math.sin(swivel) * 12;
   }
 
   fire() {
@@ -42,10 +42,10 @@ class Turret {
       slope: [this.speedX, this.speedY],
       aimX: this.aimX,
       aimY: this.aimY,
-      color: this.shots[0]
+      color: this.shots[0],
     });
     this.game.addProjectiles(projectile);
-    this.shots.shift()
+    this.shots.shift();
     this.shots.push(this.randomColor());
   }
 
@@ -53,9 +53,9 @@ class Turret {
     //turrent base
     context.beginPath();
     context.rect(180, 530, 50, 5);
-    context.fillStyle = 'gray'
-    context.fill()
-    context.stroke()
+    context.fillStyle = "gray";
+    context.fill();
+    context.stroke();
 
     //turret line
     context.beginPath();
@@ -78,9 +78,9 @@ class Turret {
     context.arc(160, 560, 50, 0, Math.PI * 2, false);
     context.fillStyle = this.shots[0];
     context.fill();
-     context.lineWidth = 1;
-     context.strokeStyle = "black";
-     context.stroke();
+    context.lineWidth = 1;
+    context.strokeStyle = "black";
+    context.stroke();
 
     //next shot
     context.beginPath();
