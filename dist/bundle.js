@@ -173,7 +173,7 @@ var Game = /*#__PURE__*/function () {
             target.aimY += 35;
           }
         });
-      }, 1000);
+      }, 5000);
       this.intervals.push(moveInterval);
     }
   }, {
@@ -215,7 +215,7 @@ var Game = /*#__PURE__*/function () {
 
           _this2.offsetRow = false; // debugger
         }
-      }, 1000);
+      }, 5000);
       this.intervals.push(addInterval);
     }
   }, {

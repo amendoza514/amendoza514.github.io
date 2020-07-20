@@ -36,7 +36,7 @@ class Game {
           target.aimY += 35;
         }
       });
-    }, 1000);
+    }, 5000);
       this.intervals.push(moveInterval);
   }
 
@@ -68,7 +68,7 @@ class Game {
         this.offsetRow = false;
         // debugger
       }
-    }, 1000);
+    }, 5000);
     this.intervals.push(addInterval);
   }
 
