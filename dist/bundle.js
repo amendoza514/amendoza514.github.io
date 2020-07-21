@@ -368,51 +368,55 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "checkCollision",
     value: function checkCollision() {
-      for (var i = 0; i < this.game.projectiles.length; i++) {
-        for (var k = 0; k < this.game.projectiles.length; k++) {
-          if (i !== k) {
-            var pX = this.game.projectiles[i].aimX;
-            var pY = this.game.projectiles[i].aimY;
-            var pRadius = this.game.projectiles[i].radius;
-            var tX = this.game.projectiles[k].aimX;
-            var tY = this.game.projectiles[k].aimY;
-            var tRadius = this.game.projectiles[i].radius;
+      // for (let i = 0; i < this.game.projectiles.length; i++) {
+      var currentShot = this.game.projectiles[this.game.projectiles.length - 1]; // console.log(currentShot)
 
-            if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
-              this.game.projectiles[i].dx = 0;
-              this.game.projectiles[i].dy = 0;
-              this.game.projectiles[i].radius = 20;
-              this.game.projectiles[i].aimX = this.approxX(pX, tX);
-              this.game.projectiles[i].aimY = this.approxY(pY, tY);
+      if (this.game.projectiles.length > 0) {
+        for (var k = 0; k < this.game.projectiles.length - 1; k++) {
+          // if (i !== k) {
+          var pX = currentShot.aimX;
+          var pY = currentShot.aimY;
+          var pRadius = currentShot.radius;
+          var tX = this.game.projectiles[k].aimX;
+          var tY = this.game.projectiles[k].aimY;
+          var tRadius = currentShot.radius;
 
-              if (this.game.projectiles[i].color === this.game.projectiles[k].color) {
-                this.game.projectiles[i].hit = true;
-                this.game.projectiles[k].hit = true;
-                this.checkChain = true;
-              }
+          if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+            currentShot.dx = 0;
+            currentShot.dy = 0;
+            currentShot.radius = 20;
+            currentShot.aimX = this.approxX(pX, tX);
+            currentShot.aimY = this.approxY(pY, tY);
+
+            if (currentShot.color === this.game.projectiles[k].color) {
+              currentShot.hit = true;
+              this.game.projectiles[k].hit = true;
+              this.checkChain = true;
             }
           }
+        } // }
 
-          for (var j = 0; j < this.game.targets.length; j++) {
-            if (this.getDistance(this.game.projectiles[i].aimX, this.game.projectiles[i].aimY, this.game.targets[j].x, this.game.targets[j].y) < this.game.projectiles[i].radius + this.game.targets[j].radius) {
-              //collision response
-              // projectile instructions
-              this.game.projectiles[i].dx = 0;
-              this.game.projectiles[i].dy = 0;
-              this.game.projectiles[i].radius = 20;
-              this.game.projectiles[i].aimX = this.approxX(this.game.projectiles[i].aimX, this.game.targets[j].x);
-              this.game.projectiles[i].aimY = this.approxY(this.game.projectiles[i].aimY, this.game.targets[j].y);
 
-              if (this.game.projectiles[i].color === this.game.targets[j].color) {
-                this.game.projectiles[i].hit = true;
-                this.game.targets[j].hit = true;
-                this.checkChain = true;
-              }
-            } // this.game.projectiles[i].radius = this.game.targets[j].radius;
+        for (var j = 0; j < this.game.targets.length; j++) {
+          if (this.getDistance(currentShot.aimX, currentShot.aimY, this.game.targets[j].x, this.game.targets[j].y) < currentShot.radius + this.game.targets[j].radius) {
+            //collision response
+            // projectile instructions
+            currentShot.dx = 0;
+            currentShot.dy = 0;
+            currentShot.radius = 20;
+            currentShot.aimX = this.approxX(currentShot.aimX, this.game.targets[j].x);
+            currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
 
-          }
+            if (currentShot.color === this.game.targets[j].color) {
+              currentShot.hit = true;
+              this.game.targets[j].hit = true;
+              this.checkChain = true;
+            }
+          } // this.game.projectiles[i].radius = this.game.targets[j].radius;
+
         }
-      }
+      } // }
+
     }
   }, {
     key: "approxX",
@@ -543,7 +547,8 @@ var GameView = /*#__PURE__*/function () {
           if (shot.color === obj.color) {
             shot.hit = true;
             obj.hit = true;
-            this.checkChain = true; // console.log("saved");
+            this.checkChain = true;
+            console.log("saved");
           }
         }
       }
@@ -555,7 +560,8 @@ var GameView = /*#__PURE__*/function () {
           if (shot.color === _obj.color) {
             shot.hit = true;
             _obj.hit = true;
-            this.checkChain = true; // console.log("saved");
+            this.checkChain = true;
+            console.log("saved");
           }
         }
       }

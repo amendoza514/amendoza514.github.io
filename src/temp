@@ -30,62 +30,58 @@ class GameView {
     return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
   }
   checkCollision() {
-    // for (let i = 0; i < this.game.projectiles.length; i++) {
-      let currentShot = this.game.projectiles[this.game.projectiles.length - 1];
-      // console.log(currentShot)
-      if (this.game.projectiles.length > 0) {
-      for (let k = 0; k < this.game.projectiles.length - 1; k++) {
-        // if (i !== k) {
-          let pX = currentShot.aimX;
-          let pY = currentShot.aimY;
-          let pRadius = currentShot.radius;
+    for (let i = 0; i < this.game.projectiles.length; i++) {
+      for (let k = 0; k < this.game.projectiles.length; k++) {
+        if (i !== k) {
+          let pX = this.game.projectiles[i].aimX;
+          let pY = this.game.projectiles[i].aimY;
+          let pRadius = this.game.projectiles[i].radius;
           let tX = this.game.projectiles[k].aimX;
           let tY = this.game.projectiles[k].aimY;
-          let tRadius = currentShot.radius;
+          let tRadius = this.game.projectiles[i].radius;
 
-          if (this.getDistance(pX, pY, tX, tY)  < pRadius + tRadius) {
-            currentShot.dx = 0;
-            currentShot.dy = 0;
-            currentShot.radius = 20;
-            currentShot.aimX = this.approxX(pX, tX);
-            currentShot.aimY = this.approxY(pY, tY);
+          if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+            this.game.projectiles[i].dx = 0;
+            this.game.projectiles[i].dy = 0;
+            this.game.projectiles[i].radius = 20;
+            this.game.projectiles[i].aimX = this.approxX(pX, tX);
+            this.game.projectiles[i].aimY = this.approxY(pY, tY);
 
             if (
-              currentShot.color === this.game.projectiles[k].color
+              this.game.projectiles[i].color === this.game.projectiles[k].color
             ) {
-              currentShot.hit = true;
+              this.game.projectiles[i].hit = true;
               this.game.projectiles[k].hit = true;
               this.checkChain = true;
             }
           }
         }
-        // }
         for (let j = 0; j < this.game.targets.length; j++) {
           if (
             this.getDistance(
-              currentShot.aimX,
-              currentShot.aimY,
+              this.game.projectiles[i].aimX,
+              this.game.projectiles[i].aimY,
               this.game.targets[j].x,
               this.game.targets[j].y
             ) <
-            currentShot.radius + this.game.targets[j].radius
+            this.game.projectiles[i].radius + this.game.targets[j].radius
           ) {
             //collision response
             // projectile instructions
-            currentShot.dx = 0;
-            currentShot.dy = 0;
-            currentShot.radius = 20;
-            currentShot.aimX = this.approxX(
-              currentShot.aimX,
+            this.game.projectiles[i].dx = 0;
+            this.game.projectiles[i].dy = 0;
+            this.game.projectiles[i].radius = 20;
+            this.game.projectiles[i].aimX = this.approxX(
+              this.game.projectiles[i].aimX,
               this.game.targets[j].x
             );
-            currentShot.aimY = this.approxY(
-              currentShot.aimY,
+            this.game.projectiles[i].aimY = this.approxY(
+              this.game.projectiles[i].aimY,
               this.game.targets[j].y
             );
 
-            if (currentShot.color === this.game.targets[j].color) {
-              currentShot.hit = true;
+            if (this.game.projectiles[i].color === this.game.targets[j].color) {
+              this.game.projectiles[i].hit = true;
               this.game.targets[j].hit = true;
               this.checkChain = true;
             }
@@ -93,7 +89,7 @@ class GameView {
           // this.game.projectiles[i].radius = this.game.targets[j].radius;
         }
       }
-    // }
+    }
   }
 
   approxX(x1, x2) {
@@ -226,7 +222,7 @@ class GameView {
           shot.hit = true;
           obj.hit = true;
           this.checkChain = true;
-          console.log("saved");
+          // console.log("saved");
         }
       }
     }
@@ -240,7 +236,7 @@ class GameView {
           shot.hit = true;
           obj.hit = true;
           this.checkChain = true;
-          console.log("saved");
+          // console.log("saved");
         }
       }
     }
