@@ -43,7 +43,7 @@ class GameView {
           let tY = this.game.projectiles[k].aimY;
           let tRadius = currentShot.radius;
 
-          if (this.getDistance(pX, pY, tX, tY)  < pRadius + tRadius) {
+          if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
             currentShot.dx = 0;
             currentShot.dy = 0;
             currentShot.radius = 20;
@@ -56,6 +56,7 @@ class GameView {
               currentShot.hit = true;
               this.game.projectiles[k].hit = true;
               this.checkChain = true;
+              return
             }
           }
         }
@@ -88,6 +89,7 @@ class GameView {
               currentShot.hit = true;
               this.game.targets[j].hit = true;
               this.checkChain = true;
+              return
             }
           }
           // this.game.projectiles[i].radius = this.game.targets[j].radius;
@@ -101,13 +103,15 @@ class GameView {
       return x2 + 20;
     } else {
       return x2 - 20;
-    }
+    } 
   }
   approxY(y1, y2) {
     if (y1 > y2) {
       return y2 + 35;
     } else if (y1 < y2) {
       return y2 - 35;
+    } else {
+      return y2
     }
   }
 
