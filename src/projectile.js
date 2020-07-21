@@ -28,6 +28,9 @@ class Projectile {
   }
 
   move() {
+    if (this.aimY - this.radius <= 0) {
+       this.game.reloaded = true;
+    }
     if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
       this.dx = -this.dx;
     }

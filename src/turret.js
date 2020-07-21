@@ -37,16 +37,21 @@ class Turret {
   }
 
   fire() {
-    const projectile = new Projectile({
-      game: this.game,
-      slope: [this.speedX, this.speedY],
-      aimX: this.aimX,
-      aimY: this.aimY,
-      color: this.shots[0],
-    });
-    this.game.addProjectiles(projectile);
-    this.shots.shift();
-    this.shots.push(this.randomColor());
+    if (this.game.reloaded === true) {
+      let projectile = new Projectile({
+        game: this.game,
+        slope: [this.speedX, this.speedY],
+        aimX: this.aimX,
+        aimY: this.aimY,
+        color: this.shots[0],
+      });
+        this.projectiles += 1;
+        this.game.reloaded = false;
+        this.game.addProjectiles(projectile);
+        this.shots.shift();
+        this.shots.push(this.randomColor());
+    }
+    // console.log("too soon!")
   }
 
   draw(context) {

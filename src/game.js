@@ -17,6 +17,7 @@ class Game {
     this.offset = false;
     this.movingObjects = this.movingObjects.bind(this);
     this.intervals = [];
+    this.reloaded = true;
   }
 
   movingObjects() {

@@ -148,6 +148,7 @@ var Game = /*#__PURE__*/function () {
     this.offset = false;
     this.movingObjects = this.movingObjects.bind(this);
     this.intervals = [];
+    this.reloaded = true;
   }
 
   _createClass(Game, [{
@@ -390,7 +391,7 @@ var GameView = /*#__PURE__*/function () {
             currentShot.radius = 20;
             currentShot.aimX = this.approxX(pX, tX);
             currentShot.aimY = this.approxY(pY, tY);
-            currentShot.collided = true;
+            this.game.reloaded = true;
 
             if (currentShot.color === this.game.projectiles[k].color) {
               currentShot.hit = true;
@@ -409,11 +410,12 @@ var GameView = /*#__PURE__*/function () {
             currentShot.dx = 0;
             currentShot.dy = 0;
             currentShot.radius = 20;
-            currentShot.collided = true;
+            this.game.reloaded = true;
             currentShot.aimX = this.approxX(currentShot.aimX, this.game.targets[j].x);
             currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
 
             if (currentShot.color === this.game.targets[j].color) {
+              this.game.reloaded = true;
               currentShot.hit = true;
               this.game.targets[j].hit = true;
               this.checkChain = true;
@@ -509,6 +511,7 @@ var GameView = /*#__PURE__*/function () {
               if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
                 this.game.projectiles[_i].hit = true;
                 this.game.targets[_k].hit = true;
+                this.game.reloaded = true;
                 this.checkChain = false;
               }
             }
@@ -530,6 +533,7 @@ var GameView = /*#__PURE__*/function () {
                 if (this.game.projectiles[_i2].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i2].hit || this.game.projectiles[_k2].hit)) {
                   this.game.projectiles[_i2].hit = true;
                   this.game.projectiles[_k2].hit = true;
+                  this.game.reloaded = true;
                   this.checkChain = false;
                 }
               }
@@ -706,6 +710,10 @@ var Projectile = /*#__PURE__*/function () {
   }, {
     key: "move",
     value: function move() {
+      if (this.aimY - this.radius <= 0) {
+        this.game.reloaded = true;
+      }
+
       if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
         this.dx = -this.dx;
       }
@@ -870,16 +878,21 @@ var Turret = /*#__PURE__*/function () {
   }, {
     key: "fire",
     value: function fire() {
-      var projectile = new Projectile({
-        game: this.game,
-        slope: [this.speedX, this.speedY],
-        aimX: this.aimX,
-        aimY: this.aimY,
-        color: this.shots[0]
-      });
-      this.game.addProjectiles(projectile);
-      this.shots.shift();
-      this.shots.push(this.randomColor());
+      if (this.game.reloaded === true) {
+        var projectile = new Projectile({
+          game: this.game,
+          slope: [this.speedX, this.speedY],
+          aimX: this.aimX,
+          aimY: this.aimY,
+          color: this.shots[0]
+        });
+        this.projectiles += 1;
+        this.game.reloaded = false;
+        this.game.addProjectiles(projectile);
+        this.shots.shift();
+        this.shots.push(this.randomColor());
+      } // console.log("too soon!")
+
     }
   }, {
     key: "draw",
