@@ -22,7 +22,6 @@ class GameView {
     this.chainReaction = this.chainReaction.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
   }
-  
 
   getDistance(x1, y1, x2, y2) {
     const xDist = x2 - x1;
@@ -30,12 +29,9 @@ class GameView {
     return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
   }
   checkCollision() {
-    // for (let i = 0; i < this.game.projectiles.length; i++) {
       let currentShot = this.game.projectiles[this.game.projectiles.length - 1];
-      // console.log(currentShot)
       if (this.game.projectiles.length > 0) {
       for (let k = 0; k < this.game.projectiles.length - 1; k++) {
-        // if (i !== k) {
           let pX = currentShot.aimX;
           let pY = currentShot.aimY;
           let pRadius = currentShot.radius;
@@ -43,12 +39,13 @@ class GameView {
           let tY = this.game.projectiles[k].aimY;
           let tRadius = currentShot.radius;
 
-          if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+          if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
             currentShot.dx = 0;
             currentShot.dy = 0;
             currentShot.radius = 20;
             currentShot.aimX = this.approxX(pX, tX);
             currentShot.aimY = this.approxY(pY, tY);
+            currentShot.collided = true;
 
             if (
               currentShot.color === this.game.projectiles[k].color
@@ -76,6 +73,7 @@ class GameView {
             currentShot.dx = 0;
             currentShot.dy = 0;
             currentShot.radius = 20;
+            currentShot.collided = true;
             currentShot.aimX = this.approxX(
               currentShot.aimX,
               this.game.targets[j].x
@@ -92,10 +90,8 @@ class GameView {
               return
             }
           }
-          // this.game.projectiles[i].radius = this.game.targets[j].radius;
         }
       }
-    // }
   }
 
   approxX(x1, x2) {
@@ -105,14 +101,16 @@ class GameView {
       return x2 - 20;
     } 
   }
+
   approxY(y1, y2) {
     if (y1 > y2) {
       return y2 + 35;
     } else if (y1 < y2) {
       return y2 - 35;
-    } else {
-      return y2
-    }
+    } 
+    // else {
+    //   return y2
+    // }
   }
 
   //older aiming
@@ -137,7 +135,6 @@ class GameView {
     while (this.checkChain === true) {
       //target / target
       for (let i = 0; i < this.game.targets.length; i++) {
-        // console.log("checking");
         let check = 0;
         for (let k = 0; k < this.game.targets.length; k++) {
           if (i !== k) {
@@ -167,7 +164,6 @@ class GameView {
       }
       //projectile / target
       for (let i = 0; i < this.game.projectiles.length; i++) {
-        // console.log("checking");
         for (let k = 0; k < this.game.targets.length; k++) {
           let pX = this.game.projectiles[i].aimX;
           let pY = this.game.projectiles[i].aimY;
@@ -190,7 +186,6 @@ class GameView {
       }
       // projectile / projectile
       for (let i = 0; i < this.game.projectiles.length; i++) {
-        // console.log("checking");
         for (let k = 0; k < this.game.projectiles.length; k++) {
           if (i !== k) {
             let pX = this.game.projectiles[i].aimX;
@@ -230,7 +225,6 @@ class GameView {
           shot.hit = true;
           obj.hit = true;
           this.checkChain = true;
-          console.log("saved");
         }
       }
     }
@@ -244,7 +238,6 @@ class GameView {
           shot.hit = true;
           obj.hit = true;
           this.checkChain = true;
-          console.log("saved");
         }
       }
     }
@@ -290,7 +283,6 @@ class GameView {
   resetGame() {
     this.game.playing = true;
     this.game.intervals.forEach(interval => clearInterval(interval));
-    // this.game.turret = new Turret(this)
     this.game.intervals = []
     this.game.projectiles = [];
     this.game.targets = [];

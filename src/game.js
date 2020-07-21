@@ -83,6 +83,11 @@ class Game {
         this.playing = false
       }
     });
+    this.projectiles.forEach((projectile) => {
+      if (projectile.gameOver()) {
+        this.playing = false;
+      }
+    });
   }
 
   remove(obj) {
