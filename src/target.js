@@ -45,7 +45,7 @@ class Target {
   frameSet() {
     this.frameCount += 1;
     if (this.frameCount === 80) {
-      this.frame = this.frame === 0 ? 41 : 0;
+      this.frame = this.frame === 0 ? 40 : 0;
       this.frameCount = 0;
     }
   }

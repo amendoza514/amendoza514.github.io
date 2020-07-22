@@ -189,11 +189,13 @@ class Game {
 
     this.gameOver();
 
-    let score = document.getElementById("score");
+    let score = document.getElementById("score-text");
     if (this.playing === true) {
       score.innerHTML = `score: ${this.score}`;
+      score.classList.remove("final-score");
     } else {
       score.innerHTML = `Your final score: ${this.score}`;
+      score.classList.add("final-score");
     }
 
     this.movingObjects().forEach((obj) => {
