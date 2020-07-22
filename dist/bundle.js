@@ -1064,12 +1064,6 @@ var Turret = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(context) {
-      //turrent base
-      // context.beginPath();
-      // context.rect(185, 530, 50, 5);
-      // context.fillStyle = "#4a5462";
-      // context.fill();
-      // context.stroke();
       //next shot
       context.beginPath();
       context.arc(210, 520, 5, 0, Math.PI * 2, false);
@@ -1126,16 +1120,7 @@ var Turret = /*#__PURE__*/function () {
       context.fillStyle = "#858484";
       context.fill();
       context.strokeStyle = "white";
-      context.stroke(); // //turret circle base
-      // context.beginPath();
-      // context.arc(160, 550, 50, 0, Math.PI * 2, false);
-      // // context.fillStyle = this.shots[0];
-      // context.fillStyle = "grey";
-      // context.fill();
-      // context.lineWidth = 1;
-      // context.strokeStyle = "black";
-      // context.stroke();
-      // current shot
+      context.stroke(); // current shot
 
       context.beginPath();
       context.arc(160, 522, 15, 0, Math.PI * 2, false);
@@ -1145,27 +1130,23 @@ var Turret = /*#__PURE__*/function () {
       context.beginPath();
       context.arc(160, 522, 15, 0, Math.PI * 2, false);
       context.strokeStyle = 'black';
-      context.lineWidth = 2;
+      context.lineWidth = 2.5;
       context.stroke(); //
 
       context.beginPath();
       context.arc(146, 508, 13, 0, Math.PI * .5, false);
       context.strokeStyle = "black";
       context.lineWidth = 2;
-      context.stroke(); //main stripe
-      // context.beginPath();
-      // context.moveTo(160, 507);
-      // context.lineTo(160, 537);
-      // context.setLineDash([5, 5]);
-      // context.strokeStyle = "black";
-      // context.setLineDash([0, 0]);
-      // context.lineWidth = 1;
-      // context.stroke();
-      // 
+      context.stroke();
+      context.beginPath();
+      context.arc(174, 536, 13.5, Math.PI, Math.PI * 1.5, false);
+      context.strokeStyle = "black";
+      context.lineWidth = 2;
+      context.stroke(); //main stripes
 
       context.beginPath();
       context.moveTo(150, 512);
-      context.lineTo(169, 532.5);
+      context.lineTo(171, 532.5);
       context.setLineDash([5, 5]);
       context.strokeStyle = "black";
       context.setLineDash([0, 0]);
