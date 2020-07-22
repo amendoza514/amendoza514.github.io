@@ -818,7 +818,7 @@ var Projectile = /*#__PURE__*/function () {
     this.drop = false;
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
-    this.spriteSheet.src = "./dist/assets/".concat(this.color, "ball.png");
+    this.spriteSheet.src = "./dist/assets/".concat(this.color, ".png");
     this.frame = 0;
     this.frameCount = 0;
     this.rotation = 80;
@@ -931,7 +931,7 @@ var Target = /*#__PURE__*/function () {
     this.drop = false;
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
-    this.spriteSheet.src = "./dist/assets/".concat(this.color, "ball.png");
+    this.spriteSheet.src = "./dist/assets/".concat(this.color, ".png");
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
@@ -945,7 +945,7 @@ var Target = /*#__PURE__*/function () {
   }, {
     key: "randomColor",
     value: function randomColor() {
-      var colors = ["pink", "green", "blue", "yellow", "gray"];
+      var colors = ["purple", "green", "skyblue", "yellow", "red"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
   }, {
@@ -1026,7 +1026,7 @@ var Turret = /*#__PURE__*/function () {
   }, {
     key: "randomColor",
     value: function randomColor() {
-      var colors = ["pink", "green", "blue", "yellow", "gray"];
+      var colors = ["purple", "green", "skyblue", "yellow", "red"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
   }, {

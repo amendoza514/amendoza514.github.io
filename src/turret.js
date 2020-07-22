@@ -17,7 +17,7 @@ class Turret {
     }
   }
   randomColor() {
-    let colors = ["pink", "green", "blue", "yellow", "gray"];
+    let colors = ["purple", "green", "skyblue", "yellow", "red"];
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
