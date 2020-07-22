@@ -17,7 +17,7 @@ class Turret {
     }
   }
   randomColor() {
-    let colors = ["red", "green", "blue", "orange", "gray"];
+    let colors = ["pink", "green", "blue", "yellow", "gray"];
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
@@ -51,14 +51,20 @@ class Turret {
         this.shots.shift();
         this.shots.push(this.randomColor());
     }
-    // console.log("too soon!")
   }
+
+  // drawDashedLine(pattern) {
+  //   context.beginPath();
+  //   context.context.setLineDash([1,1]);
+  //   context.moveTo
+    
+  // }
 
   draw(context) {
     //turrent base
     context.beginPath();
-    context.rect(180, 530, 50, 5);
-    context.fillStyle = "gray";
+    context.rect(185, 530, 50, 5);
+    context.fillStyle = "#4a5462";
     context.fill();
     context.stroke();
 
@@ -66,37 +72,69 @@ class Turret {
     context.beginPath();
     context.moveTo(160, 540);
     context.lineTo(this.cheatX, this.cheatY);
-    context.strokeStyle = "grey";
+    context.setLineDash([5,5]);
+    context.strokeStyle = "white";
     context.lineWidth = 1;
     context.stroke();
+    
+    // //turret outline
+    // context.beginPath();
+    // context.moveTo(160, 540);
+    // context.lineTo(this.aimX, this.aimY);
+    // // context.strokeStyle = this.shots[0];
+    // context.setLineDash([0, 0]);
+    // context.strokeStyle = "black"
+    // context.lineWidth = 47;
+    // context.stroke();
 
     //turret cannon
     context.beginPath();
     context.moveTo(160, 540);
     context.lineTo(this.aimX, this.aimY);
-    context.strokeStyle = this.shots[0];
+    // context.strokeStyle = this.shots[0];
+    context.strokeStyle = "white";
+    context.setLineDash([0, 0]);
     context.lineWidth = 45;
+    context.stroke();   
+
+    //halfcourt
+    context.beginPath();
+    context.arc(160, 550, 50, 0, Math.PI * 2, false);
+    context.lineWidth = 4;
+    context.fillStyle = "#858484";
+    context.fill();
+    context.strokeStyle = "white";
     context.stroke();
 
-    //turret base
+    // //turret circle base
+    // context.beginPath();
+    // context.arc(160, 550, 50, 0, Math.PI * 2, false);
+    // // context.fillStyle = this.shots[0];
+    // context.fillStyle = "grey";
+    // context.fill();
+    // context.lineWidth = 1;
+    // context.strokeStyle = "black";
+    // context.stroke();
+
+    // current shot 
     context.beginPath();
-    context.arc(160, 560, 50, 0, Math.PI * 2, false);
+    context.arc(160, 522, 15, 0, Math.PI * 2, false);
     context.fillStyle = this.shots[0];
     context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = "black";
-    context.stroke();
 
     //next shot
     context.beginPath();
-    context.arc(210, 525, 5, 0, Math.PI * 2, false);
+    context.arc(213, 525, 5, 0, Math.PI * 2, false);
     context.fillStyle = this.shots[1];
     context.fill();
 
     // next next shot
     context.beginPath();
-    context.arc(222, 525, 5, 0, Math.PI * 2, false);
+    context.arc(226, 525, 5, 0, Math.PI * 2, false);
     context.fillStyle = this.shots[2];
+    context.fill();
+
+    context.fillStyle = "gray";
     context.fill();
   }
 }

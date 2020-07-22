@@ -124,8 +124,68 @@ class Game {
 
   drawElements(context, mousePosition) {
     context.clearRect(0, 0, this.width, this.height);
-    context.fillStyle = "white";
+    // context.fillStyle = "white";
     context.fillRect(0, 0, this.width, this.height);
+    //halfcourt semi
+    context.beginPath();
+    context.arc(160, 550, 50, 0, Math.PI * 2, false);
+    context.lineWidth = 4;
+    context.strokeStyle = "white";
+    context.stroke();
+
+    //top of the key
+    context.beginPath();
+    context.arc(160, 150, 50, 0, Math.PI, false);
+    context.lineWidth = 4.2;
+    context.strokeStyle = "white";
+    context.stroke();
+    //hoop
+    context.beginPath();
+    context.arc(160, 38, 15, 0, Math.PI * 2, false);
+    context.lineWidth = 4;
+    context.strokeStyle = "white";
+    context.stroke();
+    //top of the key
+    context.beginPath();
+    context.arc(160, 150, 50, 0, Math.PI * 2, false);
+    context.setLineDash([9, 9]);
+    context.lineWidth = 4;
+    context.strokeStyle = "white";
+    context.stroke();
+    //key line 1
+    context.beginPath();
+    context.moveTo(110, 0);
+    context.lineTo(110, 150);
+    context.setLineDash([5,5]);
+    context.strokeStyle = "white";
+    context.setLineDash([0, 0]);
+    context.lineWidth = 4;
+    context.stroke();
+    //key line 2
+    context.beginPath();
+    context.moveTo(210, 0);
+    context.lineTo(210, 150);
+    context.setLineDash([5,5]);
+    context.strokeStyle = "white";
+    context.setLineDash([0, 0]);
+    context.lineWidth = 4;
+    context.stroke();
+    //backboard
+    context.beginPath();
+    context.moveTo(130, 17);
+    context.lineTo(190, 17);
+    context.setLineDash([5,5]);
+    context.strokeStyle = "white";
+    context.setLineDash([0, 0]);
+    context.lineWidth = 4;
+    context.stroke();
+    //3-point
+    context.beginPath();
+    context.arc(160, 18, 200, 0, Math.PI, false);
+    context.lineWidth = 4;
+    context.setLineDash([0, 0]);
+    context.strokeStyle = "white";
+    context.stroke();
 
     this.gameOver();
 

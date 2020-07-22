@@ -108,6 +108,66 @@ document.addEventListener("DOMContentLoaded", function () {
   var game = new Game(canvas.width, canvas.height);
   new GameView(game, context, canvas, start, reset, pause).startUp(); //for testing use .startGame()
   //for produciton use .startUp()
+  //halfcourt semi
+
+  context.beginPath();
+  context.arc(160, 550, 50, 0, Math.PI * 2, false);
+  context.lineWidth = 4;
+  context.strokeStyle = "white";
+  context.stroke(); //top of the key
+
+  context.beginPath();
+  context.arc(160, 150, 50, 0, Math.PI, false);
+  context.lineWidth = 4.2;
+  context.strokeStyle = "white";
+  context.stroke(); //hoop
+
+  context.beginPath();
+  context.arc(160, 38, 15, 0, Math.PI * 2, false);
+  context.lineWidth = 4;
+  context.strokeStyle = "white";
+  context.stroke(); //top of the key
+
+  context.beginPath();
+  context.arc(160, 150, 50, 0, Math.PI * 2, false);
+  context.setLineDash([9, 9]);
+  context.lineWidth = 4;
+  context.strokeStyle = "white";
+  context.stroke(); //key line 1
+
+  context.beginPath();
+  context.moveTo(110, 0);
+  context.lineTo(110, 150);
+  context.setLineDash([5, 5]);
+  context.strokeStyle = "white";
+  context.setLineDash([0, 0]);
+  context.lineWidth = 4;
+  context.stroke(); //key line 2
+
+  context.beginPath();
+  context.moveTo(210, 0);
+  context.lineTo(210, 150);
+  context.setLineDash([5, 5]);
+  context.strokeStyle = "white";
+  context.setLineDash([0, 0]);
+  context.lineWidth = 4;
+  context.stroke(); //backboard
+
+  context.beginPath();
+  context.moveTo(130, 17);
+  context.lineTo(190, 17);
+  context.setLineDash([5, 5]);
+  context.strokeStyle = "white";
+  context.setLineDash([0, 0]);
+  context.lineWidth = 4;
+  context.stroke(); //3-point
+
+  context.beginPath();
+  context.arc(160, 18, 200, 0, Math.PI, false);
+  context.lineWidth = 4;
+  context.setLineDash([0, 0]);
+  context.strokeStyle = "white";
+  context.stroke();
 });
 
 /***/ }),
@@ -271,9 +331,68 @@ var Game = /*#__PURE__*/function () {
     value: function drawElements(context, mousePosition) {
       var _this4 = this;
 
-      context.clearRect(0, 0, this.width, this.height);
-      context.fillStyle = "white";
-      context.fillRect(0, 0, this.width, this.height);
+      context.clearRect(0, 0, this.width, this.height); // context.fillStyle = "white";
+
+      context.fillRect(0, 0, this.width, this.height); //halfcourt semi
+
+      context.beginPath();
+      context.arc(160, 550, 50, 0, Math.PI * 2, false);
+      context.lineWidth = 4;
+      context.strokeStyle = "white";
+      context.stroke(); //top of the key
+
+      context.beginPath();
+      context.arc(160, 150, 50, 0, Math.PI, false);
+      context.lineWidth = 4.2;
+      context.strokeStyle = "white";
+      context.stroke(); //hoop
+
+      context.beginPath();
+      context.arc(160, 38, 15, 0, Math.PI * 2, false);
+      context.lineWidth = 4;
+      context.strokeStyle = "white";
+      context.stroke(); //top of the key
+
+      context.beginPath();
+      context.arc(160, 150, 50, 0, Math.PI * 2, false);
+      context.setLineDash([9, 9]);
+      context.lineWidth = 4;
+      context.strokeStyle = "white";
+      context.stroke(); //key line 1
+
+      context.beginPath();
+      context.moveTo(110, 0);
+      context.lineTo(110, 150);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "white";
+      context.setLineDash([0, 0]);
+      context.lineWidth = 4;
+      context.stroke(); //key line 2
+
+      context.beginPath();
+      context.moveTo(210, 0);
+      context.lineTo(210, 150);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "white";
+      context.setLineDash([0, 0]);
+      context.lineWidth = 4;
+      context.stroke(); //backboard
+
+      context.beginPath();
+      context.moveTo(130, 17);
+      context.lineTo(190, 17);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "white";
+      context.setLineDash([0, 0]);
+      context.lineWidth = 4;
+      context.stroke(); //3-point
+
+      context.beginPath();
+      context.arc(160, 18, 200, 0, Math.PI, false);
+      context.lineWidth = 4;
+      context.setLineDash([0, 0]);
+      context.strokeStyle = "white";
+      context.stroke();
       this.gameOver();
       var score = document.getElementById("score");
 
@@ -391,6 +510,7 @@ var GameView = /*#__PURE__*/function () {
             currentShot.radius = 20;
             currentShot.aimX = this.approxX(pX, tX);
             currentShot.aimY = this.approxY(pY, tY);
+            currentShot.collided = true;
             this.game.reloaded = true;
 
             if (currentShot.color === this.game.projectiles[k].color) {
@@ -411,6 +531,7 @@ var GameView = /*#__PURE__*/function () {
             currentShot.dy = 0;
             currentShot.radius = 20;
             this.game.reloaded = true;
+            currentShot.collided = true;
             currentShot.aimX = this.approxX(currentShot.aimX, this.game.targets[j].x);
             currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
 
@@ -510,6 +631,7 @@ var GameView = /*#__PURE__*/function () {
             if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
               if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
                 this.game.projectiles[_i].hit = true;
+                this.game.projectiles[_i].collided = true;
                 this.game.targets[_k].hit = true;
                 this.game.reloaded = true;
                 this.checkChain = false;
@@ -533,6 +655,8 @@ var GameView = /*#__PURE__*/function () {
                 if (this.game.projectiles[_i2].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i2].hit || this.game.projectiles[_k2].hit)) {
                   this.game.projectiles[_i2].hit = true;
                   this.game.projectiles[_k2].hit = true;
+                  this.game.projectiles[_i2].collided = true;
+                  this.game.projectiles[_k2].collided = true;
                   this.game.reloaded = true;
                   this.checkChain = false;
                 }
@@ -780,6 +904,11 @@ var Target = /*#__PURE__*/function () {
     this.hit = false;
     this.drop = false;
     this.gameOver = this.gameOver.bind(this);
+    this.spriteSheet = new Image();
+    this.spriteSheet.src = "./dist/assets/".concat(this.color, "ball.png");
+    this.frame = 0;
+    this.frameCount = 0;
+    this.frameSet = this.frameSet.bind(this);
   }
 
   _createClass(Target, [{
@@ -790,7 +919,7 @@ var Target = /*#__PURE__*/function () {
   }, {
     key: "randomColor",
     value: function randomColor() {
-      var colors = ["red", "green", "blue", "orange", "gray"];
+      var colors = ["pink", "green", "blue", "yellow", "gray"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
   }, {
@@ -803,13 +932,26 @@ var Target = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "frameSet",
+    value: function frameSet() {
+      this.frameCount += 1;
+
+      if (this.frameCount === 80) {
+        this.frame = this.frame === 0 ? 41 : 0;
+        this.frameCount = 0;
+      }
+    }
+  }, {
     key: "draw",
     value: function draw(context) {
-      // this.gameOver()
-      context.beginPath();
-      context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      context.fillStyle = this.color;
-      context.fill(); // this.update();
+      this.frameSet(); // context.beginPath();
+      // context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      // context.fillStyle = this.color;
+      // context.fill();
+      //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+
+      context.drawImage(this.spriteSheet, this.frame, 0, 41, 41, this.x - 20, this.y - 20, 41, 41); //next frame below
+      // context.drawImage(this.spriteSheet, 40, 0, 40, 40, this.x, this.y, 40, 40);
     }
   }]);
 
@@ -858,7 +1000,7 @@ var Turret = /*#__PURE__*/function () {
   }, {
     key: "randomColor",
     value: function randomColor() {
-      var colors = ["red", "green", "blue", "orange", "gray"];
+      var colors = ["pink", "green", "blue", "yellow", "gray"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
   }, {
@@ -891,49 +1033,81 @@ var Turret = /*#__PURE__*/function () {
         this.game.addProjectiles(projectile);
         this.shots.shift();
         this.shots.push(this.randomColor());
-      } // console.log("too soon!")
+      }
+    } // drawDashedLine(pattern) {
+    //   context.beginPath();
+    //   context.context.setLineDash([1,1]);
+    //   context.moveTo
+    // }
 
-    }
   }, {
     key: "draw",
     value: function draw(context) {
       //turrent base
       context.beginPath();
-      context.rect(180, 530, 50, 5);
-      context.fillStyle = "gray";
+      context.rect(185, 530, 50, 5);
+      context.fillStyle = "#4a5462";
       context.fill();
       context.stroke(); //turret line
 
       context.beginPath();
       context.moveTo(160, 540);
       context.lineTo(this.cheatX, this.cheatY);
-      context.strokeStyle = "grey";
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "white";
       context.lineWidth = 1;
-      context.stroke(); //turret cannon
+      context.stroke(); // //turret outline
+      // context.beginPath();
+      // context.moveTo(160, 540);
+      // context.lineTo(this.aimX, this.aimY);
+      // // context.strokeStyle = this.shots[0];
+      // context.setLineDash([0, 0]);
+      // context.strokeStyle = "black"
+      // context.lineWidth = 47;
+      // context.stroke();
+      //turret cannon
 
       context.beginPath();
       context.moveTo(160, 540);
-      context.lineTo(this.aimX, this.aimY);
-      context.strokeStyle = this.shots[0];
+      context.lineTo(this.aimX, this.aimY); // context.strokeStyle = this.shots[0];
+
+      context.strokeStyle = "white";
+      context.setLineDash([0, 0]);
       context.lineWidth = 45;
-      context.stroke(); //turret base
+      context.stroke(); //halfcourt
 
       context.beginPath();
-      context.arc(160, 560, 50, 0, Math.PI * 2, false);
-      context.fillStyle = this.shots[0];
+      context.arc(160, 550, 50, 0, Math.PI * 2, false);
+      context.lineWidth = 4;
+      context.fillStyle = "#858484";
       context.fill();
-      context.lineWidth = 1;
-      context.strokeStyle = "black";
-      context.stroke(); //next shot
+      context.strokeStyle = "white";
+      context.stroke(); // //turret circle base
+      // context.beginPath();
+      // context.arc(160, 550, 50, 0, Math.PI * 2, false);
+      // // context.fillStyle = this.shots[0];
+      // context.fillStyle = "grey";
+      // context.fill();
+      // context.lineWidth = 1;
+      // context.strokeStyle = "black";
+      // context.stroke();
+      // current shot 
 
       context.beginPath();
-      context.arc(210, 525, 5, 0, Math.PI * 2, false);
+      context.arc(160, 522, 15, 0, Math.PI * 2, false);
+      context.fillStyle = this.shots[0];
+      context.fill(); //next shot
+
+      context.beginPath();
+      context.arc(213, 525, 5, 0, Math.PI * 2, false);
       context.fillStyle = this.shots[1];
       context.fill(); // next next shot
 
       context.beginPath();
-      context.arc(222, 525, 5, 0, Math.PI * 2, false);
+      context.arc(226, 525, 5, 0, Math.PI * 2, false);
       context.fillStyle = this.shots[2];
+      context.fill();
+      context.fillStyle = "gray";
       context.fill();
     }
   }]);

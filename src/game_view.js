@@ -45,6 +45,7 @@ class GameView {
             currentShot.radius = 20;
             currentShot.aimX = this.approxX(pX, tX);
             currentShot.aimY = this.approxY(pY, tY);
+            currentShot.collided = true;
             this.game.reloaded = true;
 
             if (
@@ -74,6 +75,7 @@ class GameView {
             currentShot.dy = 0;
             currentShot.radius = 20;
             this.game.reloaded = true;
+            currentShot.collided = true;
             currentShot.aimX = this.approxX(
               currentShot.aimX,
               this.game.targets[j].x
@@ -179,6 +181,7 @@ class GameView {
               this.game.projectiles[i].hit
             ) {
               this.game.projectiles[i].hit = true;
+              this.game.projectiles[i].collided = true;
               this.game.targets[k].hit = true;
               this.game.reloaded = true;
               this.checkChain = false;
@@ -205,6 +208,8 @@ class GameView {
               ) {
                 this.game.projectiles[i].hit = true;
                 this.game.projectiles[k].hit = true;
+                this.game.projectiles[i].collided = true;
+                this.game.projectiles[k].collided = true;
                 this.game.reloaded = true;
                 this.checkChain = false;
               }
