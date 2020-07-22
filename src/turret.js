@@ -55,10 +55,37 @@ class Turret {
 
   draw(context) {
     //turrent base
+    // context.beginPath();
+    // context.rect(185, 530, 50, 5);
+    // context.fillStyle = "#4a5462";
+    // context.fill();
+    // context.stroke();
+
+    //next shot
     context.beginPath();
-    context.rect(185, 530, 50, 5);
-    context.fillStyle = "#4a5462";
+    context.arc(210, 520, 5, 0, Math.PI * 2, false);
+    context.fillStyle = this.shots[1];
     context.fill();
+
+    context.beginPath();
+    context.arc(210, 520, 5, 0, Math.PI * 2, false);
+    context.strokeStyle = "black";
+    context.setLineDash([0, 0]);
+    context.lineWidth = 2;
+    context.fill();
+    context.stroke();
+
+    // next next shot
+    context.beginPath();
+    context.arc(217, 533, 5, 0, Math.PI * 2, false);
+    context.fillStyle = this.shots[2];
+    context.fill();
+
+    context.beginPath();
+    context.arc(217, 533, 5, 0, Math.PI * 2, false);
+    context.strokeStyle = "black";
+    context.setLineDash([0, 0]);
+    context.lineWidth = 2;
     context.stroke();
 
     //turret line
@@ -118,13 +145,13 @@ class Turret {
       context.beginPath();
       context.arc(160, 522, 15, 0, Math.PI * 2, false);
       context.strokeStyle = 'black';
-      context.lineWidth = 1;
+      context.lineWidth = 2;
       context.stroke();
       //
       context.beginPath();
       context.arc(146, 508, 13, 0, Math.PI * .5, false);
       context.strokeStyle = "black";
-      context.lineWidth = 1;
+      context.lineWidth = 2;
       context.stroke();
 
       //main stripe
@@ -143,7 +170,7 @@ class Turret {
         context.setLineDash([5, 5]);
         context.strokeStyle = "black";
         context.setLineDash([0, 0]);
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.stroke();
         // 
         context.beginPath();
@@ -152,22 +179,10 @@ class Turret {
         context.setLineDash([5, 5]);
         context.strokeStyle = "black";
         context.setLineDash([0, 0]);
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.stroke();
         
     // context.drawImage(this.spriteSheet, 41, 0, 41, 41, 160, 522, 41, 41);
-
-    //next shot
-    context.beginPath();
-    context.arc(213, 525, 5, 0, Math.PI * 2, false);
-    context.fillStyle = this.shots[1];
-    context.fill();
-
-    // next next shot
-    context.beginPath();
-    context.arc(226, 525, 5, 0, Math.PI * 2, false);
-    context.fillStyle = this.shots[2];
-    context.fill();
 
     context.fillStyle = "gray";
     context.fill();
