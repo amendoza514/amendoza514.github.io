@@ -828,7 +828,7 @@ var Projectile = /*#__PURE__*/function () {
   _createClass(Projectile, [{
     key: "gameOver",
     value: function gameOver() {
-      if (!this.drop && this.aimY + this.radius >= 535 && this.collided) {
+      if (this.drop && this.aimY + this.radius >= 535 && this.collided) {
         return true;
       } else {
         return false;

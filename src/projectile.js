@@ -22,7 +22,7 @@ class Projectile {
   }
 
   gameOver() {
-    if (!this.drop && this.aimY + this.radius >= 535 && this.collided) {
+    if (this.drop && this.aimY + this.radius >= 535 && this.collided) {
       return true;
     } else {
       return false;
