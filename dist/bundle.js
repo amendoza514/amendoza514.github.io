@@ -483,6 +483,7 @@ var GameView = /*#__PURE__*/function () {
     this.checkCollision = this.checkCollision.bind(this);
     this.chainReaction = this.chainReaction.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
+    this.check;
   }
 
   _createClass(GameView, [{
@@ -592,7 +593,7 @@ var GameView = /*#__PURE__*/function () {
       while (this.checkChain === true) {
         //target / target
         for (var i = 0; i < this.game.targets.length; i++) {
-          var check = 0;
+          this.check = 0;
 
           for (var k = 0; k < this.game.targets.length; k++) {
             if (i !== k) {
@@ -604,7 +605,7 @@ var GameView = /*#__PURE__*/function () {
               var tRadius = this.game.targets[i].radius;
 
               if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-                check += 1;
+                this.check += 1;
 
                 if (this.game.targets[i].color === this.game.targets[k].color && (this.game.targets[i].hit || this.game.targets[k].hit)) {
                   this.game.targets[i].hit = true;
@@ -615,13 +616,15 @@ var GameView = /*#__PURE__*/function () {
             }
           }
 
-          if (check === 0) {
+          if (this.check === 0) {
             this.game.targets[i].drop = true;
           }
         } //projectile / target
 
 
         for (var _i = 0; _i < this.game.projectiles.length; _i++) {
+          this.check = 0;
+
           for (var _k = 0; _k < this.game.targets.length; _k++) {
             var _pX = this.game.projectiles[_i].aimX;
             var _pY = this.game.projectiles[_i].aimY;
@@ -631,6 +634,8 @@ var GameView = /*#__PURE__*/function () {
             var _tRadius = this.game.targets[_i].radius;
 
             if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
+              this.check += 1;
+
               if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
                 this.game.projectiles[_i].hit = true;
                 this.game.projectiles[_i].collided = true;
@@ -639,31 +644,35 @@ var GameView = /*#__PURE__*/function () {
                 this.checkChain = false;
               }
             }
-          }
-        } // projectile / projectile
+          } // projectile / projectile      
 
 
-        for (var _i2 = 0; _i2 < this.game.projectiles.length; _i2++) {
           for (var _k2 = 0; _k2 < this.game.projectiles.length; _k2++) {
-            if (_i2 !== _k2) {
-              var _pX2 = this.game.projectiles[_i2].aimX;
-              var _pY2 = this.game.projectiles[_i2].aimY;
-              var _pRadius2 = this.game.projectiles[_i2].radius;
+            if (_i !== _k2) {
+              var _pX2 = this.game.projectiles[_i].aimX;
+              var _pY2 = this.game.projectiles[_i].aimY;
+              var _pRadius2 = this.game.projectiles[_i].radius;
               var _tX2 = this.game.projectiles[_k2].aimX;
               var _tY2 = this.game.projectiles[_k2].aimY;
-              var _tRadius2 = this.game.projectiles[_i2].radius;
+              var _tRadius2 = this.game.projectiles[_i].radius;
 
               if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
-                if (this.game.projectiles[_i2].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i2].hit || this.game.projectiles[_k2].hit)) {
-                  this.game.projectiles[_i2].hit = true;
+                this.check += 1;
+
+                if (this.game.projectiles[_i].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i].hit || this.game.projectiles[_k2].hit)) {
+                  this.game.projectiles[_i].hit = true;
                   this.game.projectiles[_k2].hit = true;
-                  this.game.projectiles[_i2].collided = true;
+                  this.game.projectiles[_i].collided = true;
                   this.game.projectiles[_k2].collided = true;
                   this.game.reloaded = true;
                   this.checkChain = false;
                 }
               }
             }
+          }
+
+          if (this.check === 0) {
+            this.game.projectiles[_i].drop = true;
           }
         }
 
@@ -687,8 +696,8 @@ var GameView = /*#__PURE__*/function () {
         }
       }
 
-      for (var _i3 = 0; _i3 < this.game.targets.length; _i3++) {
-        var _obj = this.game.targets[_i3];
+      for (var _i2 = 0; _i2 < this.game.targets.length; _i2++) {
+        var _obj = this.game.targets[_i2];
 
         if (this.getDistance(shot.aimX, shot.aimY, _obj.x, _obj.y) - 5 < shot.radius + _obj.radius) {
           if (shot.color === _obj.color) {
@@ -828,7 +837,7 @@ var Projectile = /*#__PURE__*/function () {
   _createClass(Projectile, [{
     key: "gameOver",
     value: function gameOver() {
-      if (this.drop && this.aimY + this.radius >= 535 && this.collided) {
+      if (!this.drop && this.aimY + this.radius >= 535 && this.collided) {
         return true;
       } else {
         return false;
