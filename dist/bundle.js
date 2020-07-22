@@ -963,7 +963,7 @@ var Target = /*#__PURE__*/function () {
       this.frameCount += 1;
 
       if (this.frameCount === 80) {
-        this.frame = this.frame === 0 ? 40 : 0;
+        this.frame = this.frame === 0 ? 41 : 0;
         this.frameCount = 0;
       }
     }
@@ -1060,12 +1060,7 @@ var Turret = /*#__PURE__*/function () {
         this.shots.shift();
         this.shots.push(this.randomColor());
       }
-    } // drawDashedLine(pattern) {
-    //   context.beginPath();
-    //   context.context.setLineDash([1,1]);
-    //   context.moveTo
-    // }
-
+    }
   }, {
     key: "draw",
     value: function draw(context) {
@@ -1117,12 +1112,52 @@ var Turret = /*#__PURE__*/function () {
       // context.lineWidth = 1;
       // context.strokeStyle = "black";
       // context.stroke();
-      // current shot 
+      // current shot
 
       context.beginPath();
       context.arc(160, 522, 15, 0, Math.PI * 2, false);
       context.fillStyle = this.shots[0];
-      context.fill(); //next shot
+      context.fill(); //ball markations current shot
+
+      context.beginPath();
+      context.arc(160, 522, 15, 0, Math.PI * 2, false);
+      context.strokeStyle = 'black';
+      context.lineWidth = 1;
+      context.stroke(); //
+
+      context.beginPath();
+      context.arc(146, 508, 13, 0, Math.PI * .5, false);
+      context.strokeStyle = "black";
+      context.lineWidth = 1;
+      context.stroke(); //main stripe
+      // context.beginPath();
+      // context.moveTo(160, 507);
+      // context.lineTo(160, 537);
+      // context.setLineDash([5, 5]);
+      // context.strokeStyle = "black";
+      // context.setLineDash([0, 0]);
+      // context.lineWidth = 1;
+      // context.stroke();
+      // 
+
+      context.beginPath();
+      context.moveTo(150, 512);
+      context.lineTo(169, 532.5);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "black";
+      context.setLineDash([0, 0]);
+      context.lineWidth = 1;
+      context.stroke(); // 
+
+      context.beginPath();
+      context.moveTo(170, 512);
+      context.lineTo(149.5, 530.5);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "black";
+      context.setLineDash([0, 0]);
+      context.lineWidth = 1;
+      context.stroke(); // context.drawImage(this.spriteSheet, 41, 0, 41, 41, 160, 522, 41, 41);
+      //next shot
 
       context.beginPath();
       context.arc(213, 525, 5, 0, Math.PI * 2, false);
