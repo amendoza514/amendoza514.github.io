@@ -1,13 +1,12 @@
 const Target = require("./target");
 const Turret = require("./turret");
 const Projectile = require("./projectile");
+const Game = require("./game");
 
 class GameView {
-  constructor(game, context, canvas, start, pause, reset) {
+  constructor(game, context, canvas, start) {
     this.game = game;
     this.start = start;
-    this.pause = pause;
-    this.reset = reset;
     this.context = context;
     this.canvas = canvas;
     this.mousePosition = [0, 0];
@@ -298,14 +297,16 @@ class GameView {
   }
 
   resetGame() {
-    this.game.playing = true;
-    this.game.intervals.forEach(interval => clearInterval(interval));
-    this.game.intervals = []
-    this.game.projectiles = [];
-    this.game.targets = [];
-    this.game.score = 0;
-     this.game.addTargets();
-     this.game.moveTargets();
+    // this.startUp();
+
+    // this.game.playing = true;
+    // this.game.intervals.forEach(interval => clearInterval(interval));
+    // this.game.intervals = []
+    // this.game.projectiles = [];
+    // this.game.targets = [];
+    // this.game.score = 0;
+    //  this.game.addTargets();
+    //  this.game.moveTargets();
   }
 
   animate() {

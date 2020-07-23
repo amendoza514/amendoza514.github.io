@@ -4,7 +4,7 @@ class Target {
     this.offset = offset;
     this.x = x;
     this.y;
-    this.y = 20;
+    this.y = -10;
     this.radius = 20;
     this.color;
     if (color) {

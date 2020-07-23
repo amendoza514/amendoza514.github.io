@@ -100,13 +100,11 @@ var GameView = __webpack_require__(/*! ./game_view.js */ "./src/game_view.js");
 document.addEventListener("DOMContentLoaded", function () {
   var canvas = document.querySelector("canvas");
   var start = document.getElementById("start");
-  var pause = document.getElementById("pause");
-  var reset = document.getElementById("reset");
   var context = canvas.getContext("2d");
   canvas.width = 320;
   canvas.height = 540;
   var game = new Game(canvas.width, canvas.height);
-  new GameView(game, context, canvas, start, reset, pause).startUp(); //for testing use .startGame()
+  new GameView(game, context, canvas, start).startUp(); //for testing use .startGame()
   //for produciton use .startUp()
   //halfcourt semi
 
@@ -462,14 +460,14 @@ var Turret = __webpack_require__(/*! ./turret */ "./src/turret.js");
 
 var Projectile = __webpack_require__(/*! ./projectile */ "./src/projectile.js");
 
+var Game = __webpack_require__(/*! ./game */ "./src/game.js");
+
 var GameView = /*#__PURE__*/function () {
-  function GameView(game, context, canvas, start, pause, reset) {
+  function GameView(game, context, canvas, start) {
     _classCallCheck(this, GameView);
 
     this.game = game;
     this.start = start;
-    this.pause = pause;
-    this.reset = reset;
     this.context = context;
     this.canvas = canvas;
     this.mousePosition = [0, 0];
@@ -757,17 +755,15 @@ var GameView = /*#__PURE__*/function () {
     }
   }, {
     key: "resetGame",
-    value: function resetGame() {
-      this.game.playing = true;
-      this.game.intervals.forEach(function (interval) {
-        return clearInterval(interval);
-      });
-      this.game.intervals = [];
-      this.game.projectiles = [];
-      this.game.targets = [];
-      this.game.score = 0;
-      this.game.addTargets();
-      this.game.moveTargets();
+    value: function resetGame() {// this.startUp();
+      // this.game.playing = true;
+      // this.game.intervals.forEach(interval => clearInterval(interval));
+      // this.game.intervals = []
+      // this.game.projectiles = [];
+      // this.game.targets = [];
+      // this.game.score = 0;
+      //  this.game.addTargets();
+      //  this.game.moveTargets();
     }
   }, {
     key: "animate",
@@ -926,7 +922,7 @@ var Target = /*#__PURE__*/function () {
     this.offset = offset;
     this.x = x;
     this.y;
-    this.y = 20;
+    this.y = -10;
     this.radius = 20;
     this.color;
 
