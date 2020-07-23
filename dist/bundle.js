@@ -418,7 +418,7 @@ var Game = /*#__PURE__*/function () {
             _this4.remove(obj); //trash collection
 
           } else if (obj.drop) {
-            obj.aimY += 10;
+            obj.aimY += 15;
           }
         }
 
@@ -429,7 +429,7 @@ var Game = /*#__PURE__*/function () {
             _this4.remove(obj); //trash collection
 
           } else if (obj.drop) {
-            obj.y += 10;
+            obj.y += 15;
           }
         }
       });
@@ -539,7 +539,6 @@ var GameView = /*#__PURE__*/function () {
             currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
 
             if (currentShot.color === this.game.targets[j].color) {
-              this.game.reloaded = true;
               currentShot.hit = true;
               this.game.targets[j].hit = true;
               this.checkChain = true;
@@ -565,27 +564,8 @@ var GameView = /*#__PURE__*/function () {
         return y2 + 35;
       } else if (y1 < y2) {
         return y2 - 35;
-      } // else {
-      //   return y2
-      // }
-
-    } //older aiming
-    // approxY(yInput, y2) {
-    //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
-    //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
-    //   return yOutput;
-    // }
-    // approxX(pX, offset, tX) {
-    //   let xPositions = [40, 80, 120, 160, 200, 240, 280, 20, 60, 100, 140, 180, 220, 260, 300];
-    //   // if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
-    //   //   xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
-    //   // } else {
-    //   //   xPositions = [40, 80, 120, 160, 200, 240, 280];
-    //   // }
-    //   let xOutput = xPositions.reduce((previous, current) => Math.abs(current - pX) < Math.abs(previous - pX) ? current : previous);
-    //   return xOutput;
-    // }
-    //still need to add collision on ball ball and ball target
+      }
+    } //still need to add collision on ball ball and ball target
 
   }, {
     key: "chainReaction",
@@ -602,7 +582,7 @@ var GameView = /*#__PURE__*/function () {
               var pRadius = this.game.targets[i].radius;
               var tX = this.game.targets[k].x;
               var tY = this.game.targets[k].y;
-              var tRadius = this.game.targets[i].radius;
+              var tRadius = this.game.targets[k].radius;
 
               if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
                 this.check += 1;
@@ -616,8 +596,30 @@ var GameView = /*#__PURE__*/function () {
             }
           }
 
+          for (var _k = 0; _k < this.game.projectiles.length; _k++) {
+            if (i !== _k) {
+              var _pX = this.game.targets[i].x;
+              var _pY = this.game.targets[i].y;
+              var _pRadius = this.game.targets[i].radius;
+              var _tX = this.game.projectiles[_k].aimX;
+              var _tY = this.game.projectiles[_k].aimY;
+              var _tRadius = this.game.projectiles[_k].radius;
+
+              if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
+                this.check += 1;
+
+                if (this.game.targets[i].color === this.game.projectiles[_k].color && (this.game.targets[i].hit || this.game.projectiles[_k].hit)) {
+                  this.game.targets[i].hit = true;
+                  this.game.projectiles[_k].hit = true;
+                  this.checkChain = false;
+                }
+              }
+            }
+          }
+
           if (this.check === 0) {
             this.game.targets[i].drop = true;
+            this.game.targets[i].radius = 0;
           }
         } //projectile / target
 
@@ -625,46 +627,46 @@ var GameView = /*#__PURE__*/function () {
         for (var _i = 0; _i < this.game.projectiles.length; _i++) {
           this.check = 0;
 
-          for (var _k = 0; _k < this.game.targets.length; _k++) {
-            var _pX = this.game.projectiles[_i].aimX;
-            var _pY = this.game.projectiles[_i].aimY;
-            var _pRadius = this.game.projectiles[_i].radius;
-            var _tX = this.game.targets[_k].x;
-            var _tY = this.game.targets[_k].y;
-            var _tRadius = this.game.targets[_i].radius;
+          for (var _k2 = 0; _k2 < this.game.targets.length; _k2++) {
+            var _pX2 = this.game.projectiles[_i].aimX;
+            var _pY2 = this.game.projectiles[_i].aimY;
+            var _pRadius2 = this.game.projectiles[_i].radius;
+            var _tX2 = this.game.targets[_k2].x;
+            var _tY2 = this.game.targets[_k2].y;
+            var _tRadius2 = this.game.targets[_k2].radius;
 
-            if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
+            if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
               this.check += 1;
+              this.game.reloaded = true;
+              this.game.projectiles[_i].collided = true;
 
-              if (this.game.projectiles[_i].color === this.game.targets[_k].color && this.game.projectiles[_i].hit) {
+              if (this.game.projectiles[_i].color === this.game.targets[_k2].color) {
                 this.game.projectiles[_i].hit = true;
-                this.game.projectiles[_i].collided = true;
-                this.game.targets[_k].hit = true;
-                this.game.reloaded = true;
+                this.game.targets[_k2].hit = true;
                 this.checkChain = false;
               }
             }
           } // projectile / projectile      
 
 
-          for (var _k2 = 0; _k2 < this.game.projectiles.length; _k2++) {
-            if (_i !== _k2) {
-              var _pX2 = this.game.projectiles[_i].aimX;
-              var _pY2 = this.game.projectiles[_i].aimY;
-              var _pRadius2 = this.game.projectiles[_i].radius;
-              var _tX2 = this.game.projectiles[_k2].aimX;
-              var _tY2 = this.game.projectiles[_k2].aimY;
-              var _tRadius2 = this.game.projectiles[_i].radius;
+          for (var _k3 = 0; _k3 < this.game.projectiles.length; _k3++) {
+            if (_i !== _k3) {
+              var _pX3 = this.game.projectiles[_i].aimX;
+              var _pY3 = this.game.projectiles[_i].aimY;
+              var _pRadius3 = this.game.projectiles[_i].radius;
+              var _tX3 = this.game.projectiles[_k3].aimX;
+              var _tY3 = this.game.projectiles[_k3].aimY;
+              var _tRadius3 = this.game.projectiles[_k3].radius;
 
-              if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
+              if (this.getDistance(_pX3, _pY3, _tX3, _tY3) - 10 < _pRadius3 + _tRadius3) {
                 this.check += 1;
+                this.game.reloaded = true;
 
-                if (this.game.projectiles[_i].color === this.game.projectiles[_k2].color && (this.game.projectiles[_i].hit || this.game.projectiles[_k2].hit)) {
+                if (this.game.projectiles[_i].color === this.game.projectiles[_k3].color && (this.game.projectiles[_i].hit || this.game.projectiles[_k3].hit)) {
                   this.game.projectiles[_i].hit = true;
-                  this.game.projectiles[_k2].hit = true;
+                  this.game.projectiles[_k3].hit = true;
                   this.game.projectiles[_i].collided = true;
-                  this.game.projectiles[_k2].collided = true;
-                  this.game.reloaded = true;
+                  this.game.projectiles[_k3].collided = true;
                   this.checkChain = false;
                 }
               }
@@ -673,6 +675,7 @@ var GameView = /*#__PURE__*/function () {
 
           if (this.check === 0) {
             this.game.projectiles[_i].drop = true;
+            this.game.projectiles[_i].radius = 0;
           }
         }
 

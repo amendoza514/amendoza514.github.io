@@ -29,6 +29,7 @@ class GameView {
     const yDist = y2 - y1;
     return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
   }
+
   checkCollision() {
       let currentShot = this.game.projectiles[this.game.projectiles.length - 1];
       if (this.game.projectiles.length > 0) {
@@ -68,7 +69,7 @@ class GameView {
               this.game.targets[j].x,
               this.game.targets[j].y
             ) <
-            currentShot.radius + this.game.targets[j].radius
+            currentShot.radius + this.game.targets[j].radius 
           ) {
             //collision response
             // projectile instructions
@@ -87,7 +88,6 @@ class GameView {
             );
 
             if (currentShot.color === this.game.targets[j].color) {
-              this.game.reloaded = true;
               currentShot.hit = true;
               this.game.targets[j].hit = true;
               this.checkChain = true;
@@ -112,27 +112,7 @@ class GameView {
     } else if (y1 < y2) {
       return y2 - 35;
     } 
-    // else {
-    //   return y2
-    // }
   }
-
-  //older aiming
-  // approxY(yInput, y2) {
-  //   let yPositions = [20, 55, 90, 125, 160, 195, 230, 265, 300, 335, 370, 405, 440, 475, 510, 545, 580];
-  //   let yOutput = yPositions.reduce((previous, current) => Math.abs(current - yInput) < Math.abs(previous - yInput) ? current : previous);
-  //   return yOutput;
-  // }
-  // approxX(pX, offset, tX) {
-  //   let xPositions = [40, 80, 120, 160, 200, 240, 280, 20, 60, 100, 140, 180, 220, 260, 300];
-  //   // if ([20, 60, 100, 140, 180, 220, 260, 300].indexOf(tempX) === - 1) {
-  //   //   xPositions = [20, 60, 100, 140, 180, 220, 260, 300];
-  //   // } else {
-  //   //   xPositions = [40, 80, 120, 160, 200, 240, 280];
-  //   // }
-  //   let xOutput = xPositions.reduce((previous, current) => Math.abs(current - pX) < Math.abs(previous - pX) ? current : previous);
-  //   return xOutput;
-  // }
 
   //still need to add collision on ball ball and ball target
   chainReaction() {
@@ -147,13 +127,13 @@ class GameView {
             let pRadius = this.game.targets[i].radius;
             let tX = this.game.targets[k].x;
             let tY = this.game.targets[k].y;
-            let tRadius = this.game.targets[i].radius;
+            let tRadius = this.game.targets[k].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
               this.check += 1;
               if (
                 this.game.targets[i].color === this.game.targets[k].color &&
-                (this.game.targets[i].hit || this.game.targets[k].hit)
+                (this.game.targets[i].hit || this.game.targets[k].hit) 
               ) {
                 this.game.targets[i].hit = true;
                 this.game.targets[k].hit = true;
@@ -162,8 +142,31 @@ class GameView {
             }
           }
         }
+        for (let k = 0; k < this.game.projectiles.length; k++) {
+          if (i !== k) {
+            let pX = this.game.targets[i].x;
+            let pY = this.game.targets[i].y;
+            let pRadius = this.game.targets[i].radius;
+            let tX = this.game.projectiles[k].aimX;
+            let tY = this.game.projectiles[k].aimY;
+            let tRadius = this.game.projectiles[k].radius;
+
+            if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+              this.check += 1;
+              if (
+                this.game.targets[i].color === this.game.projectiles[k].color &&
+                (this.game.targets[i].hit || this.game.projectiles[k].hit)
+              ) {
+                this.game.targets[i].hit = true;
+                this.game.projectiles[k].hit = true;
+                this.checkChain = false;
+              }
+            }
+          }
+        }
         if (this.check === 0) {
           this.game.targets[i].drop = true;
+          this.game.targets[i].radius = 0;
         }
       }
       //projectile / target
@@ -175,18 +178,17 @@ class GameView {
           let pRadius = this.game.projectiles[i].radius;
           let tX = this.game.targets[k].x;
           let tY = this.game.targets[k].y;
-          let tRadius = this.game.targets[i].radius;
+          let tRadius = this.game.targets[k].radius;
 
           if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
             this.check += 1
+            this.game.reloaded = true;
+            this.game.projectiles[i].collided = true;
             if (
-              this.game.projectiles[i].color === this.game.targets[k].color &&
-              this.game.projectiles[i].hit
+              this.game.projectiles[i].color === this.game.targets[k].color 
             ) {
               this.game.projectiles[i].hit = true;
-              this.game.projectiles[i].collided = true;
               this.game.targets[k].hit = true;
-              this.game.reloaded = true;
               this.checkChain = false;
             }
           }
@@ -199,20 +201,20 @@ class GameView {
             let pRadius = this.game.projectiles[i].radius;
             let tX = this.game.projectiles[k].aimX;
             let tY = this.game.projectiles[k].aimY;
-            let tRadius = this.game.projectiles[i].radius;
+            let tRadius = this.game.projectiles[k].radius;
 
-            if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+            if (this.getDistance(pX, pY, tX, tY) - 10 < pRadius + tRadius) {
               this.check += 1;
+              this.game.reloaded = true;
               if (
                 this.game.projectiles[i].color ===
                   this.game.projectiles[k].color &&
-                (this.game.projectiles[i].hit || this.game.projectiles[k].hit)
+                (this.game.projectiles[i].hit || this.game.projectiles[k].hit) 
               ) {
                 this.game.projectiles[i].hit = true;
                 this.game.projectiles[k].hit = true;
                 this.game.projectiles[i].collided = true;
                 this.game.projectiles[k].collided = true;
-                this.game.reloaded = true;
                 this.checkChain = false;
               }
             }
@@ -221,6 +223,7 @@ class GameView {
         }
             if (this.check === 0) {
               this.game.projectiles[i].drop = true;
+              this.game.projectiles[i].radius = 0;
             }
           }
           this.checkChain = false;

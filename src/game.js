@@ -209,8 +209,9 @@ class Game {
         } else if (obj.aimY > 600 || obj.aimY < 0) {
           this.remove(obj);
           //trash collection
-        } else if (obj.drop) {
-          obj.aimY += 10;
+        } 
+        else if (obj.drop) {
+          obj.aimY += 15;
         }
       }
       if (obj instanceof Target) {
@@ -219,8 +220,9 @@ class Game {
         } else if (obj.x > 600 || obj.y < 0) {
           this.remove(obj);
           //trash collection
-        } else if (obj.drop) {
-          obj.y += 10;
+        } 
+        else if (obj.drop) {
+          obj.y += 15;
         }
       }
     });
