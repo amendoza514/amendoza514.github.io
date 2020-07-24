@@ -99,20 +99,6 @@ class Game {
     });
   }
 
-  // greyOut (context) {
-  //   for (let i = 0; i < this.targets.length - 1; i++) {
-  //     this.targets[i].color = 'grey'
-  //     this.targets[i].draw(context);
-  //     // return true
-  //     // console.log('asdasdasdasd')
-  //   }
-  //   for (let i = 0; i < this.projectiles.length - 1; i++) {
-  //     this.projectiles[i].color = "grey";
-  //     this.projectiles[i].draw(context);
-  //     // return true
-  //   }
-  // }
-
   remove(obj) {
     if (this.playing === true) {
       if (obj instanceof Projectile) {
@@ -127,38 +113,6 @@ class Game {
       }
     }
   }
-
-  // drop(obj) {
-  //   let x;
-  //   let y;
-  //   let color = obj.color;
-  //   let radius = obj.radius;
-  //   if (this.playing === true) {
-  //     if (obj instanceof Projectile) {
-  //       x = obj.aimX;
-  //       y = obj.aimY;
-  //       this.projectiles = this.projectiles
-  //         .slice(0, this.projectiles.indexOf(obj))
-  //         .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
-  //       this.score += 23;
-  //     } else if (obj instanceof Target) {
-  //       x = obj.x;
-  //       y = obj.y;
-  //       this.targets = this.targets
-  //         .slice(0, this.targets.indexOf(obj))
-  //         .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
-  //       this.score += 23;
-  //     }
-  //      let projectile = new Projectile({
-  //       game: this.game,
-  //       slope: [x, 35],
-  //       aimX: x,
-  //       aimY: y,
-  //       color: color
-  //   })
-  //   this.projectiles.push(projectile)
-  //   }
-  // }
 
   drawElements(context, mousePosition) {
     context.clearRect(0, 0, this.width, this.height);
@@ -257,7 +211,9 @@ class Game {
             // this.drop(ob
             obj.aimY += 15;
           } else if (!this.playing) {
-            obj.spriteSheet.src = `./dist/assets/grey.png`;
+            // setInterval(() => {
+              obj.spriteSheet.src = `./dist/assets/grey.png`;
+            // }, 1000);
           }
         }
         if (obj instanceof Target) {
@@ -272,7 +228,9 @@ class Game {
             // this.drop(obj)
             obj.y += 15;
           } else if (!this.playing) {
-            obj.spriteSheet.src = `./dist/assets/grey.png`;
+            // setInterval(() => {
+              obj.spriteSheet.src = `./dist/assets/grey.png`;
+            // }, 1000)
           }
         }
         // if(this.gameOver() === true){

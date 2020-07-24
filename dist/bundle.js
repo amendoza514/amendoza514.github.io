@@ -310,20 +310,7 @@ var Game = /*#__PURE__*/function () {
           _this3.playing = false;
         }
       });
-    } // greyOut (context) {
-    //   for (let i = 0; i < this.targets.length - 1; i++) {
-    //     this.targets[i].color = 'grey'
-    //     this.targets[i].draw(context);
-    //     // return true
-    //     // console.log('asdasdasdasd')
-    //   }
-    //   for (let i = 0; i < this.projectiles.length - 1; i++) {
-    //     this.projectiles[i].color = "grey";
-    //     this.projectiles[i].draw(context);
-    //     // return true
-    //   }
-    // }
-
+    }
   }, {
     key: "remove",
     value: function remove(obj) {
@@ -335,38 +322,7 @@ var Game = /*#__PURE__*/function () {
           this.score += 23;
         }
       }
-    } // drop(obj) {
-    //   let x;
-    //   let y;
-    //   let color = obj.color;
-    //   let radius = obj.radius;
-    //   if (this.playing === true) {
-    //     if (obj instanceof Projectile) {
-    //       x = obj.aimX;
-    //       y = obj.aimY;
-    //       this.projectiles = this.projectiles
-    //         .slice(0, this.projectiles.indexOf(obj))
-    //         .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
-    //       this.score += 23;
-    //     } else if (obj instanceof Target) {
-    //       x = obj.x;
-    //       y = obj.y;
-    //       this.targets = this.targets
-    //         .slice(0, this.targets.indexOf(obj))
-    //         .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
-    //       this.score += 23;
-    //     }
-    //      let projectile = new Projectile({
-    //       game: this.game,
-    //       slope: [x, 35],
-    //       aimX: x,
-    //       aimY: y,
-    //       color: color
-    //   })
-    //   this.projectiles.push(projectile)
-    //   }
-    // }
-
+    }
   }, {
     key: "drawElements",
     value: function drawElements(context, mousePosition) {
@@ -464,7 +420,8 @@ var Game = /*#__PURE__*/function () {
             // this.drop(ob
             obj.aimY += 15;
           } else if (!this.playing) {
-            obj.spriteSheet.src = "./dist/assets/grey.png";
+            // setInterval(() => {
+            obj.spriteSheet.src = "./dist/assets/grey.png"; // }, 1000);
           }
         }
 
@@ -479,7 +436,8 @@ var Game = /*#__PURE__*/function () {
             // this.drop(obj)
             obj.y += 15;
           } else if (!this.playing) {
-            obj.spriteSheet.src = "./dist/assets/grey.png";
+            // setInterval(() => {
+            obj.spriteSheet.src = "./dist/assets/grey.png"; // }, 1000)
           }
         } // if(this.gameOver() === true){
         //   this.greyOut();
@@ -542,6 +500,8 @@ var GameView = /*#__PURE__*/function () {
     this.checkValidation = this.checkValidation.bind(this);
     this.checkDrops = this.checkDrops.bind(this);
     this.check;
+    this.startUp = this.startUp.bind(this);
+    this.newGame = false;
   }
 
   _createClass(GameView, [{
@@ -636,8 +596,6 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "checkDrops",
     value: function checkDrops() {
-      // let vt = this.game.targets.filter(t => t.y > 0);
-      // let vp = this.game.projectiles.filter((p) => p.aimY > 0);
       if (this.game.playing) {
         var vt = this.game.targets;
         var vp = this.game.projectiles;
@@ -663,16 +621,14 @@ var GameView = /*#__PURE__*/function () {
                 break;
               }
             }
-          } // validTargets[i] instanceof Projectile && marker === 0 ? validTargets[i].drop = true : '';
-
+          }
 
           if (marker === 0) {
             validTargets[i].drop = true;
           }
         }
       }
-    } //still need to add collision on ball ball and ball target
-
+    }
   }, {
     key: "chainReaction",
     value: function chainReaction() {
@@ -731,11 +687,7 @@ var GameView = /*#__PURE__*/function () {
                   }
                 }
               }
-            } // if (this.check === 0) {
-            //   this.game.targets[i].drop = true;
-            //   this.game.targets[i].radius = 0;
-            // }
-
+            }
           } //projectile / target
 
 
@@ -768,7 +720,7 @@ var GameView = /*#__PURE__*/function () {
                   this.checkChain = false;
                 }
               }
-            } // projectile / projectile      
+            } // projectile / projectile
 
 
             for (var _k3 = 0; _k3 < this.game.projectiles.length; _k3++) {
@@ -797,11 +749,7 @@ var GameView = /*#__PURE__*/function () {
                   }
                 }
               }
-            } // if (this.check === 0) {
-            //   this.game.projectiles[i].drop = true;
-            //   this.game.projectiles[i].radius = 0;
-            // }
-
+            }
           }
 
           this.checkChain = false;
@@ -870,15 +818,6 @@ var GameView = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "setup",
-    value: function setup() {
-      this.listenForMove();
-      this.listenForClick();
-      this.game.turret.setColors();
-      this.game.addTargets();
-      this.game.moveTargets();
-    }
-  }, {
     key: "startUp",
     value: function startUp() {
       if (!this.game.playing) {
@@ -890,33 +829,44 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "startGame",
     value: function startGame() {
+      this.newGame = false;
       this.setup();
       this.animate();
     }
   }, {
+    key: "setup",
+    value: function setup() {
+      this.listenForMove();
+      this.listenForClick();
+      this.game.turret.setColors();
+      this.game.addTargets();
+      this.game.moveTargets();
+    }
+  }, {
     key: "resetGame",
     value: function resetGame() {
-      // this.game.playing = true
-      // this.startUp();
-      //     let canvas = document.querySelector("canvas");
+      this.newGame = true;
+      this.game.reloaded = true; // let canvas = document.querySelector("canvas");
       // let context = canvas.getContext("2d");
-      // canvas.width = 320;
-      // canvas.height = 540;
-      this.game = new Game(canvas.width, canvas.height);
-      this.context = context;
-      this.canvas = canvas;
-      this.startUp(); // this.game.playing = true;
-      // this.game.intervals.forEach(interval => clearInterval(interval));
-      // this.game.intervals = []
-      // this.game.projectiles = [];
-      // this.game.targets = [];
-      // this.game.score = 0;
-      //  this.game.addTargets();
-      //  this.game.moveTargets();
+
+      this.game.playing = true; // this.context = context;
+      // this.canvas = canvas
+      // this.game = new Game(320, 540);
+
+      this.game.intervals.forEach(function (interval) {
+        return clearInterval(interval);
+      });
+      this.game.intervals = [];
+      this.game.projectiles = [];
+      this.game.targets = [];
+      this.game.score = 0; // this.startUp();
+
+      this.startGame();
     }
   }, {
     key: "animate",
     value: function animate() {
+      // if (!this.newGame) {
       if (this.game.playing) {
         this.start.innerHTML = "reset";
         this.start.addEventListener("click", this.resetGame);
@@ -935,7 +885,12 @@ var GameView = /*#__PURE__*/function () {
       }
 
       this.game.drawElements(this.context, this.mousePosition);
-      requestAnimationFrame(this.animate.bind(this));
+      requestAnimationFrame(this.animate.bind(this)); // this.animation = window.requestAnimationFrame(this.animate.bind(this));
+      // }
+      // else {
+      //   window.cancelAnimationFrame(this.animation)
+      //   console.log('asdasdasdasd')
+      // }
     }
   }]);
 
