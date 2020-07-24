@@ -11,13 +11,15 @@ class Game {
     this.targets = [];
     this.offsetRow = false;
     this.remove = this.remove.bind(this);
-    this.gameOver = this.gameOver.bind(this)
-    this.playing = false
+    this.gameOver = this.gameOver.bind(this);
+    this.playing = false;
     this.score = 0;
     this.offset = false;
     this.movingObjects = this.movingObjects.bind(this);
     this.intervals = [];
     this.reloaded = true;
+    // this.greyOut = this.greyOut.bind(this);
+    
   }
 
   movingObjects() {
@@ -25,6 +27,7 @@ class Game {
   }
 
   moveTargets() {
+    if (this.playing === true) {
     let moveInterval = setInterval(() => {
       this.targets.forEach((target) => {
         if (target instanceof Target) {
@@ -38,11 +41,13 @@ class Game {
         }
       });
     }, 5000);
-      this.intervals.push(moveInterval);
+    this.intervals.push(moveInterval);
+  }
   }
 
   addTargets() {
-   let addInterval = setInterval(() => {
+    if (this.playing === true) {
+    let addInterval = setInterval(() => {
       if (!this.offsetRow) {
         let last;
         for (let i = 1; i <= 8; i++) {
@@ -72,6 +77,7 @@ class Game {
     }, 5000);
     this.intervals.push(addInterval);
   }
+  }
 
   addProjectiles(projectile) {
     this.projectiles.push(projectile);
@@ -81,15 +87,31 @@ class Game {
   gameOver() {
     this.targets.forEach((target) => {
       if (target.gameOver()) {
-        this.playing = false
+        this.playing = false;
+        this.intervals.forEach(interval => clearInterval(interval));
       }
     });
     this.projectiles.forEach((projectile) => {
       if (projectile.gameOver()) {
+        this.intervals.forEach((interval) => clearInterval(interval));
         this.playing = false;
       }
     });
   }
+
+  // greyOut (context) {
+  //   for (let i = 0; i < this.targets.length - 1; i++) {
+  //     this.targets[i].color = 'grey'
+  //     this.targets[i].draw(context);
+  //     // return true
+  //     // console.log('asdasdasdasd')
+  //   }
+  //   for (let i = 0; i < this.projectiles.length - 1; i++) {
+  //     this.projectiles[i].color = "grey";
+  //     this.projectiles[i].draw(context);
+  //     // return true
+  //   }
+  // }
 
   remove(obj) {
     if (this.playing === true) {
@@ -106,21 +128,37 @@ class Game {
     }
   }
 
-  drop(obj) {
-    if (this.playing === true) {
-      if (obj instanceof Projectile) {
-        this.projectiles = this.projectiles
-          .slice(0, this.projectiles.indexOf(obj))
-          .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
-        this.score += 23;
-      } else if (obj instanceof Target) {
-        this.targets = this.targets
-          .slice(0, this.targets.indexOf(obj))
-          .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
-        this.score += 23;
-      }
-    }
-  }
+  // drop(obj) {
+  //   let x;
+  //   let y;
+  //   let color = obj.color;
+  //   let radius = obj.radius;
+  //   if (this.playing === true) {
+  //     if (obj instanceof Projectile) {
+  //       x = obj.aimX;
+  //       y = obj.aimY;
+  //       this.projectiles = this.projectiles
+  //         .slice(0, this.projectiles.indexOf(obj))
+  //         .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+  //       this.score += 23;
+  //     } else if (obj instanceof Target) {
+  //       x = obj.x;
+  //       y = obj.y;
+  //       this.targets = this.targets
+  //         .slice(0, this.targets.indexOf(obj))
+  //         .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
+  //       this.score += 23;
+  //     }
+  //      let projectile = new Projectile({
+  //       game: this.game,
+  //       slope: [x, 35],
+  //       aimX: x,
+  //       aimY: y,
+  //       color: color
+  //   })
+  //   this.projectiles.push(projectile)
+  //   }
+  // }
 
   drawElements(context, mousePosition) {
     context.clearRect(0, 0, this.width, this.height);
@@ -156,7 +194,7 @@ class Game {
     context.beginPath();
     context.moveTo(110, 0);
     context.lineTo(110, 150);
-    context.setLineDash([5,5]);
+    context.setLineDash([5, 5]);
     context.strokeStyle = "white";
     context.setLineDash([0, 0]);
     context.lineWidth = 4;
@@ -165,7 +203,7 @@ class Game {
     context.beginPath();
     context.moveTo(210, 0);
     context.lineTo(210, 150);
-    context.setLineDash([5,5]);
+    context.setLineDash([5, 5]);
     context.strokeStyle = "white";
     context.setLineDash([0, 0]);
     context.lineWidth = 4;
@@ -174,7 +212,7 @@ class Game {
     context.beginPath();
     context.moveTo(130, 17);
     context.lineTo(190, 17);
-    context.setLineDash([5,5]);
+    context.setLineDash([5, 5]);
     context.strokeStyle = "white";
     context.setLineDash([0, 0]);
     context.lineWidth = 4;
@@ -187,8 +225,7 @@ class Game {
     context.strokeStyle = "white";
     context.stroke();
 
-    this.gameOver();
-
+    
     let score = document.getElementById("score-text");
     if (this.playing === true) {
       score.innerHTML = `score: ${this.score}`;
@@ -197,36 +234,54 @@ class Game {
       score.innerHTML = `Your final score: ${this.score}`;
       score.classList.add("final-score");
     }
+    
+    if (this.playing) {
+      this.gameOver();
+    }
 
-    this.movingObjects().forEach((obj) => {
-      obj.draw(context);
-      if (obj instanceof Turret) {
-        obj.swivelTurret(mousePosition);
-      }
-      if (obj instanceof Projectile) {
-        if (obj.hit) {
-          this.remove(obj);
-        } else if (obj.aimY > 600 || obj.aimY < 0) {
-          this.remove(obj);
-          //trash collection
-        } 
-        else if (obj.drop) {
-          obj.aimY += 15;
+    for (let i = 0; i < this.movingObjects().length; i++) {
+      let obj = this.movingObjects()[i];
+      // this.movingObjects().forEach((obj) => {
+        if (obj instanceof Turret) {
+          obj.swivelTurret(mousePosition);
         }
-      }
-      if (obj instanceof Target) {
-        if (obj.hit) {
-          this.remove(obj);
-        } else if (obj.x > 600 || obj.y < 0) {
-          this.remove(obj);
-          //trash collection
-        } 
-        else if (obj.drop) {
-          obj.y += 15;
+        if (obj instanceof Projectile) {
+          if (obj.hit) {
+            this.remove(obj);
+            i--;
+          } else if (obj.aimY > 600 || obj.aimY < 0) {
+            this.remove(obj);
+            i--;
+            //trash collection
+          } else if (obj.drop) {
+            // this.drop(ob
+            obj.aimY += 15;
+          } else if (!this.playing) {
+            obj.spriteSheet.src = `./dist/assets/grey.png`;
+          }
         }
-      }
-    });
-  }
+        if (obj instanceof Target) {
+          if (obj.hit) {
+            this.remove(obj);
+            i --
+          } else if (obj.x > 600 || obj.y < 0) {
+            this.remove(obj);
+            i --
+            //trash collection
+          } else if (obj.drop) {
+            // this.drop(obj)
+            obj.y += 15;
+          } else if (!this.playing) {
+            obj.spriteSheet.src = `./dist/assets/grey.png`;
+          }
+        }
+        // if(this.gameOver() === true){
+          //   this.greyOut();
+          // }
+          obj.draw(context);
+      };
+      
+    }
 }
 
 module.exports = Game;

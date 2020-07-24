@@ -22,7 +22,7 @@ class Projectile {
   }
 
   gameOver() {
-    if (!this.drop && this.aimY + this.radius >= 535 && this.collided) {
+    if (!this.drop && this.aimY + this.radius >= 545 && this.collided) {
       return true;
     } else {
       return false;
@@ -30,18 +30,18 @@ class Projectile {
   }
 
   targetMove() {
-    this.aimY += 35;
+      this.aimY += 35;
   }
 
   move() {
-    if (this.aimY - this.radius <= 0) {
-      this.game.reloaded = true;
-    }
-    if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
-      this.dx = -this.dx;
-    }
-    this.aimX += this.dx;
-    this.aimY += this.dy;
+      if (this.aimY - this.radius <= 0) {
+        this.game.reloaded = true;
+      }
+      if (this.aimX + this.radius > 320 || this.aimX - this.radius < 0) {
+        this.dx = -this.dx;
+      }
+      this.aimX += this.dx;
+      this.aimY += this.dy;
   }
 
   frameSet() {

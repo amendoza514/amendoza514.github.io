@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const game = new Game(canvas.width, canvas.height)
     new GameView(game, context, canvas, start).startUp();
     //for testing use .startGame()
-    //for produciton use .startUp()
+    //for production use .startUp()
 
     //halfcourt semi
     context.beginPath();

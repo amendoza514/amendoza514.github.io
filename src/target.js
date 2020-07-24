@@ -35,7 +35,7 @@ class Target {
   }
 
   gameOver() {
-      if ((!this.drop) && (this.y + this.radius >= 535)) {
+      if ((!this.drop) && (this.y + this.radius >= 545)) {
         return true;
       } else {
         return false;

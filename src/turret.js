@@ -88,16 +88,6 @@ class Turret {
     context.lineWidth = 1;
     context.stroke();
 
-    // //turret outline
-    // context.beginPath();
-    // context.moveTo(160, 540);
-    // context.lineTo(this.aimX, this.aimY);
-    // // context.strokeStyle = this.shots[0];
-    // context.setLineDash([0, 0]);
-    // context.strokeStyle = "black"
-    // context.lineWidth = 47;
-    // context.stroke();
-
     //turret cannon
     context.beginPath();
     context.moveTo(160, 540);
@@ -134,8 +124,6 @@ class Turret {
       context.strokeStyle = "black";
       context.lineWidth = 2;
       context.stroke();
-
-  
 
       context.beginPath();
       context.arc(174, 536, 13.5, Math.PI, Math.PI * 1.5, false);
