@@ -4,7 +4,7 @@ const Projectile = require("./projectile");
 const Game = require("./game");
 
 class GameView {
-  constructor(game, context, canvas, start) {
+  constructor(game, context, canvas, start, newGame) {
     this.game = game;
     this.start = start;
     this.context = context;
@@ -23,7 +23,8 @@ class GameView {
     this.checkDrops = this.checkDrops.bind(this);
     this.check;
     this.startUp = this.startUp.bind(this);
-    this.newGame = false;
+    this.reset = false
+    this.newGame = newGame;
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -349,14 +350,25 @@ class GameView {
 
   startUp() {
     if (!this.game.playing) {
+      if (this.start.innerHTML = 'start') 
       this.start.innerHTML = `start`;
-      this.start.addEventListener("click", this.startGame);
+      this.start.addEventListener("click", () => {
+        if (this.start.innerHTML === 'start') {
+          this.startGame();
+          this.start.innerHTML = 'reset'
+        } else {
+          this.resetGame();
+          this.start.innerHTML = 'start'
+        }
+      });
       this.game.playing = true;
+      // this.start.innerHTML = `reset`;
+      // this.start.addEventListener("click", this.resetGame);
     }
   }
 
   startGame() {
-    this.newGame = false;
+    // this.newGame = false;
     this.setup();
     this.animate();
   }
@@ -370,28 +382,25 @@ class GameView {
   }
 
   resetGame() {
-    this.newGame = true;
-    this.game.reloaded = true;
-    // let canvas = document.querySelector("canvas");
-    // let context = canvas.getContext("2d");
-    this.game.playing = true;
-    // this.context = context;
-    // this.canvas = canvas
-    // this.game = new Game(320, 540);
-    this.game.intervals.forEach((interval) => clearInterval(interval));
-    this.game.intervals = [];
-    this.game.projectiles = [];
-    this.game.targets = [];
-    this.game.score = 0;
-    // this.startUp();
-    this.startGame();
+    window.location.href = "https://amendoza514.github.io/";
+    //  this.reset = true
+    //  cancelAnimationFrame(this.animation);
+    //  this.animation = null;
+
+    // this.game.intervals.forEach((interval) => clearInterval(interval));
+    // this.game.intervals = [];
+    // this.game.projectiles = [];
+    // this.game.targets = [];
+    // this.game.score = 0;
+  
+    // this.startGame();
+    // window.cancelAnimationFrame(this.animation);
+    // this.newGame();
   }
 
   animate() {
-    // if (!this.newGame) {
+    // if (!this.reset) {
     if (this.game.playing) {
-      this.start.innerHTML = `reset`;
-      this.start.addEventListener("click", this.resetGame);
       if (this.game.projectiles.length > 0) {
         this.checkCollision();
         this.checkValidation();
@@ -404,12 +413,11 @@ class GameView {
     }
 
     this.game.drawElements(this.context, this.mousePosition);
-    requestAnimationFrame(this.animate.bind(this));
-    // this.animation = window.requestAnimationFrame(this.animate.bind(this));
+    // requestAnimationFrame(this.animate.bind(this));
+    this.animation = requestAnimationFrame(this.animate.bind(this));
     // }
     // else {
-    //   window.cancelAnimationFrame(this.animation)
-    //   console.log('asdasdasdasd')
+    //   cancelAnimationFrame(this.animation)
     // }
   }
 }

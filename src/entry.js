@@ -10,10 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.width = 320;
     canvas.height = 540;
 
-    const game = new Game(canvas.width, canvas.height)
-    new GameView(game, context, canvas, start).startUp();
-    //for testing use .startGame()
-    //for production use .startUp()
+    go();
 
     //halfcourt semi
     context.beginPath();
@@ -76,3 +73,22 @@ document.addEventListener("DOMContentLoaded", function () {
     context.strokeStyle = "white";
     context.stroke();
 });
+
+function newGame() {
+    go()
+}
+
+function go(){
+        let canvas = document.querySelector("canvas");
+        let start = document.getElementById("start");
+
+        let context = canvas.getContext("2d");
+        canvas.width = 320;
+        canvas.height = 540;
+  const game = new Game(canvas.width, canvas.height)
+  const gameview = new GameView(game, context, canvas, start, newGame)
+  gameview.startUp();
+    //for testing use .startGame()
+    //for production use .startUp()
+}
+
