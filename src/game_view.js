@@ -4,7 +4,7 @@ const Projectile = require("./projectile");
 const Game = require("./game");
 
 class GameView {
-  constructor(game, context, canvas, start, newGame) {
+  constructor(game, context, canvas, start, newGame, pause) {
     this.game = game;
     this.start = start;
     this.context = context;
@@ -23,8 +23,10 @@ class GameView {
     this.checkDrops = this.checkDrops.bind(this);
     this.check;
     this.startUp = this.startUp.bind(this);
-    this.reset = false
+    this.reset = false;
     this.newGame = newGame;
+    this.pause = pause;
+    this.paused  = false;
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -355,7 +357,7 @@ class GameView {
       this.start.addEventListener("click", () => {
         if (this.start.innerHTML === 'start') {
           this.startGame();
-          this.start.innerHTML = 'reset'
+          this.start.innerHTML = 'main menu'
         } else {
           this.resetGame();
           this.start.innerHTML = 'start'
@@ -369,6 +371,7 @@ class GameView {
 
   startGame() {
     // this.newGame = false;
+    // this.pause.style.display = "flex"
     this.setup();
     this.animate();
   }
@@ -379,10 +382,22 @@ class GameView {
     this.game.turret.setColors();
     this.game.addTargets();
     this.game.moveTargets();
+
+    // this.pause.addEventListener("click", () => {
+    //      if (this.paused === false) {
+    //        this.paused = true;
+    //        this.pause.innerHTML = 'play'
+    //      } else {
+    //        this.paused = false;
+    //        this.pause.innerHTML = "pause";
+    //        this.animate();
+    //      }
+    // });
   }
 
   resetGame() {
-    window.location.href = "https://amendoza514.github.io/";
+    // window.location.href = "https://amendoza514.github.io/";
+    window.location.href = "http://127.0.0.1:5500/index.html";
     //  this.reset = true
     //  cancelAnimationFrame(this.animation);
     //  this.animation = null;
@@ -400,25 +415,27 @@ class GameView {
 
   animate() {
     // if (!this.reset) {
-    if (this.game.playing) {
-      if (this.game.projectiles.length > 0) {
-        this.checkCollision();
-        this.checkValidation();
-        this.chainReaction();
-        if (this.checkChain === true) {
+    if (!this.paused) {
+      if (this.game.playing) {
+        if (this.game.projectiles.length > 0) {
+          this.checkCollision();
+          this.checkValidation();
           this.chainReaction();
+          if (this.checkChain === true) {
+            this.chainReaction();
+          }
         }
+        this.checkDrops();
       }
-      this.checkDrops();
-    }
 
-    this.game.drawElements(this.context, this.mousePosition);
-    // requestAnimationFrame(this.animate.bind(this));
-    this.animation = requestAnimationFrame(this.animate.bind(this));
-    // }
-    // else {
-    //   cancelAnimationFrame(this.animation)
-    // }
+      this.game.drawElements(this.context, this.mousePosition);
+      // requestAnimationFrame(this.animate.bind(this));
+      this.animation = requestAnimationFrame(this.animate.bind(this));
+      // }
+      // else {
+      //   cancelAnimationFrame(this.animation)
+      // }
+    }
   }
 }
     

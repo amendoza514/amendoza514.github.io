@@ -9,10 +9,11 @@
     
         * {
             background-color: darkslategray;
+            font-family: 'Press Start 2P', cursive;
         }
         body {
             display: flex;
-            /* justify-content: center; */
+            justify-content: center;
         }
 
         span {
@@ -24,46 +25,80 @@
             border: 4px solid white;
             background-color: gray;
             margin-left: 50px;
-            cursor: none;
+            /* cursor: none; */
         }
         #score {
-            margin: 10px;
+            margin-right: 10px;
+            margin-left: 10px;
             margin-top: 50px;
             font-size: 30px;
-            /* width: 380px; */
+            width: 400px;
             height: -webkit-fill-available;
-            display: table;
             padding: 10px;
             padding-bottom: 15px;
             padding-right: 15px;
             padding-left: 15px;
             padding-top: 15px;
-            font-family: 'Press Start 2P', cursive;
-            /* font-family: 'digital-7', sans-serif; */
             text-transform: uppercase;
             background-color: black;
             color: red;
             border: 4px solid white;
         }
-        #start {
+
+         #welcome {
+            margin-right: 10px;
+            margin-left: 10px;            
+            font-size: 10.5px;
+            height: -webkit-fill-available;
+            width: 400px;
+            border: 4px solid white;
+            padding: 15px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            color: white;
+            line-height: 1.8em;
+            background-color: black;
+            text-transform: uppercase;
+        }
+
+        .emp-text {
+            color: #2196f3;
+            background-color: black;
+            display: inline;
+        }
+
+          #pause {
             margin: 10px;
-            font-size: 30px;
+            font-size: 16px;
             height: -webkit-fill-available;
             width: -webkit-fill-available;
             border: 4px solid white;
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            padding-bottom: 15px;
-            padding-right: 15px;
-            padding-left: 15px;
-            font-family: sans-serif;
+            padding: 15px;
             color: white;
-            background-color: gray;
+            background-color: black;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: none;
+            justify-content: center;
+        }
+        
+        #start {
+            margin: 10px;
+            font-size: 16px;
+            height: -webkit-fill-available;
+            width: -webkit-fill-available;
+            border: 4px solid white;
+            padding: 15px;
+            color: white;
+            background-color: black;
             text-transform: uppercase;
             cursor: pointer;
         }
-        
+
+        #start:hover, #pause:hover {
+            color: red;
+        }
+
         .options {
             display: flex;
         }
@@ -72,8 +107,6 @@
             display: flex;
             justify-content: space-around;
         }
-        
-       
     
         body {
             margin: 0px;
@@ -94,8 +127,6 @@
     </style>
 </head>
 <body>
-    <div id='welcome'>
-        <div></div>
     </div>
     <canvas id='canvas'></canvas>
     
@@ -103,8 +134,33 @@
         <div id='score'>
             <span id='score-text' class="final-score">Bubble Ball!</span>
         </div>
-        <button id='start'>start!</button>
         <div class='main-menu'>
+            <!-- <button id='pause'>pause</button> -->
+            <button id='start'>start!</button>
+        </div>
+        <div id='welcome'>
+            <div class='emp-text'>The year is 2020</div>.
+            A global pandemic has forced  
+            NBA commissioner Adam Silver to construct 
+            the worlds largest completely isolated sports complex, known as 
+            <div class='emp-text'>"The Orlando Bubble"</div>.
+            <br/>
+            <br/>
+            Now, the NBA's mightiest hero's 
+            must juggle rigourous safety regualtions while balling with the best
+            of them. How long can they keep the season alive?
+            <br/>
+            <br />
+            <div class='emp-text'>Instructions:</div> 
+            <br />
+            Use your mouse aim, and click to fire.
+            <br /> 
+            <br />
+            NBA rules restrict any meat substitues on court, so no shot spamming.
+            <br />
+            <br />
+            To encourage social distancing, freethrows are rewarded by
+            isolating targets. No hack-a-shaq here!
         </div>
         <div id='final-score'> </div>
     </div>

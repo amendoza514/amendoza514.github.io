@@ -89,12 +89,14 @@ class Game {
       if (target.gameOver()) {
         this.playing = false;
         this.intervals.forEach(interval => clearInterval(interval));
+        this.projectiles =  this.projectiles.slice(0, this.projectiles.length - 1);
       }
     });
     this.projectiles.forEach((projectile) => {
       if (projectile.gameOver()) {
         this.intervals.forEach((interval) => clearInterval(interval));
         this.playing = false;
+        this.projectiles =  this.projectiles.slice(0, this.projectiles.length - 1);
       }
     });
   }
@@ -181,9 +183,11 @@ class Game {
 
     
     let score = document.getElementById("score-text");
+    let welcome = document.getElementById("welcome");
     if (this.playing === true) {
       score.innerHTML = `score: ${this.score}`;
       score.classList.remove("final-score");
+      welcome.style.display = "none";
     } else {
       score.innerHTML = `Your final score: ${this.score}`;
       score.classList.add("final-score");
@@ -195,7 +199,6 @@ class Game {
 
     for (let i = 0; i < this.movingObjects().length; i++) {
       let obj = this.movingObjects()[i];
-      // this.movingObjects().forEach((obj) => {
         if (obj instanceof Turret) {
           obj.swivelTurret(mousePosition);
         }
@@ -206,9 +209,7 @@ class Game {
           } else if (obj.aimY > 600 || obj.aimY < 0) {
             this.remove(obj);
             i--;
-            //trash collection
           } else if (obj.drop) {
-            // this.drop(ob
             obj.aimY += 15;
           } else if (!this.playing) {
             // setInterval(() => {
@@ -219,13 +220,11 @@ class Game {
         if (obj instanceof Target) {
           if (obj.hit) {
             this.remove(obj);
-            i --
+            i --;
           } else if (obj.x > 600 || obj.y < 0) {
-            this.remove(obj);
+            this.rem;ove(obj);
             i --
-            //trash collection
           } else if (obj.drop) {
-            // this.drop(obj)
             obj.y += 15;
           } else if (!this.playing) {
             // setInterval(() => {
