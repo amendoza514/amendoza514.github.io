@@ -222,7 +222,7 @@ class Game {
             this.remove(obj);
             i --;
           } else if (obj.x > 600 || obj.y < 0) {
-            this.rem;ove(obj);
+            this.remove(obj);
             i --
           } else if (obj.drop) {
             obj.y += 15;
