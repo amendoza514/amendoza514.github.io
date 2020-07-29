@@ -208,9 +208,7 @@ class Game {
         } else if (obj.drop) {
           obj.aimY += 15;
         } else if (!this.playing) {
-          // setInterval(() => {
             obj.spriteSheet.src = `./dist/assets/grey.png`;
-            // }, 1000);
           }
         }
         if (obj instanceof Target) {
@@ -223,9 +221,7 @@ class Game {
           } else if (obj.drop) {
             obj.y += 15;
           } else if (!this.playing) {
-            // setInterval(() => {
               obj.spriteSheet.src = `./dist/assets/grey.png`;
-              // }, 1000)
             }
           }
           // if(this.gameOver() === true){

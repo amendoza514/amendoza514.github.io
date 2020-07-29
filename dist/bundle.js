@@ -435,8 +435,7 @@ var Game = /*#__PURE__*/function () {
           } else if (obj.drop) {
             obj.aimY += 15;
           } else if (!this.playing) {
-            // setInterval(() => {
-            obj.spriteSheet.src = "./dist/assets/grey.png"; // }, 1000);
+            obj.spriteSheet.src = "./dist/assets/grey.png";
           }
         }
 
@@ -450,8 +449,7 @@ var Game = /*#__PURE__*/function () {
           } else if (obj.drop) {
             obj.y += 15;
           } else if (!this.playing) {
-            // setInterval(() => {
-            obj.spriteSheet.src = "./dist/assets/grey.png"; // }, 1000)
+            obj.spriteSheet.src = "./dist/assets/grey.png";
           }
         } // if(this.gameOver() === true){
         //   this.greyOut();
@@ -508,7 +506,8 @@ var GameView = /*#__PURE__*/function () {
     this.lebron = lebron;
     this.steph = steph;
     this.mousePosition = [0, 0];
-    this.handlePlayer = this.handlePlayer.bind(this);
+    this.handlePlayer1 = this.handlePlayer1.bind(this);
+    this.handlePlayer2 = this.handlePlayer2.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -524,6 +523,8 @@ var GameView = /*#__PURE__*/function () {
     this.startUp = this.startUp.bind(this);
     this.reset = false;
     this.newGame = newGame;
+    this.player1Selected = false;
+    this.player2Selected = false;
   }
 
   _createClass(GameView, [{
@@ -536,65 +537,60 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "checkCollision",
     value: function checkCollision() {
-      if (this.game.playing) {
-        var currentShot = this.game.projectiles[this.game.projectiles.length - 1];
+      var currentShot = this.game.projectiles[this.game.projectiles.length - 1]; // if (this.game.projectiles.length > 0) {
 
-        if (this.game.projectiles.length > 0) {
-          for (var k = 0; k < this.game.projectiles.length - 1; k++) {
-            if (this.game.projectiles[k].drop === true) {
-              continue;
-            }
+      for (var k = 0; k < this.game.projectiles.length - 1; k++) {
+        if (this.game.projectiles[k].drop === true) {
+          continue;
+        }
 
-            var pX = currentShot.aimX;
-            var pY = currentShot.aimY;
-            var pRadius = currentShot.radius;
-            var tX = this.game.projectiles[k].aimX;
-            var tY = this.game.projectiles[k].aimY;
-            var tRadius = currentShot.radius;
+        var pX = currentShot.aimX;
+        var pY = currentShot.aimY;
+        var pRadius = currentShot.radius;
+        var tX = this.game.projectiles[k].aimX;
+        var tY = this.game.projectiles[k].aimY;
+        var tRadius = currentShot.radius;
 
-            if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
-              currentShot.dx = 0;
-              currentShot.dy = 0;
-              currentShot.radius = 20;
-              currentShot.aimX = this.approxX(pX, tX);
-              currentShot.aimY = this.approxY(pY, tY);
-              currentShot.collided = true;
-              this.game.reloaded = true;
+        if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+          currentShot.dx = 0;
+          currentShot.dy = 0;
+          currentShot.radius = 20;
+          currentShot.aimX = this.approxX(pX, tX);
+          currentShot.aimY = this.approxY(pY, tY);
+          currentShot.collided = true;
+          this.game.reloaded = true;
 
-              if (currentShot.color === this.game.projectiles[k].color) {
-                currentShot.hit = true;
-                this.game.projectiles[k].hit = true;
-                this.checkChain = true;
-                return;
-              }
-            }
-          }
-
-          for (var j = 0; j < this.game.targets.length; j++) {
-            if (this.game.targets[j].drop === true) {
-              continue;
-            }
-
-            if (this.getDistance(currentShot.aimX, currentShot.aimY, this.game.targets[j].x, this.game.targets[j].y) < currentShot.radius + this.game.targets[j].radius) {
-              //collision response
-              // projectile instructions
-              currentShot.dx = 0;
-              currentShot.dy = 0;
-              currentShot.radius = 20;
-              this.game.reloaded = true;
-              currentShot.collided = true;
-              currentShot.aimX = this.approxX(currentShot.aimX, this.game.targets[j].x);
-              currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
-
-              if (currentShot.color === this.game.targets[j].color) {
-                currentShot.hit = true;
-                this.game.targets[j].hit = true;
-                this.checkChain = true;
-                return;
-              }
-            }
+          if (currentShot.color === this.game.projectiles[k].color) {
+            currentShot.hit = true;
+            this.game.projectiles[k].hit = true;
+            this.checkChain = true; // return;
           }
         }
+      }
+
+      for (var j = 0; j < this.game.targets.length; j++) {
+        if (this.game.targets[j].drop === true) {
+          continue;
+        }
+
+        if (this.getDistance(currentShot.aimX, currentShot.aimY, this.game.targets[j].x, this.game.targets[j].y) < currentShot.radius + this.game.targets[j].radius) {
+          //collision response
+          // projectile instructions
+          currentShot.dx = 0;
+          currentShot.dy = 0;
+          currentShot.radius = 20;
+          this.game.reloaded = true;
+          currentShot.collided = true;
+          currentShot.aimX = this.approxX(currentShot.aimX, this.game.targets[j].x);
+          currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
+
+          if (currentShot.color === this.game.targets[j].color) {
+            currentShot.hit = true;
+            this.game.targets[j].hit = true;
+            this.checkChain = true; // return;
+          }
+        } // }
+
       }
     }
   }, {
@@ -654,129 +650,129 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "chainReaction",
     value: function chainReaction() {
-      if (this.game.playing) {
-        while (this.checkChain === true) {
-          //target / target
-          for (var i = 0; i < this.game.targets.length; i++) {
-            // this.check = 0;
-            if (this.game.targets[i].drop === true) {
+      // if (this.game.playing) {
+      while (this.checkChain === true) {
+        //target / target
+        for (var i = 0; i < this.game.targets.length; i++) {
+          // this.check = 0;
+          if (this.game.targets[i].drop === true) {
+            continue;
+          }
+
+          for (var k = 0; k < this.game.targets.length; k++) {
+            if (this.game.targets[k].drop === true) {
               continue;
             }
 
-            for (var k = 0; k < this.game.targets.length; k++) {
-              if (this.game.targets[k].drop === true) {
-                continue;
-              }
+            if (i !== k) {
+              var pX = this.game.targets[i].x;
+              var pY = this.game.targets[i].y;
+              var pRadius = this.game.targets[i].radius;
+              var tX = this.game.targets[k].x;
+              var tY = this.game.targets[k].y;
+              var tRadius = this.game.targets[k].radius;
 
-              if (i !== k) {
-                var pX = this.game.targets[i].x;
-                var pY = this.game.targets[i].y;
-                var pRadius = this.game.targets[i].radius;
-                var tX = this.game.targets[k].x;
-                var tY = this.game.targets[k].y;
-                var tRadius = this.game.targets[k].radius;
-
-                if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-                  // this.check += 1;
-                  if (this.game.targets[i].color === this.game.targets[k].color && (this.game.targets[i].hit || this.game.targets[k].hit)) {
-                    this.game.targets[i].hit = true;
-                    this.game.targets[k].hit = true;
-                    this.checkChain = false;
-                  }
-                }
-              }
-            }
-
-            for (var _k = 0; _k < this.game.projectiles.length; _k++) {
-              if (this.game.projectiles[_k].drop === true) {
-                continue;
-              }
-
-              if (i !== _k) {
-                var _pX = this.game.targets[i].x;
-                var _pY = this.game.targets[i].y;
-                var _pRadius = this.game.targets[i].radius;
-                var _tX = this.game.projectiles[_k].aimX;
-                var _tY = this.game.projectiles[_k].aimY;
-                var _tRadius = this.game.projectiles[_k].radius;
-
-                if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
-                  // this.check += 1;
-                  if (this.game.targets[i].color === this.game.projectiles[_k].color && (this.game.targets[i].hit || this.game.projectiles[_k].hit)) {
-                    this.game.targets[i].hit = true;
-                    this.game.projectiles[_k].hit = true;
-                    this.checkChain = false;
-                  }
-                }
-              }
-            }
-          } //projectile / target
-
-
-          for (var _i = 0; _i < this.game.projectiles.length; _i++) {
-            if (this.game.projectiles[_i].drop === true) {
-              continue;
-            } // this.check = 0
-
-
-            for (var _k2 = 0; _k2 < this.game.targets.length; _k2++) {
-              if (this.game.targets[_k2].drop === true) {
-                continue;
-              }
-
-              var _pX2 = this.game.projectiles[_i].aimX;
-              var _pY2 = this.game.projectiles[_i].aimY;
-              var _pRadius2 = this.game.projectiles[_i].radius;
-              var _tX2 = this.game.targets[_k2].x;
-              var _tY2 = this.game.targets[_k2].y;
-              var _tRadius2 = this.game.targets[_k2].radius;
-
-              if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
-                // this.check += 1
-                this.game.reloaded = true;
-                this.game.projectiles[_i].collided = true;
-
-                if (this.game.projectiles[_i].color === this.game.targets[_k2].color) {
-                  this.game.projectiles[_i].hit = true;
-                  this.game.targets[_k2].hit = true;
+              if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+                // this.check += 1;
+                if (this.game.targets[i].color === this.game.targets[k].color && (this.game.targets[i].hit || this.game.targets[k].hit)) {
+                  this.game.targets[i].hit = true;
+                  this.game.targets[k].hit = true;
                   this.checkChain = false;
-                }
-              }
-            } // projectile / projectile
-
-
-            for (var _k3 = 0; _k3 < this.game.projectiles.length; _k3++) {
-              if (this.game.projectiles[_k3].drop === true) {
-                continue;
-              }
-
-              if (_i !== _k3) {
-                var _pX3 = this.game.projectiles[_i].aimX;
-                var _pY3 = this.game.projectiles[_i].aimY;
-                var _pRadius3 = this.game.projectiles[_i].radius;
-                var _tX3 = this.game.projectiles[_k3].aimX;
-                var _tY3 = this.game.projectiles[_k3].aimY;
-                var _tRadius3 = this.game.projectiles[_k3].radius;
-
-                if (this.getDistance(_pX3, _pY3, _tX3, _tY3) - 5 < _pRadius3 + _tRadius3) {
-                  this.check += 1;
-                  this.game.reloaded = true;
-
-                  if (this.game.projectiles[_i].color === this.game.projectiles[_k3].color && (this.game.projectiles[_i].hit || this.game.projectiles[_k3].hit)) {
-                    this.game.projectiles[_i].hit = true;
-                    this.game.projectiles[_k3].hit = true;
-                    this.game.projectiles[_i].collided = true;
-                    this.game.projectiles[_k3].collided = true;
-                    this.checkChain = false;
-                  }
                 }
               }
             }
           }
 
-          this.checkChain = false;
+          for (var _k = 0; _k < this.game.projectiles.length; _k++) {
+            if (this.game.projectiles[_k].drop === true) {
+              continue;
+            }
+
+            if (i !== _k) {
+              var _pX = this.game.targets[i].x;
+              var _pY = this.game.targets[i].y;
+              var _pRadius = this.game.targets[i].radius;
+              var _tX = this.game.projectiles[_k].aimX;
+              var _tY = this.game.projectiles[_k].aimY;
+              var _tRadius = this.game.projectiles[_k].radius;
+
+              if (this.getDistance(_pX, _pY, _tX, _tY) - 5 < _pRadius + _tRadius) {
+                // this.check += 1;
+                if (this.game.targets[i].color === this.game.projectiles[_k].color && (this.game.targets[i].hit || this.game.projectiles[_k].hit)) {
+                  this.game.targets[i].hit = true;
+                  this.game.projectiles[_k].hit = true;
+                  this.checkChain = false;
+                }
+              }
+            }
+          }
+        } //projectile / target
+
+
+        for (var _i = 0; _i < this.game.projectiles.length; _i++) {
+          if (this.game.projectiles[_i].drop === true) {
+            continue;
+          } // this.check = 0
+
+
+          for (var _k2 = 0; _k2 < this.game.targets.length; _k2++) {
+            if (this.game.targets[_k2].drop === true) {
+              continue;
+            }
+
+            var _pX2 = this.game.projectiles[_i].aimX;
+            var _pY2 = this.game.projectiles[_i].aimY;
+            var _pRadius2 = this.game.projectiles[_i].radius;
+            var _tX2 = this.game.targets[_k2].x;
+            var _tY2 = this.game.targets[_k2].y;
+            var _tRadius2 = this.game.targets[_k2].radius;
+
+            if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
+              // this.check += 1
+              this.game.reloaded = true;
+              this.game.projectiles[_i].collided = true;
+
+              if (this.game.projectiles[_i].color === this.game.targets[_k2].color) {
+                this.game.projectiles[_i].hit = true;
+                this.game.targets[_k2].hit = true;
+                this.checkChain = false;
+              }
+            }
+          } // projectile / projectile
+
+
+          for (var _k3 = 0; _k3 < this.game.projectiles.length; _k3++) {
+            if (this.game.projectiles[_k3].drop === true) {
+              continue;
+            }
+
+            if (_i !== _k3) {
+              var _pX3 = this.game.projectiles[_i].aimX;
+              var _pY3 = this.game.projectiles[_i].aimY;
+              var _pRadius3 = this.game.projectiles[_i].radius;
+              var _tX3 = this.game.projectiles[_k3].aimX;
+              var _tY3 = this.game.projectiles[_k3].aimY;
+              var _tRadius3 = this.game.projectiles[_k3].radius;
+
+              if (this.getDistance(_pX3, _pY3, _tX3, _tY3) - 5 < _pRadius3 + _tRadius3) {
+                this.check += 1;
+                this.game.reloaded = true;
+
+                if (this.game.projectiles[_i].color === this.game.projectiles[_k3].color && (this.game.projectiles[_i].hit || this.game.projectiles[_k3].hit)) {
+                  this.game.projectiles[_i].hit = true;
+                  this.game.projectiles[_k3].hit = true;
+                  this.game.projectiles[_i].collided = true;
+                  this.game.projectiles[_k3].collided = true;
+                  this.checkChain = false;
+                }
+              }
+            }
+          }
         }
-      }
+
+        this.checkChain = false;
+      } // }
+
     }
   }, {
     key: "checkValidation",
@@ -840,9 +836,20 @@ var GameView = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "handlePlayer",
-    value: function handlePlayer() {
-      console.log('ok');
+    key: "handlePlayer1",
+    value: function handlePlayer1() {
+      this.lebron.innerHTML = "* Lebron * ";
+      this.steph.innerHTML = 'Steph';
+      this.start.innerHTML = 'start';
+      this.player1Selected = true;
+    }
+  }, {
+    key: "handlePlayer2",
+    value: function handlePlayer2() {
+      this.steph.innerHTML = "* Steph *";
+      this.lebron.innerHTML = "Lebron";
+      this.start.innerHTML = "start";
+      this.player2Selected = true;
     }
   }, {
     key: "startUp",
@@ -850,18 +857,27 @@ var GameView = /*#__PURE__*/function () {
       var _this = this;
 
       if (!this.game.playing) {
-        this.lebron.addEventListener("click", this.handlePlayer);
-        this.steph.addEventListener("click", this.handlePlayer);
-        if (this.start.innerHTML = 'start') this.start.innerHTML = "start";
+        this.lebron.addEventListener("click", this.handlePlayer1);
+        this.steph.addEventListener("click", this.handlePlayer2);
+        if (this.start.innerHTML = "start") this.start.innerHTML = "start";
         this.start.addEventListener("click", function () {
-          if (_this.start.innerHTML === 'start') {
+          if (_this.start.innerHTML === "start" && _this.player1Selected === false && _this.player2Selected === false) {
+            _this.start.innerHTML = "CHOOSE A PLAYER";
+            return;
+          }
+
+          if (_this.start.innerHTML === "CHOOSE A PLAYER" && (_this.player1Selected === false || _this.player2Selected === false)) {
+            return;
+          }
+
+          if ((_this.start.innerHTML === "start" || _this.start.innerHTML === "CHOOSE A PLAYER") && (_this.player1Selected === true || _this.player2Selected === true)) {
             _this.startGame();
 
-            _this.start.innerHTML = 'main menu';
+            _this.start.innerHTML = "main menu";
           } else {
             _this.resetGame();
 
-            _this.start.innerHTML = 'start';
+            _this.start.innerHTML = "start";
           }
         });
         this.game.playing = true;
@@ -903,24 +919,22 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "animate",
     value: function animate() {
-      if (!this.paused) {
-        if (this.game.playing) {
-          if (this.game.projectiles.length > 0) {
-            this.checkCollision();
-            this.checkValidation();
+      if (this.game.playing) {
+        if (this.game.projectiles.length > 0) {
+          this.checkCollision();
+          this.checkValidation();
+          this.chainReaction();
+
+          if (this.checkChain === true) {
             this.chainReaction();
-
-            if (this.checkChain === true) {
-              this.chainReaction();
-            }
           }
-
-          this.checkDrops();
         }
 
-        this.game.drawElements(this.context, this.mousePosition);
-        this.animation = requestAnimationFrame(this.animate.bind(this));
+        this.checkDrops();
       }
+
+      this.game.drawElements(this.context, this.mousePosition);
+      this.animation = requestAnimationFrame(this.animate.bind(this));
     }
   }]);
 

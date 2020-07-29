@@ -12,7 +12,8 @@ class GameView {
     this.lebron = lebron;
     this.steph = steph;
     this.mousePosition = [0, 0];
-    this.handlePlayer = this.handlePlayer.bind(this);
+    this.handlePlayer1 = this.handlePlayer1.bind(this);
+    this.handlePlayer2 = this.handlePlayer2.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -28,6 +29,8 @@ class GameView {
     this.startUp = this.startUp.bind(this);
     this.reset = false;
     this.newGame = newGame;
+    this.player1Selected = false;
+    this.player2Selected = false;
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -37,75 +40,73 @@ class GameView {
   }
 
   checkCollision() {
-    if (this.game.playing) {
-      let currentShot = this.game.projectiles[this.game.projectiles.length - 1];
-      if (this.game.projectiles.length > 0) {
-        for (let k = 0; k < this.game.projectiles.length - 1; k++) {
-          if (this.game.projectiles[k].drop === true) {
-            continue;
-          }
-          let pX = currentShot.aimX;
-          let pY = currentShot.aimY;
-          let pRadius = currentShot.radius;
-          let tX = this.game.projectiles[k].aimX;
-          let tY = this.game.projectiles[k].aimY;
-          let tRadius = currentShot.radius;
+    let currentShot = this.game.projectiles[this.game.projectiles.length - 1];
+    // if (this.game.projectiles.length > 0) {
+    for (let k = 0; k < this.game.projectiles.length - 1; k++) {
+      if (this.game.projectiles[k].drop === true) {
+        continue;
+      }
+      let pX = currentShot.aimX;
+      let pY = currentShot.aimY;
+      let pRadius = currentShot.radius;
+      let tX = this.game.projectiles[k].aimX;
+      let tY = this.game.projectiles[k].aimY;
+      let tRadius = currentShot.radius;
 
-          if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
-            currentShot.dx = 0;
-            currentShot.dy = 0;
-            currentShot.radius = 20;
-            currentShot.aimX = this.approxX(pX, tX);
-            currentShot.aimY = this.approxY(pY, tY);
-            currentShot.collided = true;
-            this.game.reloaded = true;
+      if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+        currentShot.dx = 0;
+        currentShot.dy = 0;
+        currentShot.radius = 20;
+        currentShot.aimX = this.approxX(pX, tX);
+        currentShot.aimY = this.approxY(pY, tY);
+        currentShot.collided = true;
+        this.game.reloaded = true;
 
-            if (currentShot.color === this.game.projectiles[k].color) {
-              currentShot.hit = true;
-              this.game.projectiles[k].hit = true;
-              this.checkChain = true;
-              return;
-            }
-          }
-        }
-        for (let j = 0; j < this.game.targets.length; j++) {
-          if (this.game.targets[j].drop === true) {
-            continue;
-          }
-          if (
-            this.getDistance(
-              currentShot.aimX,
-              currentShot.aimY,
-              this.game.targets[j].x,
-              this.game.targets[j].y
-            ) <
-            currentShot.radius + this.game.targets[j].radius
-          ) {
-            //collision response
-            // projectile instructions
-            currentShot.dx = 0;
-            currentShot.dy = 0;
-            currentShot.radius = 20;
-            this.game.reloaded = true;
-            currentShot.collided = true;
-            currentShot.aimX = this.approxX(
-              currentShot.aimX,
-              this.game.targets[j].x
-            );
-            currentShot.aimY = this.approxY(
-              currentShot.aimY,
-              this.game.targets[j].y
-            );
-
-            if (currentShot.color === this.game.targets[j].color) {
-              currentShot.hit = true;
-              this.game.targets[j].hit = true;
-              this.checkChain = true;
-              return;
-            }
-          }
+        if (currentShot.color === this.game.projectiles[k].color) {
+          currentShot.hit = true;
+          this.game.projectiles[k].hit = true;
+          this.checkChain = true;
+          // return;
         }
       }
+    }
+    for (let j = 0; j < this.game.targets.length; j++) {
+      if (this.game.targets[j].drop === true) {
+        continue;
+      }
+      if (
+        this.getDistance(
+          currentShot.aimX,
+          currentShot.aimY,
+          this.game.targets[j].x,
+          this.game.targets[j].y
+        ) <
+        currentShot.radius + this.game.targets[j].radius
+      ) {
+        //collision response
+        // projectile instructions
+        currentShot.dx = 0;
+        currentShot.dy = 0;
+        currentShot.radius = 20;
+        this.game.reloaded = true;
+        currentShot.collided = true;
+        currentShot.aimX = this.approxX(
+          currentShot.aimX,
+          this.game.targets[j].x
+        );
+        currentShot.aimY = this.approxY(
+          currentShot.aimY,
+          this.game.targets[j].y
+        );
+
+        if (currentShot.color === this.game.targets[j].color) {
+          currentShot.hit = true;
+          this.game.targets[j].hit = true;
+          this.checkChain = true;
+          // return;
+        }
+      }
+      // }
     }
   }
 
@@ -168,131 +169,128 @@ class GameView {
   }
 
   chainReaction() {
-    if (this.game.playing) {
-      while (this.checkChain === true) {
-        //target / target
+    // if (this.game.playing) {
+    while (this.checkChain === true) {
+      //target / target
 
-        for (let i = 0; i < this.game.targets.length; i++) {
-          // this.check = 0;
-          if (this.game.targets[i].drop === true) {
-            continue;
-          }
-          for (let k = 0; k < this.game.targets.length; k++) {
-            if (this.game.targets[k].drop === true) {
-              continue;
-            }
-            if (i !== k) {
-              let pX = this.game.targets[i].x;
-              let pY = this.game.targets[i].y;
-              let pRadius = this.game.targets[i].radius;
-              let tX = this.game.targets[k].x;
-              let tY = this.game.targets[k].y;
-              let tRadius = this.game.targets[k].radius;
-
-              if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-                // this.check += 1;
-                if (
-                  this.game.targets[i].color === this.game.targets[k].color &&
-                  (this.game.targets[i].hit || this.game.targets[k].hit)
-                ) {
-                  this.game.targets[i].hit = true;
-                  this.game.targets[k].hit = true;
-                  this.checkChain = false;
-                }
-              }
-            }
-          }
-          for (let k = 0; k < this.game.projectiles.length; k++) {
-            if (this.game.projectiles[k].drop === true) {
-              continue;
-            }
-            if (i !== k) {
-              let pX = this.game.targets[i].x;
-              let pY = this.game.targets[i].y;
-              let pRadius = this.game.targets[i].radius;
-              let tX = this.game.projectiles[k].aimX;
-              let tY = this.game.projectiles[k].aimY;
-              let tRadius = this.game.projectiles[k].radius;
-
-              if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-                // this.check += 1;
-                if (
-                  this.game.targets[i].color ===
-                    this.game.projectiles[k].color &&
-                  (this.game.targets[i].hit || this.game.projectiles[k].hit)
-                ) {
-                  this.game.targets[i].hit = true;
-                  this.game.projectiles[k].hit = true;
-                  this.checkChain = false;
-                }
-              }
-            }
-          }
+      for (let i = 0; i < this.game.targets.length; i++) {
+        // this.check = 0;
+        if (this.game.targets[i].drop === true) {
+          continue;
         }
-        //projectile / target
-        for (let i = 0; i < this.game.projectiles.length; i++) {
-          if (this.game.projectiles[i].drop === true) {
+        for (let k = 0; k < this.game.targets.length; k++) {
+          if (this.game.targets[k].drop === true) {
             continue;
           }
-          // this.check = 0
-          for (let k = 0; k < this.game.targets.length; k++) {
-            if (this.game.targets[k].drop === true) {
-              continue;
-            }
-            let pX = this.game.projectiles[i].aimX;
-            let pY = this.game.projectiles[i].aimY;
-            let pRadius = this.game.projectiles[i].radius;
+          if (i !== k) {
+            let pX = this.game.targets[i].x;
+            let pY = this.game.targets[i].y;
+            let pRadius = this.game.targets[i].radius;
             let tX = this.game.targets[k].x;
             let tY = this.game.targets[k].y;
             let tRadius = this.game.targets[k].radius;
 
             if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-              // this.check += 1
-              this.game.reloaded = true;
-              this.game.projectiles[i].collided = true;
+              // this.check += 1;
               if (
-                this.game.projectiles[i].color === this.game.targets[k].color
+                this.game.targets[i].color === this.game.targets[k].color &&
+                (this.game.targets[i].hit || this.game.targets[k].hit)
               ) {
-                this.game.projectiles[i].hit = true;
+                this.game.targets[i].hit = true;
                 this.game.targets[k].hit = true;
                 this.checkChain = false;
               }
             }
           }
-          // projectile / projectile
-          for (let k = 0; k < this.game.projectiles.length; k++) {
-            if (this.game.projectiles[k].drop === true) {
-              continue;
-            }
-            if (i !== k) {
-              let pX = this.game.projectiles[i].aimX;
-              let pY = this.game.projectiles[i].aimY;
-              let pRadius = this.game.projectiles[i].radius;
-              let tX = this.game.projectiles[k].aimX;
-              let tY = this.game.projectiles[k].aimY;
-              let tRadius = this.game.projectiles[k].radius;
+        }
+        for (let k = 0; k < this.game.projectiles.length; k++) {
+          if (this.game.projectiles[k].drop === true) {
+            continue;
+          }
+          if (i !== k) {
+            let pX = this.game.targets[i].x;
+            let pY = this.game.targets[i].y;
+            let pRadius = this.game.targets[i].radius;
+            let tX = this.game.projectiles[k].aimX;
+            let tY = this.game.projectiles[k].aimY;
+            let tRadius = this.game.projectiles[k].radius;
 
-              if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
-                this.check += 1;
-                this.game.reloaded = true;
-                if (
-                  this.game.projectiles[i].color ===
-                    this.game.projectiles[k].color &&
-                  (this.game.projectiles[i].hit || this.game.projectiles[k].hit)
-                ) {
-                  this.game.projectiles[i].hit = true;
-                  this.game.projectiles[k].hit = true;
-                  this.game.projectiles[i].collided = true;
-                  this.game.projectiles[k].collided = true;
-                  this.checkChain = false;
-                }
+            if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+              // this.check += 1;
+              if (
+                this.game.targets[i].color === this.game.projectiles[k].color &&
+                (this.game.targets[i].hit || this.game.projectiles[k].hit)
+              ) {
+                this.game.targets[i].hit = true;
+                this.game.projectiles[k].hit = true;
+                this.checkChain = false;
               }
             }
           }
         }
-        this.checkChain = false;
       }
+      //projectile / target
+      for (let i = 0; i < this.game.projectiles.length; i++) {
+        if (this.game.projectiles[i].drop === true) {
+          continue;
+        }
+        // this.check = 0
+        for (let k = 0; k < this.game.targets.length; k++) {
+          if (this.game.targets[k].drop === true) {
+            continue;
+          }
+          let pX = this.game.projectiles[i].aimX;
+          let pY = this.game.projectiles[i].aimY;
+          let pRadius = this.game.projectiles[i].radius;
+          let tX = this.game.targets[k].x;
+          let tY = this.game.targets[k].y;
+          let tRadius = this.game.targets[k].radius;
+
+          if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+            // this.check += 1
+            this.game.reloaded = true;
+            this.game.projectiles[i].collided = true;
+            if (this.game.projectiles[i].color === this.game.targets[k].color) {
+              this.game.projectiles[i].hit = true;
+              this.game.targets[k].hit = true;
+              this.checkChain = false;
+            }
+          }
+        }
+        // projectile / projectile
+        for (let k = 0; k < this.game.projectiles.length; k++) {
+          if (this.game.projectiles[k].drop === true) {
+            continue;
+          }
+          if (i !== k) {
+            let pX = this.game.projectiles[i].aimX;
+            let pY = this.game.projectiles[i].aimY;
+            let pRadius = this.game.projectiles[i].radius;
+            let tX = this.game.projectiles[k].aimX;
+            let tY = this.game.projectiles[k].aimY;
+            let tRadius = this.game.projectiles[k].radius;
+
+            if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
+              this.check += 1;
+              this.game.reloaded = true;
+              if (
+                this.game.projectiles[i].color ===
+                  this.game.projectiles[k].color &&
+                (this.game.projectiles[i].hit || this.game.projectiles[k].hit)
+              ) {
+                this.game.projectiles[i].hit = true;
+                this.game.projectiles[k].hit = true;
+                this.game.projectiles[i].collided = true;
+                this.game.projectiles[k].collided = true;
+                this.checkChain = false;
+              }
+            }
+          }
+        }
+      }
+      this.checkChain = false;
     }
+    // }
   }
 
   checkValidation() {
@@ -351,24 +349,47 @@ class GameView {
     }
   }
 
-  handlePlayer(){
-    console.log('ok')
+  handlePlayer1() {    
+    this.lebron.innerHTML = "* Lebron * ";
+    this.steph.innerHTML = 'Steph';
+    this.start.innerHTML = 'start';
+    this.player1Selected  = true;
+  }
+
+  handlePlayer2() {
+    this.steph.innerHTML = "* Steph *";
+    this.lebron.innerHTML = "Lebron";
+    this.start.innerHTML = "start";
+    this.player2Selected  = true;
   }
 
   startUp() {
     if (!this.game.playing) {
-      this.lebron.addEventListener("click", this.handlePlayer);
-      this.steph.addEventListener("click", this.handlePlayer);
-      if (this.start.innerHTML = 'start') 
+      this.lebron.addEventListener("click", this.handlePlayer1);
+      this.steph.addEventListener("click", this.handlePlayer2);
+      if ((this.start.innerHTML = "start")) 
       this.start.innerHTML = `start`;
       this.start.addEventListener("click", () => {
-        if (this.start.innerHTML === 'start') {
-          this.startGame();
-          this.start.innerHTML = 'main menu'
-        } else {
-          this.resetGame();
-          this.start.innerHTML = 'start'
+        if (this.start.innerHTML === "start" && (this.player1Selected === false && this.player2Selected === false)) {
+          this.start.innerHTML = "CHOOSE A PLAYER";
+          return
         }
+        if (this.start.innerHTML === "CHOOSE A PLAYER" &&
+          (this.player1Selected === false || this.player2Selected === false)
+        ) {
+          return
+        }
+          if (
+            (this.start.innerHTML === "start" ||
+              this.start.innerHTML === "CHOOSE A PLAYER") &&
+            (this.player1Selected === true || this.player2Selected === true)
+          ) {
+            this.startGame();
+            this.start.innerHTML = "main menu";
+          } else {
+            this.resetGame();
+            this.start.innerHTML = "start";
+          }
       });
       this.game.playing = true;
     }
@@ -401,29 +422,27 @@ class GameView {
     // this.game.projectiles = [];
     // this.game.targets = [];
     // this.game.score = 0;
-  
+
     // this.startGame();
     // window.cancelAnimationFrame(this.animation);
     // this.newGame();
   }
 
   animate() {
-    if (!this.paused) {
-      if (this.game.playing) {
-        if (this.game.projectiles.length > 0) {
-          this.checkCollision();
-          this.checkValidation();
+    if (this.game.playing) {
+      if (this.game.projectiles.length > 0) {
+        this.checkCollision();
+        this.checkValidation();
+        this.chainReaction();
+        if (this.checkChain === true) {
           this.chainReaction();
-          if (this.checkChain === true) {
-            this.chainReaction();
-          }
         }
-        this.checkDrops();
       }
-
-      this.game.drawElements(this.context, this.mousePosition);
-      this.animation = requestAnimationFrame(this.animate.bind(this));
+      this.checkDrops();
     }
+
+    this.game.drawElements(this.context, this.mousePosition);
+    this.animation = requestAnimationFrame(this.animate.bind(this));
   }
 }
     
