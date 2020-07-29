@@ -80,13 +80,15 @@ class Turret {
     context.stroke();
 
     //turret line
-    context.beginPath();
-    context.moveTo(160, 540);
-    context.lineTo(this.cheatX, this.cheatY);
-    context.setLineDash([5, 5]);
-    context.strokeStyle = "white";
-    context.lineWidth = 1;
-    context.stroke();
+    if (this.game.playerSelected === 2) {
+      context.beginPath();
+      context.moveTo(160, 540);
+      context.lineTo(this.cheatX, this.cheatY);
+      context.setLineDash([5, 5]);
+      context.strokeStyle = "white";
+      context.lineWidth = 1;
+      context.stroke();
+    }
 
     //turret cannon
     context.beginPath();

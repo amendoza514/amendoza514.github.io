@@ -221,7 +221,8 @@ var Game = /*#__PURE__*/function () {
     this.offset = false;
     this.movingObjects = this.movingObjects.bind(this);
     this.intervals = [];
-    this.reloaded = true; // this.greyOut = this.greyOut.bind(this);
+    this.reloaded = true;
+    this.playerSelected; // this.greyOut = this.greyOut.bind(this);
   }
 
   _createClass(Game, [{
@@ -842,6 +843,7 @@ var GameView = /*#__PURE__*/function () {
       this.steph.innerHTML = 'Steph';
       this.start.innerHTML = 'start';
       this.player1Selected = true;
+      this.game.playerSelected = 1;
     }
   }, {
     key: "handlePlayer2",
@@ -850,6 +852,7 @@ var GameView = /*#__PURE__*/function () {
       this.lebron.innerHTML = "Lebron";
       this.start.innerHTML = "start";
       this.player2Selected = true;
+      this.game.playerSelected = 2;
     }
   }, {
     key: "startUp",
@@ -1246,13 +1249,16 @@ var Turret = /*#__PURE__*/function () {
       context.lineWidth = 2;
       context.stroke(); //turret line
 
-      context.beginPath();
-      context.moveTo(160, 540);
-      context.lineTo(this.cheatX, this.cheatY);
-      context.setLineDash([5, 5]);
-      context.strokeStyle = "white";
-      context.lineWidth = 1;
-      context.stroke(); //turret cannon
+      if (this.game.playerSelected === 2) {
+        context.beginPath();
+        context.moveTo(160, 540);
+        context.lineTo(this.cheatX, this.cheatY);
+        context.setLineDash([5, 5]);
+        context.strokeStyle = "white";
+        context.lineWidth = 1;
+        context.stroke();
+      } //turret cannon
+
 
       context.beginPath();
       context.moveTo(160, 540);

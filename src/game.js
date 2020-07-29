@@ -18,6 +18,7 @@ class Game {
     this.movingObjects = this.movingObjects.bind(this);
     this.intervals = [];
     this.reloaded = true;
+    this.playerSelected;
     // this.greyOut = this.greyOut.bind(this);
   }
 

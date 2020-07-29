@@ -354,6 +354,7 @@ class GameView {
     this.steph.innerHTML = 'Steph';
     this.start.innerHTML = 'start';
     this.player1Selected  = true;
+    this.game.playerSelected = 1;
   }
 
   handlePlayer2() {
@@ -361,6 +362,7 @@ class GameView {
     this.lebron.innerHTML = "Lebron";
     this.start.innerHTML = "start";
     this.player2Selected  = true;
+    this.game.playerSelected = 2;
   }
 
   startUp() {
