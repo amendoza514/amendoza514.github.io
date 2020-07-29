@@ -19,7 +19,6 @@ class Game {
     this.intervals = [];
     this.reloaded = true;
     // this.greyOut = this.greyOut.bind(this);
-    
   }
 
   movingObjects() {
@@ -193,27 +192,24 @@ class Game {
       score.classList.add("final-score");
     }
     
-    if (this.playing) {
-      this.gameOver();
-    }
-
+    
     for (let i = 0; i < this.movingObjects().length; i++) {
       let obj = this.movingObjects()[i];
-        if (obj instanceof Turret) {
-          obj.swivelTurret(mousePosition);
-        }
-        if (obj instanceof Projectile) {
-          if (obj.hit) {
-            this.remove(obj);
-            i--;
-          } else if (obj.aimY > 600 || obj.aimY < 0) {
-            this.remove(obj);
-            i--;
-          } else if (obj.drop) {
-            obj.aimY += 15;
-          } else if (!this.playing) {
-            // setInterval(() => {
-              obj.spriteSheet.src = `./dist/assets/grey.png`;
+      if (obj instanceof Turret) {
+        obj.swivelTurret(mousePosition);
+      }
+      if (obj instanceof Projectile) {
+        if (obj.hit) {
+          this.remove(obj);
+          i--;
+        } else if (obj.aimY > 600 || obj.aimY < 0) {
+          this.remove(obj);
+          i--;
+        } else if (obj.drop) {
+          obj.aimY += 15;
+        } else if (!this.playing) {
+          // setInterval(() => {
+            obj.spriteSheet.src = `./dist/assets/grey.png`;
             // }, 1000);
           }
         }
@@ -229,16 +225,19 @@ class Game {
           } else if (!this.playing) {
             // setInterval(() => {
               obj.spriteSheet.src = `./dist/assets/grey.png`;
-            // }, 1000)
+              // }, 1000)
+            }
+          }
+          // if(this.gameOver() === true){
+            //   this.greyOut();
+            // }
+            obj.draw(context);
+          };
+          
+          if (this.playing) {
+            this.gameOver();
           }
         }
-        // if(this.gameOver() === true){
-          //   this.greyOut();
-          // }
-          obj.draw(context);
-      };
-      
-    }
 }
 
 module.exports = Game;

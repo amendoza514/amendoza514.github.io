@@ -4,12 +4,15 @@ const Projectile = require("./projectile");
 const Game = require("./game");
 
 class GameView {
-  constructor(game, context, canvas, start, newGame, pause) {
+  constructor(game, context, canvas, start, newGame, lebron, steph) {
     this.game = game;
     this.start = start;
     this.context = context;
     this.canvas = canvas;
+    this.lebron = lebron;
+    this.steph = steph;
     this.mousePosition = [0, 0];
+    this.handlePlayer = this.handlePlayer.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -25,8 +28,6 @@ class GameView {
     this.startUp = this.startUp.bind(this);
     this.reset = false;
     this.newGame = newGame;
-    this.pause = pause;
-    this.paused  = false;
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -350,8 +351,14 @@ class GameView {
     }
   }
 
+  handlePlayer(){
+    console.log('ok')
+  }
+
   startUp() {
     if (!this.game.playing) {
+      this.lebron.addEventListener("click", this.handlePlayer);
+      this.steph.addEventListener("click", this.handlePlayer);
       if (this.start.innerHTML = 'start') 
       this.start.innerHTML = `start`;
       this.start.addEventListener("click", () => {
@@ -364,8 +371,6 @@ class GameView {
         }
       });
       this.game.playing = true;
-      // this.start.innerHTML = `reset`;
-      // this.start.addEventListener("click", this.resetGame);
     }
   }
 
@@ -382,17 +387,6 @@ class GameView {
     this.game.turret.setColors();
     this.game.addTargets();
     this.game.moveTargets();
-
-    // this.pause.addEventListener("click", () => {
-    //      if (this.paused === false) {
-    //        this.paused = true;
-    //        this.pause.innerHTML = 'play'
-    //      } else {
-    //        this.paused = false;
-    //        this.pause.innerHTML = "pause";
-    //        this.animate();
-    //      }
-    // });
   }
 
   resetGame() {
@@ -414,7 +408,6 @@ class GameView {
   }
 
   animate() {
-    // if (!this.reset) {
     if (!this.paused) {
       if (this.game.playing) {
         if (this.game.projectiles.length > 0) {
@@ -429,12 +422,7 @@ class GameView {
       }
 
       this.game.drawElements(this.context, this.mousePosition);
-      // requestAnimationFrame(this.animate.bind(this));
       this.animation = requestAnimationFrame(this.animate.bind(this));
-      // }
-      // else {
-      //   cancelAnimationFrame(this.animation)
-      // }
     }
   }
 }

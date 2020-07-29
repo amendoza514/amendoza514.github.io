@@ -172,12 +172,13 @@ function newGame() {
 function go() {
   var canvas = document.querySelector("canvas");
   var start = document.getElementById("start");
-  var pause = document.getElementById("pause");
+  var lebron = document.getElementById("lebron");
+  var steph = document.getElementById("steph");
   var context = canvas.getContext("2d");
   canvas.width = 320;
   canvas.height = 540;
   var game = new Game(canvas.width, canvas.height);
-  var gameview = new GameView(game, context, canvas, start, newGame, pause);
+  var gameview = new GameView(game, context, canvas, start, newGame, lebron, steph);
   gameview.startUp(); //for testing use .startGame()
   //for production use .startUp()
 }
@@ -417,10 +418,6 @@ var Game = /*#__PURE__*/function () {
         score.classList.add("final-score");
       }
 
-      if (this.playing) {
-        this.gameOver();
-      }
-
       for (var i = 0; i < this.movingObjects().length; i++) {
         var obj = this.movingObjects()[i];
 
@@ -465,6 +462,10 @@ var Game = /*#__PURE__*/function () {
       }
 
       ;
+
+      if (this.playing) {
+        this.gameOver();
+      }
     }
   }]);
 
@@ -497,14 +498,17 @@ var Projectile = __webpack_require__(/*! ./projectile */ "./src/projectile.js");
 var Game = __webpack_require__(/*! ./game */ "./src/game.js");
 
 var GameView = /*#__PURE__*/function () {
-  function GameView(game, context, canvas, start, newGame, pause) {
+  function GameView(game, context, canvas, start, newGame, lebron, steph) {
     _classCallCheck(this, GameView);
 
     this.game = game;
     this.start = start;
     this.context = context;
     this.canvas = canvas;
+    this.lebron = lebron;
+    this.steph = steph;
     this.mousePosition = [0, 0];
+    this.handlePlayer = this.handlePlayer.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMove = this.handleMove.bind(this);
     this.startGame = this.startGame.bind(this);
@@ -520,8 +524,6 @@ var GameView = /*#__PURE__*/function () {
     this.startUp = this.startUp.bind(this);
     this.reset = false;
     this.newGame = newGame;
-    this.pause = pause;
-    this.paused = false;
   }
 
   _createClass(GameView, [{
@@ -838,11 +840,18 @@ var GameView = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "handlePlayer",
+    value: function handlePlayer() {
+      console.log('ok');
+    }
+  }, {
     key: "startUp",
     value: function startUp() {
       var _this = this;
 
       if (!this.game.playing) {
+        this.lebron.addEventListener("click", this.handlePlayer);
+        this.steph.addEventListener("click", this.handlePlayer);
         if (this.start.innerHTML = 'start') this.start.innerHTML = "start";
         this.start.addEventListener("click", function () {
           if (_this.start.innerHTML === 'start') {
@@ -855,8 +864,7 @@ var GameView = /*#__PURE__*/function () {
             _this.start.innerHTML = 'start';
           }
         });
-        this.game.playing = true; // this.start.innerHTML = `reset`;
-        // this.start.addEventListener("click", this.resetGame);
+        this.game.playing = true;
       }
     }
   }, {
@@ -874,16 +882,7 @@ var GameView = /*#__PURE__*/function () {
       this.listenForClick();
       this.game.turret.setColors();
       this.game.addTargets();
-      this.game.moveTargets(); // this.pause.addEventListener("click", () => {
-      //      if (this.paused === false) {
-      //        this.paused = true;
-      //        this.pause.innerHTML = 'play'
-      //      } else {
-      //        this.paused = false;
-      //        this.pause.innerHTML = "pause";
-      //        this.animate();
-      //      }
-      // });
+      this.game.moveTargets();
     }
   }, {
     key: "resetGame",
@@ -904,7 +903,6 @@ var GameView = /*#__PURE__*/function () {
   }, {
     key: "animate",
     value: function animate() {
-      // if (!this.reset) {
       if (!this.paused) {
         if (this.game.playing) {
           if (this.game.projectiles.length > 0) {
@@ -920,12 +918,8 @@ var GameView = /*#__PURE__*/function () {
           this.checkDrops();
         }
 
-        this.game.drawElements(this.context, this.mousePosition); // requestAnimationFrame(this.animate.bind(this));
-
-        this.animation = requestAnimationFrame(this.animate.bind(this)); // }
-        // else {
-        //   cancelAnimationFrame(this.animation)
-        // }
+        this.game.drawElements(this.context, this.mousePosition);
+        this.animation = requestAnimationFrame(this.animate.bind(this));
       }
     }
   }]);
