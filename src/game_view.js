@@ -22,6 +22,8 @@ class GameView {
     this.approxY = this.approxY.bind(this);
     this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
+    this.andOne = this.andOne.bind(this);
+    this.andOneNumber = null;
     this.chainReaction = this.chainReaction.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
     this.checkDrops = this.checkDrops.bind(this);
@@ -31,6 +33,19 @@ class GameView {
     this.newGame = newGame;
     this.player1Selected = false;
     this.player2Selected = false;
+  }
+
+  andOne() {
+    if (this.game.playerSelected === 1) {
+      let validArr = this.game.targets.filter(target => target.hit === false && target.drop === false);
+      let randomNum = Math.floor(Math.random() * validArr.length);
+      this.andOneNumber = randomNum;  
+      let select = (Math.floor(Math.random() * 100)) + 1
+      if (select <= 23) {
+        validArr[randomNum].drop = true;
+        // console.log('AND ONE');
+      }
+    }
   }
 
   getDistance(x1, y1, x2, y2) {
@@ -63,6 +78,9 @@ class GameView {
         this.game.reloaded = true;
 
         if (currentShot.color === this.game.projectiles[k].color) {
+          if (this.andOneNumber === null) {
+            this.andOne();
+          }
           currentShot.hit = true;
           this.game.projectiles[k].hit = true;
           this.checkChain = true;
@@ -100,6 +118,9 @@ class GameView {
         );
 
         if (currentShot.color === this.game.targets[j].color) {
+          if (this.andOneNumber === null) {
+            this.andOne();
+          }
           currentShot.hit = true;
           this.game.targets[j].hit = true;
           this.checkChain = true;
@@ -199,6 +220,8 @@ class GameView {
                 this.game.targets[i].hit = true;
                 this.game.targets[k].hit = true;
                 this.checkChain = false;
+                this.game.reloaded = true;
+                //maybe????
               }
             }
           }
@@ -224,6 +247,8 @@ class GameView {
                 this.game.targets[i].hit = true;
                 this.game.projectiles[k].hit = true;
                 this.checkChain = false;
+                this.game.reloaded = true;
+                //maybe ???
               }
             }
           }
@@ -249,6 +274,7 @@ class GameView {
           if (this.getDistance(pX, pY, tX, tY) - 5 < pRadius + tRadius) {
             // this.check += 1
             this.game.reloaded = true;
+            //maybe???
             this.game.projectiles[i].collided = true;
             if (this.game.projectiles[i].color === this.game.targets[k].color) {
               this.game.projectiles[i].hit = true;
@@ -305,7 +331,11 @@ class GameView {
           this.getDistance(shot.aimX, shot.aimY, obj.aimX, obj.aimY) - 5 <
           shot.radius + obj.radius
         ) {
+          this.game.reloaded = true;
           if (shot.color === obj.color) {
+            if (this.andOneNumber === null) {
+              this.andOne();
+            }
             shot.hit = true;
             obj.hit = true;
             this.checkChain = true;
@@ -321,7 +351,11 @@ class GameView {
           this.getDistance(shot.aimX, shot.aimY, obj.x, obj.y) - 5 <
           shot.radius + obj.radius
         ) {
+          this.game.reloaded = true;
           if (shot.color === obj.color) {
+            if (this.andOneNumber === null) {
+              this.andOne();
+            }
             shot.hit = true;
             obj.hit = true;
             this.checkChain = true;
@@ -441,6 +475,7 @@ class GameView {
         }
       }
       this.checkDrops();
+      this.andOneNumber = null;
     }
 
     this.game.drawElements(this.context, this.mousePosition);

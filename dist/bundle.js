@@ -517,6 +517,8 @@ var GameView = /*#__PURE__*/function () {
     this.approxY = this.approxY.bind(this);
     this.checkChain;
     this.checkCollision = this.checkCollision.bind(this);
+    this.andOne = this.andOne.bind(this);
+    this.andOneNumber = null;
     this.chainReaction = this.chainReaction.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
     this.checkDrops = this.checkDrops.bind(this);
@@ -529,6 +531,22 @@ var GameView = /*#__PURE__*/function () {
   }
 
   _createClass(GameView, [{
+    key: "andOne",
+    value: function andOne() {
+      if (this.game.playerSelected === 1) {
+        var validArr = this.game.targets.filter(function (target) {
+          return target.hit === false && target.drop === false;
+        });
+        var randomNum = Math.floor(Math.random() * validArr.length);
+        this.andOneNumber = randomNum;
+        var select = Math.floor(Math.random() * 100) + 1;
+
+        if (select <= 23) {
+          validArr[randomNum].drop = true; // console.log('AND ONE');
+        }
+      }
+    }
+  }, {
     key: "getDistance",
     value: function getDistance(x1, y1, x2, y2) {
       var xDist = x2 - x1;
@@ -562,6 +580,10 @@ var GameView = /*#__PURE__*/function () {
           this.game.reloaded = true;
 
           if (currentShot.color === this.game.projectiles[k].color) {
+            if (this.andOneNumber === null) {
+              this.andOne();
+            }
+
             currentShot.hit = true;
             this.game.projectiles[k].hit = true;
             this.checkChain = true; // return;
@@ -586,6 +608,10 @@ var GameView = /*#__PURE__*/function () {
           currentShot.aimY = this.approxY(currentShot.aimY, this.game.targets[j].y);
 
           if (currentShot.color === this.game.targets[j].color) {
+            if (this.andOneNumber === null) {
+              this.andOne();
+            }
+
             currentShot.hit = true;
             this.game.targets[j].hit = true;
             this.checkChain = true; // return;
@@ -679,6 +705,7 @@ var GameView = /*#__PURE__*/function () {
                   this.game.targets[i].hit = true;
                   this.game.targets[k].hit = true;
                   this.checkChain = false;
+                  this.game.reloaded = true; //maybe????
                 }
               }
             }
@@ -703,6 +730,7 @@ var GameView = /*#__PURE__*/function () {
                   this.game.targets[i].hit = true;
                   this.game.projectiles[_k].hit = true;
                   this.checkChain = false;
+                  this.game.reloaded = true; //maybe ???
                 }
               }
             }
@@ -730,7 +758,8 @@ var GameView = /*#__PURE__*/function () {
 
             if (this.getDistance(_pX2, _pY2, _tX2, _tY2) - 5 < _pRadius2 + _tRadius2) {
               // this.check += 1
-              this.game.reloaded = true;
+              this.game.reloaded = true; //maybe???
+
               this.game.projectiles[_i].collided = true;
 
               if (this.game.projectiles[_i].color === this.game.targets[_k2].color) {
@@ -789,7 +818,13 @@ var GameView = /*#__PURE__*/function () {
           }
 
           if (this.getDistance(shot.aimX, shot.aimY, obj.aimX, obj.aimY) - 5 < shot.radius + obj.radius) {
+            this.game.reloaded = true;
+
             if (shot.color === obj.color) {
+              if (this.andOneNumber === null) {
+                this.andOne();
+              }
+
               shot.hit = true;
               obj.hit = true;
               this.checkChain = true;
@@ -805,7 +840,13 @@ var GameView = /*#__PURE__*/function () {
           }
 
           if (this.getDistance(shot.aimX, shot.aimY, _obj.x, _obj.y) - 5 < shot.radius + _obj.radius) {
+            this.game.reloaded = true;
+
             if (shot.color === _obj.color) {
+              if (this.andOneNumber === null) {
+                this.andOne();
+              }
+
               shot.hit = true;
               _obj.hit = true;
               this.checkChain = true;
@@ -934,6 +975,7 @@ var GameView = /*#__PURE__*/function () {
         }
 
         this.checkDrops();
+        this.andOneNumber = null;
       }
 
       this.game.drawElements(this.context, this.mousePosition);
