@@ -19,7 +19,13 @@ class Game {
     this.intervals = [];
     this.reloaded = true;
     this.playerSelected;
+    this.setSounds();
     // this.greyOut = this.greyOut.bind(this);
+  }
+
+  setSounds() {
+    Howler.volume(0.2);
+    this.swish = new Howl({ src: ["dist/assets/swish.mp3"] });
   }
 
   movingObjects() {
@@ -203,7 +209,11 @@ class Game {
         if (obj.hit) {
           this.remove(obj);
           i--;
-        } else if (obj.aimY > 600 || obj.aimY < 0) {
+        } else if (obj.aimY < 0) {
+          this.remove(obj);
+          i--;
+        } else if (obj.aimY > 550 ) {
+          this.swish.play()
           this.remove(obj);
           i--;
         } else if (obj.drop) {
@@ -216,7 +226,11 @@ class Game {
           if (obj.hit) {
             this.remove(obj);
             i --;
-          } else if (obj.x > 600 || obj.y < 0) {
+          } else if (obj.y < 0) {
+            this.remove(obj);
+            i --
+          } else if (obj.y > 550) {
+            this.swish.play()
             this.remove(obj);
             i --
           } else if (obj.drop) {

@@ -2,6 +2,7 @@ const Target = require("./target");
 const Turret = require("./turret");
 const Projectile = require("./projectile");
 const Game = require("./game");
+const { Howl, Howler } = require("howler");
 
 class GameView {
   constructor(game, context, canvas, start, newGame, lebron, steph) {
@@ -33,6 +34,23 @@ class GameView {
     this.newGame = newGame;
     this.player1Selected = false;
     this.player2Selected = false;
+    this.setSounds();
+    this.popped = false;
+    this.intros1 = false;
+    this.intros2 = false;
+  }
+
+  setSounds() {
+    Howler.volume(0.2);
+    this.pop = new Howl({src: ['dist/assets/pop.mp3']});
+    this.lebronIntro = new Howl({ src: ["dist/assets/lebron-intro.wav"] });
+    this.stephIntro = new Howl({ src: ["dist/assets/steph-intro.wav"] });
+  }
+
+  soundType() {
+    let types = [0.5,0.6,0.7,0.8,0.9,1]
+    let randomVolume = Math.floor(Math.random() * types.length)
+    return types[randomVolume];
   }
 
   andOne() {
@@ -40,7 +58,7 @@ class GameView {
       let validArr = this.game.targets.filter(target => target.hit === false && target.drop === false);
       let randomNum = Math.floor(Math.random() * validArr.length);
       this.andOneNumber = randomNum;  
-      let select = (Math.floor(Math.random() * 100)) + 1
+      let select = (Math.floor(Math.random() * 100))
       if (select <= 23) {
         validArr[randomNum].drop = true;
         // console.log('AND ONE');
@@ -81,6 +99,12 @@ class GameView {
           if (this.andOneNumber === null) {
             this.andOne();
           }
+          //sound
+          if (this.popped === false) {
+            this.popped = true
+            this.pop.rate(this.soundType());
+            this.pop.play();
+          }
           currentShot.hit = true;
           this.game.projectiles[k].hit = true;
           this.checkChain = true;
@@ -120,6 +144,12 @@ class GameView {
         if (currentShot.color === this.game.targets[j].color) {
           if (this.andOneNumber === null) {
             this.andOne();
+          }
+          //sound
+          if (this.popped === false) {
+            this.popped = true
+            this.pop.rate(this.soundType());
+            this.pop.play();
           }
           currentShot.hit = true;
           this.game.targets[j].hit = true;
@@ -183,7 +213,13 @@ class GameView {
           }
         }
         if (marker === 0) {
-          validTargets[i].drop = true;
+          let y =
+            validTargets[i] instanceof Projectile
+              ? validTargets[i].aimY
+              : validTargets[i].y;
+              if (y > 50) {
+                validTargets[i].drop = true;
+              }
         }
       }
     }
@@ -219,6 +255,12 @@ class GameView {
               ) {
                 this.game.targets[i].hit = true;
                 this.game.targets[k].hit = true;
+                //sound
+                if (this.popped === false) {
+                  this.popped = true;
+                  this.pop.rate(this.soundType());
+                  this.pop.play();
+                }
                 this.checkChain = false;
                 this.game.reloaded = true;
                 //maybe????
@@ -244,12 +286,19 @@ class GameView {
                 this.game.targets[i].color === this.game.projectiles[k].color &&
                 (this.game.targets[i].hit || this.game.projectiles[k].hit)
               ) {
-                this.game.targets[i].hit = true;
-                this.game.projectiles[k].hit = true;
-                this.checkChain = false;
-                this.game.reloaded = true;
-                //maybe ???
-              }
+                  //sound
+                  if (this.popped === false) {
+                    this.popped = true;
+                    this.pop.rate(this.soundType());
+                    this.pop.play();
+                  }
+                  this.game.targets[i].hit = true;
+                  this.game.projectiles[k].hit = true;
+
+                  this.checkChain = false;
+                  this.game.reloaded = true;
+                  //maybe ???
+                }
             }
           }
         }
@@ -277,6 +326,12 @@ class GameView {
             //maybe???
             this.game.projectiles[i].collided = true;
             if (this.game.projectiles[i].color === this.game.targets[k].color) {
+              //sound
+              if (this.popped === false) {
+                this.popped = true;
+                this.pop.rate(this.soundType());
+                this.pop.play();
+              }
               this.game.projectiles[i].hit = true;
               this.game.targets[k].hit = true;
               this.checkChain = false;
@@ -304,12 +359,18 @@ class GameView {
                   this.game.projectiles[k].color &&
                 (this.game.projectiles[i].hit || this.game.projectiles[k].hit)
               ) {
-                this.game.projectiles[i].hit = true;
-                this.game.projectiles[k].hit = true;
-                this.game.projectiles[i].collided = true;
-                this.game.projectiles[k].collided = true;
-                this.checkChain = false;
-              }
+                  //sound
+                  if (this.popped === false) {
+                    this.popped = true;
+                    this.pop.rate(this.soundType());
+                    this.pop.play();
+                  }
+                  this.game.projectiles[i].hit = true;
+                  this.game.projectiles[k].hit = true;
+                  this.game.projectiles[i].collided = true;
+                  this.game.projectiles[k].collided = true;
+                  this.checkChain = false;
+                }
             }
           }
         }
@@ -336,6 +397,12 @@ class GameView {
             if (this.andOneNumber === null) {
               this.andOne();
             }
+            //sound
+          if (this.popped === false) {
+            this.popped = true;
+            this.pop.rate(this.soundType());
+            this.pop.play();
+          }
             shot.hit = true;
             obj.hit = true;
             this.checkChain = true;
@@ -356,6 +423,12 @@ class GameView {
             if (this.andOneNumber === null) {
               this.andOne();
             }
+            //sound
+          if (this.popped === false) {
+            this.popped = true;
+            this.pop.rate(this.soundType());
+            this.pop.play();
+          }
             shot.hit = true;
             obj.hit = true;
             this.checkChain = true;
@@ -371,6 +444,7 @@ class GameView {
 
   handleMove(event) {
     this.mousePosition = [event.offsetX, event.offsetY];
+    // console.log(this.mousePosition)
   }
 
   listenForClick() {
@@ -380,11 +454,14 @@ class GameView {
   handleClick() {
     if (this.game.playing) {
       this.game.turret.fire();
+      this.popped = false;
     }
   }
 
   handlePlayer1() {    
     this.lebron.innerHTML = "* Lebron * ";
+    this.intros1 === false ? this.lebronIntro.play() : '';
+    this.intros1 = true;
     this.steph.innerHTML = 'Steph';
     this.start.innerHTML = 'start';
     this.player1Selected  = true;
@@ -393,6 +470,8 @@ class GameView {
 
   handlePlayer2() {
     this.steph.innerHTML = "* Steph *";
+    this.intros2 === false ? this.stephIntro.play() : "";
+    this.intros2 = true;
     this.lebron.innerHTML = "Lebron";
     this.start.innerHTML = "start";
     this.player2Selected  = true;
