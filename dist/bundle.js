@@ -3340,6 +3340,27 @@ document.addEventListener("DOMContentLoaded", function () {
   var context = canvas.getContext("2d");
   canvas.width = 320;
   canvas.height = 540;
+  var lebronImg = new Image();
+  lebronImg.src = "./dist/assets/lebron3.png";
+
+  lebronImg.onload = function () {
+    context.drawImage(lebronImg, 20, 217.5, 140, 100);
+  };
+
+  var steph = new Image();
+  steph.src = "./dist/assets/steph3.png";
+
+  steph.onload = function () {
+    context.drawImage(steph, 165, 217.5, 140, 100);
+  };
+
+  var logo = new Image();
+  logo.src = "./dist/assets/nba2.png";
+
+  logo.onload = function () {
+    context.drawImage(logo, 87, 208, 153, 100);
+  };
+
   go(); //halfcourt semi
 
   context.beginPath();
@@ -3399,6 +3420,207 @@ document.addEventListener("DOMContentLoaded", function () {
   context.lineWidth = 4;
   context.setLineDash([0, 0]);
   context.strokeStyle = "white";
+  context.stroke(); // context.beginPath();
+  // context.rect(16, 210, 290, 108);
+  // context.strokeStyle = 'gray';
+  // context.stroke()
+  //maybe change here for color player select?    
+
+  context.beginPath();
+  context.rect(16, 210, 290, 230);
+  context.lineWidth = 10;
+  context.strokeStyle = 'white';
+  context.stroke();
+  var grd = context.createLinearGradient(0, 580, 0, 0);
+  grd.addColorStop(0, "black");
+  grd.addColorStop(1, "lightblue");
+  context.fillStyle = grd;
+  context.lineWidth = 5;
+  context.fill();
+  context.stroke();
+  context.beginPath();
+  context.moveTo(15, 323);
+  context.lineTo(304, 323);
+  context.lineWidth = 10;
+  context.strokeStyle = 'white';
+  context.stroke(); //player names 
+
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "white";
+  context.fillText("L.JAMES", 40, 348);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "white";
+  context.fillText("S.CURRY", 212, 348); //stat text w/ shadow precursor
+
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "black";
+  context.fillText("SPEED", 137, 367);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "yellow";
+  context.fillText("SPEED", 135, 365);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "black";
+  context.fillText("3 PTRS", 132, 387);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "yellow";
+  context.fillText("3 PTRS", 130, 385);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "black";
+  context.fillText("DUNKS", 137, 407);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "yellow";
+  context.fillText("DUNKS", 135, 405);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "black";
+  context.fillText("DEF.", 146, 427);
+  context.font = "10px 'Press Start 2P', cursive";
+  context.fillStyle = "yellow";
+  context.fillText("DEF.", 144, 425); //lebron stats
+
+  context.beginPath();
+  context.moveTo(37, 361);
+  context.lineTo(117, 361);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(35, 359);
+  context.lineTo(115, 359);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(36, 359);
+  context.lineTo(105, 359);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(37, 381);
+  context.lineTo(117, 381);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(35, 379);
+  context.lineTo(115, 379);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(36, 379);
+  context.lineTo(95, 379);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(37, 401);
+  context.lineTo(117, 401);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(35, 399);
+  context.lineTo(115, 399);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(36, 399);
+  context.lineTo(110, 399);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(37, 421);
+  context.lineTo(117, 421);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(35, 419);
+  context.lineTo(115, 419);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(36, 419);
+  context.lineTo(95, 419);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke(); //curry stats
+
+  context.beginPath();
+  context.moveTo(207, 361);
+  context.lineTo(287, 361);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(205, 359);
+  context.lineTo(285, 359);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(206, 359);
+  context.lineTo(270, 359);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(207, 381);
+  context.lineTo(287, 381);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(205, 379);
+  context.lineTo(285, 379);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(206, 379);
+  context.lineTo(284, 379);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(207, 401);
+  context.lineTo(287, 401);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(205, 399);
+  context.lineTo(285, 399);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(206, 399);
+  context.lineTo(240, 399);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(207, 421);
+  context.lineTo(287, 421);
+  context.lineWidth = 7;
+  context.strokeStyle = "black";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(205, 419);
+  context.lineTo(285, 419);
+  context.lineWidth = 7;
+  context.strokeStyle = "white";
+  context.stroke();
+  context.beginPath();
+  context.moveTo(206, 419);
+  context.lineTo(255, 419);
+  context.lineWidth = 6;
+  context.strokeStyle = "green";
   context.stroke();
 });
 
@@ -3416,7 +3638,8 @@ function go() {
   canvas.height = 540;
   var game = new Game(canvas.width, canvas.height);
   var gameview = new GameView(game, context, canvas, start, newGame, lebron, steph);
-  gameview.startUp(); //for testing use .startGame()
+  gameview.startUp(); //   gameview.harlem.play()
+  //for testing use .startGame()
   //for production use .startUp()
 }
 
@@ -3441,6 +3664,9 @@ var Target = __webpack_require__(/*! ./target */ "./src/target.js");
 
 var Turret = __webpack_require__(/*! ./turret */ "./src/turret.js");
 
+var _require = __webpack_require__(/*! howler */ "./node_modules/howler/dist/howler.js"),
+    Howl = _require.Howl;
+
 var Game = /*#__PURE__*/function () {
   function Game(width, height) {
     _classCallCheck(this, Game);
@@ -3460,15 +3686,34 @@ var Game = /*#__PURE__*/function () {
     this.intervals = [];
     this.reloaded = true;
     this.playerSelected;
-    this.setSounds(); // this.greyOut = this.greyOut.bind(this);
+    this.setSounds();
+    this.counter = 3; // this.greyOut = this.greyOut.bind(this);
   }
 
   _createClass(Game, [{
+    key: "startCount",
+    value: function startCount() {
+      var _this = this;
+
+      this.beginCount;
+
+      if (this.counter >= 0) {
+        this.beginCount = setInterval(function () {
+          _this.counter -= 1;
+        }, 1000);
+      } else {
+        clearInterval(this.beginCount);
+      }
+    }
+  }, {
     key: "setSounds",
     value: function setSounds() {
       Howler.volume(0.2);
       this.swish = new Howl({
         src: ["dist/assets/swish.mp3"]
+      });
+      this.buzzer = new Howl({
+        src: ["dist/assets/buzzer.wav"]
       });
     }
   }, {
@@ -3479,34 +3724,34 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "moveTargets",
     value: function moveTargets() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.playing === true) {
         var moveInterval = setInterval(function () {
-          _this.targets.forEach(function (target) {
+          _this2.targets.forEach(function (target) {
             if (target instanceof Target) {
               target.count += 1;
               target.y += 35;
             }
           });
 
-          _this.projectiles.forEach(function (target) {
+          _this2.projectiles.forEach(function (target) {
             if (target instanceof Projectile) {
               target.aimY += 35;
             }
           });
-        }, 5000);
+        }, 4000);
         this.intervals.push(moveInterval);
       }
     }
   }, {
     key: "addTargets",
     value: function addTargets() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.playing === true) {
         var addInterval = setInterval(function () {
-          if (!_this2.offsetRow) {
+          if (!_this3.offsetRow) {
             var last;
 
             for (var i = 1; i <= 8; i++) {
@@ -3518,12 +3763,12 @@ var Game = /*#__PURE__*/function () {
                 x = i * 40 - 20;
               }
 
-              _this2.targets.push(new Target(i, false, x));
+              _this3.targets.push(new Target(i, false, x));
 
               last = i;
             }
 
-            _this2.offsetRow = true;
+            _this3.offsetRow = true;
           } else {
             for (var j = 1; j <= 7; j++) {
               var _x = void 0;
@@ -3534,12 +3779,12 @@ var Game = /*#__PURE__*/function () {
                 _x = j * 40;
               }
 
-              _this2.targets.push(new Target(j, false, _x));
+              _this3.targets.push(new Target(j, false, _x));
             }
 
-            _this2.offsetRow = false; // debugger
+            _this3.offsetRow = false; // debugger
           }
-        }, 5000);
+        }, 4000);
         this.intervals.push(addInterval);
       }
     }
@@ -3552,27 +3797,31 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "gameOver",
     value: function gameOver() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.targets.forEach(function (target) {
         if (target.gameOver()) {
-          _this3.playing = false;
+          _this4.playing = false;
 
-          _this3.intervals.forEach(function (interval) {
+          _this4.intervals.forEach(function (interval) {
             return clearInterval(interval);
           });
 
-          _this3.projectiles = _this3.projectiles.slice(0, _this3.projectiles.length - 1);
+          _this4.projectiles = _this4.projectiles.slice(0, _this4.projectiles.length - 1);
+
+          _this4.buzzer.play();
         }
       });
       this.projectiles.forEach(function (projectile) {
         if (projectile.gameOver()) {
-          _this3.intervals.forEach(function (interval) {
+          _this4.intervals.forEach(function (interval) {
             return clearInterval(interval);
           });
 
-          _this3.playing = false;
-          _this3.projectiles = _this3.projectiles.slice(0, _this3.projectiles.length - 1);
+          _this4.playing = false;
+          _this4.projectiles = _this4.projectiles.slice(0, _this4.projectiles.length - 1);
+
+          _this4.buzzer.play();
         }
       });
     }
@@ -3652,12 +3901,24 @@ var Game = /*#__PURE__*/function () {
       context.lineWidth = 4;
       context.setLineDash([0, 0]);
       context.strokeStyle = "white";
-      context.stroke();
+      context.stroke(); // this.startCount(context);
+
+      if (this.counter > 0) {
+        context.font = "50px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+        context.fillText(this.counter, 140, 350);
+      } else if (this.counter === 0) {
+        context.font = "50px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+        context.fillText("GO!", 115, 350);
+      }
+
       var score = document.getElementById("score-text");
       var welcome = document.getElementById("welcome");
 
       if (this.playing === true) {
-        score.innerHTML = "score: ".concat(this.score);
+        score.innerHTML = "score: ".concat(this.score); // score.setAttribute("style","text-align: left")
+
         score.classList.remove("final-score");
         welcome.style.display = "none";
       } else {
@@ -3706,10 +3967,7 @@ var Game = /*#__PURE__*/function () {
           } else if (!this.playing) {
             obj.spriteSheet.src = "./dist/assets/grey.png";
           }
-        } // if(this.gameOver() === true){
-        //   this.greyOut();
-        // }
-
+        }
 
         obj.draw(context);
       }
@@ -3786,6 +4044,7 @@ var GameView = /*#__PURE__*/function () {
     this.newGame = newGame;
     this.player1Selected = false;
     this.player2Selected = false;
+    this.setMusic();
     this.setSounds();
     this.popped = false;
     this.intros1 = false;
@@ -3793,17 +4052,47 @@ var GameView = /*#__PURE__*/function () {
   }
 
   _createClass(GameView, [{
+    key: "setMusic",
+    value: function setMusic() {
+      this.harlem = new Howl({
+        src: ["dist/assets/harlem.mp3"],
+        loop: true
+      });
+      this.harlem.volume(1);
+    }
+  }, {
     key: "setSounds",
     value: function setSounds() {
       Howler.volume(0.2);
       this.pop = new Howl({
-        src: ['dist/assets/pop.mp3']
+        src: ["dist/assets/pop.mp3"]
       });
       this.lebronIntro = new Howl({
         src: ["dist/assets/lebron-intro.wav"]
       });
       this.stephIntro = new Howl({
         src: ["dist/assets/steph-intro.wav"]
+      });
+      this.and1 = new Howl({
+        src: ["dist/assets/and1.mp3"]
+      });
+      this.lebronAnd1 = new Howl({
+        src: ["dist/assets/lebron1.mp3"]
+      });
+      this.countdown = new Howl({
+        src: ["dist/assets/start.mp3"]
+      });
+      this.dribble = new Howl({
+        src: ["dist/assets/dribble.wav"]
+      });
+      this.whistle = new Howl({
+        src: ["dist/assets/whistle.wav"]
+      });
+      this.buzzer = new Howl({
+        src: ["dist/assets/buzzer.wav"]
+      });
+      this.pill = new Howl({
+        src: ["dist/assets/pill.wav"]
       });
     }
   }, {
@@ -3824,8 +4113,10 @@ var GameView = /*#__PURE__*/function () {
         this.andOneNumber = randomNum;
         var select = Math.floor(Math.random() * 100);
 
-        if (select <= 23) {
-          validArr[randomNum].drop = true; // console.log('AND ONE');
+        if (select <= 10) {
+          validArr[randomNum].drop = true;
+          this.and1.play(); // this.lebronAnd1.play();
+          // console.log('AND ONE');
         }
       }
     }
@@ -4218,6 +4509,8 @@ var GameView = /*#__PURE__*/function () {
     value: function handleClick() {
       if (this.game.playing) {
         this.game.turret.fire();
+        this.pill.play(); // this.shotgun.play();
+
         this.popped = false;
       }
     }
@@ -4225,10 +4518,10 @@ var GameView = /*#__PURE__*/function () {
     key: "handlePlayer1",
     value: function handlePlayer1() {
       this.lebron.innerHTML = "* Lebron * ";
-      this.intros1 === false ? this.lebronIntro.play() : '';
+      this.intros1 === false ? this.lebronIntro.play() : "";
       this.intros1 = true;
-      this.steph.innerHTML = 'Steph';
-      this.start.innerHTML = 'start';
+      this.steph.innerHTML = "Steph";
+      this.start.innerHTML = "start";
       this.player1Selected = true;
       this.game.playerSelected = 1;
     }
@@ -4263,8 +4556,23 @@ var GameView = /*#__PURE__*/function () {
           }
 
           if ((_this.start.innerHTML === "start" || _this.start.innerHTML === "CHOOSE A PLAYER") && (_this.player1Selected === true || _this.player2Selected === true)) {
-            _this.startGame();
+            _this.startGame(); // this.countdown.play();
 
+
+            _this.dribble.play();
+
+            setTimeout(function () {
+              _this.dribble.play();
+            }, 1000);
+            setTimeout(function () {
+              _this.dribble.play();
+            }, 2000);
+            setTimeout(function () {
+              _this.whistle.play();
+            }, 3000);
+            setTimeout(function () {
+              _this.harlem.volume(.2);
+            }, 4000);
             _this.start.innerHTML = "main menu";
           } else {
             _this.resetGame();
@@ -4282,6 +4590,7 @@ var GameView = /*#__PURE__*/function () {
       // this.pause.style.display = "flex"
       this.setup();
       this.animate();
+      this.harlem.play();
     }
   }, {
     key: "setup",
@@ -4291,6 +4600,7 @@ var GameView = /*#__PURE__*/function () {
       this.game.turret.setColors();
       this.game.addTargets();
       this.game.moveTargets();
+      this.game.startCount();
     }
   }, {
     key: "resetGame",
@@ -4517,7 +4827,8 @@ var Target = /*#__PURE__*/function () {
         this.frame = this.frame === 0 ? 41 : 0;
         this.frameCount = 0;
       }
-    }
+    } // 
+
   }, {
     key: "draw",
     value: function draw(context) {

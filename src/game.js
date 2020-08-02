@@ -1,6 +1,7 @@
 const Projectile = require('./projectile');
 const Target = require('./target')
-const Turret = require('./turret')
+const Turret = require('./turret');
+const { Howl } = require('howler');
 
 class Game {
   constructor(width, height) {
@@ -20,12 +21,25 @@ class Game {
     this.reloaded = true;
     this.playerSelected;
     this.setSounds();
+    this.counter = 3; 
     // this.greyOut = this.greyOut.bind(this);
   }
+
+  startCount() {
+    this.beginCount;
+    if (this.counter >= 0) {
+    this.beginCount = setInterval(() => {
+        this.counter -= 1;
+    },1000);
+  } else {
+    clearInterval(this.beginCount)
+  }
+}
 
   setSounds() {
     Howler.volume(0.2);
     this.swish = new Howl({ src: ["dist/assets/swish.mp3"] });
+    this.buzzer = new Howl({ src: ["dist/assets/buzzer.wav"] });
   }
 
   movingObjects() {
@@ -46,7 +60,7 @@ class Game {
           target.aimY += 35;
         }
       });
-    }, 5000);
+    }, 4000);
     this.intervals.push(moveInterval);
   }
   }
@@ -80,7 +94,7 @@ class Game {
         this.offsetRow = false;
         // debugger
       }
-    }, 5000);
+    }, 4000);
     this.intervals.push(addInterval);
   }
   }
@@ -96,6 +110,7 @@ class Game {
         this.playing = false;
         this.intervals.forEach(interval => clearInterval(interval));
         this.projectiles =  this.projectiles.slice(0, this.projectiles.length - 1);
+        this.buzzer.play();
       }
     });
     this.projectiles.forEach((projectile) => {
@@ -103,6 +118,7 @@ class Game {
         this.intervals.forEach((interval) => clearInterval(interval));
         this.playing = false;
         this.projectiles =  this.projectiles.slice(0, this.projectiles.length - 1);
+        this.buzzer.play();
       }
     });
   }
@@ -187,11 +203,22 @@ class Game {
     context.strokeStyle = "white";
     context.stroke();
 
-    
+    // this.startCount(context);
+    if (this.counter > 0) {
+      context.font = "50px 'Press Start 2P', cursive"
+      context.fillStyle = "white"
+      context.fillText(this.counter, 140, 350)        
+    } else if (this.counter === 0) {
+      context.font = "50px 'Press Start 2P', cursive";
+      context.fillStyle = "white";
+      context.fillText("GO!", 115, 350);        
+    }
+
     let score = document.getElementById("score-text");
     let welcome = document.getElementById("welcome");
     if (this.playing === true) {
       score.innerHTML = `score: ${this.score}`;
+      // score.setAttribute("style","text-align: left")
       score.classList.remove("final-score");
       welcome.style.display = "none";
     } else {
@@ -239,9 +266,6 @@ class Game {
               obj.spriteSheet.src = `./dist/assets/grey.png`;
             }
           }
-          // if(this.gameOver() === true){
-            //   this.greyOut();
-            // }
             obj.draw(context);
           };
           

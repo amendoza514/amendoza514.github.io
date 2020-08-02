@@ -19,7 +19,7 @@ class Target {
     this.drop  = false;
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
-    this.spriteSheet.src = `./dist/assets/${this.color}.png`
+    this.spriteSheet.src = `./dist/assets/${this.color}.png`;
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
@@ -49,7 +49,7 @@ class Target {
       this.frameCount = 0;
     }
   }
-
+// 
   draw(context) {
     this.frameSet();
     // context.beginPath();
