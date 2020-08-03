@@ -39,6 +39,7 @@ class GameView {
     this.popped = false;
     this.intros1 = false;
     this.intros2 = false;
+
   }
 
   setMusic() {

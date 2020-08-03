@@ -3973,7 +3973,7 @@ var Game = /*#__PURE__*/function () {
             i--;
           } else if (obj.y > 550) {
             this.swish.play();
-            this.remove(obj, true);
+            this.remove(obj, false);
             i--;
           } else if (obj.drop) {
             obj.y += 15;
@@ -4806,11 +4806,11 @@ var Target = /*#__PURE__*/function () {
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
     this.spriteSheet.src = "./dist/assets/".concat(this.color, ".png");
-    this.pop = new Image();
-    this.pop.src = "./dist/assets/pop1.png";
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
+    this.pop = new Image();
+    this.pop.src = "./dist/assets/popv4.png";
     this.popFrame = 0;
     this.popFrameCount = 0;
     this.popFrameSet = this.popFrameSet.bind(this);
@@ -4849,11 +4849,8 @@ var Target = /*#__PURE__*/function () {
   }, {
     key: "popFrameSet",
     value: function popFrameSet() {
-      this.popFrameCount += 0.2;
-
-      if (this.popFrameCount % 32 === 0) {
-        this.popFrame = this.popFrameCount * 32;
-      }
+      this.popFrameCount += 1;
+      this.popFrame = this.popFrameCount * 32;
     } //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 
   }, {

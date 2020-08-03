@@ -268,7 +268,7 @@ class Game {
             i --
           } else if (obj.y > 550) {
             this.swish.play();
-            this.remove(obj, true);
+            this.remove(obj, false);
             i --
           } else if (obj.drop) {
             obj.y += 15;

@@ -20,11 +20,11 @@ class Target {
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
     this.spriteSheet.src = `./dist/assets/${this.color}.png`;
-    this.pop = new Image();
-    this.pop.src = `./dist/assets/pop1.png`;
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
+    this.pop = new Image();
+    this.pop.src = `./dist/assets/popv4.png`;
     this.popFrame = 0;
     this.popFrameCount = 0;
     this.popFrameSet = this.popFrameSet.bind(this);
@@ -56,12 +56,9 @@ class Target {
   }
 
   popFrameSet() {
-    this.popFrameCount += 0.2;
-    if (this.popFrameCount % 32 === 0){
+    this.popFrameCount += 1;
       this.popFrame = this.popFrameCount * 32;
-    }
   }
-
 
   //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
   draw(context) {
