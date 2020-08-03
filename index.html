@@ -228,5 +228,30 @@
         <div id='final-score'> </div>
     </div>
     <script src='./dist/bundle.js'></script>
+    <!-- FIREBASE STARTS HERE -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB9YI2QL1Gnxhmo9GPHXJF7W9fKWvhwgSQ",
+            authDomain: "bubbleball-3c836.firebaseapp.com",
+            databaseURL: "https://bubbleball-3c836.firebaseio.com",
+            projectId: "bubbleball-3c836",
+            storageBucket: "bubbleball-3c836.appspot.com",
+            messagingSenderId: "997944157435",
+            appId: "1:997944157435:web:cc4823f7453e82589abc5e",
+            measurementId: "G-KDTQV4N93Z"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <!-- FIREBASE ENDS HERE -->
 </body>
 </html>

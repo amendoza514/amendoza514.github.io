@@ -22,7 +22,6 @@ class Game {
     this.playerSelected;
     this.setSounds();
     this.counter = 3; 
-    // this.greyOut = this.greyOut.bind(this);
   }
 
   startCount() {
@@ -123,17 +122,28 @@ class Game {
     });
   }
 
-  remove(obj) {
+    frameSet() {
+    this.frameCount += 1;
+    if (this.frameCount === 80) {
+      this.frame = this.frame === 0 ? 32 : 0;
+      this.frameCount = 0;
+    }
+  }
+
+  remove(obj, points) {
     if (this.playing === true) {
       if (obj instanceof Projectile) {
         this.projectiles = this.projectiles
           .slice(0, this.projectiles.indexOf(obj))
           .concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+          points === true ? this.score += 23 : '';
+          return true
       } else if (obj instanceof Target) {
         this.targets = this.targets
           .slice(0, this.targets.indexOf(obj))
           .concat(this.targets.slice(this.targets.indexOf(obj) + 1));
-        this.score += 23;
+        points === true ? (this.score += 23) : "";
+        return true;
       }
     }
   }
@@ -234,14 +244,14 @@ class Game {
       }
       if (obj instanceof Projectile) {
         if (obj.hit) {
-          this.remove(obj);
+          this.remove(obj, true);
           i--;
         } else if (obj.aimY < 0) {
-          this.remove(obj);
-          i--;
+          this.remove(obj, false);
+          i--;      
         } else if (obj.aimY > 550 ) {
           this.swish.play()
-          this.remove(obj);
+          this.remove(obj, true);
           i--;
         } else if (obj.drop) {
           obj.aimY += 15;
@@ -251,14 +261,14 @@ class Game {
         }
         if (obj instanceof Target) {
           if (obj.hit) {
-            this.remove(obj);
+            this.remove(obj, true);
             i --;
           } else if (obj.y < 0) {
             this.remove(obj);
             i --
           } else if (obj.y > 550) {
-            this.swish.play()
-            this.remove(obj);
+            this.swish.play();
+            this.remove(obj, true);
             i --
           } else if (obj.drop) {
             obj.y += 15;

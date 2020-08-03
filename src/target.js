@@ -20,9 +20,14 @@ class Target {
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
     this.spriteSheet.src = `./dist/assets/${this.color}.png`;
+    this.pop = new Image();
+    this.pop.src = `./dist/assets/pop1.png`;
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
+    this.popFrame = 0;
+    this.popFrameCount = 0;
+    this.popFrameSet = this.popFrameSet.bind(this);
   }
 
   move() {
@@ -49,16 +54,26 @@ class Target {
       this.frameCount = 0;
     }
   }
-// 
-  draw(context) {
-    this.frameSet();
-    // context.beginPath();
-    // context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    // context.fillStyle = this.color;
-    // context.fill();
 
-    //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
-    context.drawImage(this.spriteSheet, this.frame, 0, 41, 41, this.x - 20, this.y - 20, 41, 41);
+  popFrameSet() {
+    this.popFrameCount += 0.2;
+    if (this.popFrameCount % 32 === 0){
+      this.popFrame = this.popFrameCount * 32;
+    }
+  }
+
+
+  //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+  draw(context) {
+    if (!this.hit) {
+      this.frameSet();
+      context.drawImage(this.spriteSheet, this.frame, 0, 41, 41, this.x - 20, this.y - 20, 41, 41);
+    }
+     if (this.hit) {
+      this.popFrameSet();
+      context.drawImage(this.pop, this.popFrame, 0, 32, 32, this.x - 20, this.y - 20, 32, 32);
+    }
+
     //next frame below
     // context.drawImage(this.spriteSheet, 40, 0, 40, 40, this.x, this.y, 40, 40);
   }

@@ -3687,7 +3687,7 @@ var Game = /*#__PURE__*/function () {
     this.reloaded = true;
     this.playerSelected;
     this.setSounds();
-    this.counter = 3; // this.greyOut = this.greyOut.bind(this);
+    this.counter = 3;
   }
 
   _createClass(Game, [{
@@ -3826,14 +3826,27 @@ var Game = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "frameSet",
+    value: function frameSet() {
+      this.frameCount += 1;
+
+      if (this.frameCount === 80) {
+        this.frame = this.frame === 0 ? 32 : 0;
+        this.frameCount = 0;
+      }
+    }
+  }, {
     key: "remove",
-    value: function remove(obj) {
+    value: function remove(obj, points) {
       if (this.playing === true) {
         if (obj instanceof Projectile) {
           this.projectiles = this.projectiles.slice(0, this.projectiles.indexOf(obj)).concat(this.projectiles.slice(this.projectiles.indexOf(obj) + 1));
+          points === true ? this.score += 23 : '';
+          return true;
         } else if (obj instanceof Target) {
           this.targets = this.targets.slice(0, this.targets.indexOf(obj)).concat(this.targets.slice(this.targets.indexOf(obj) + 1));
-          this.score += 23;
+          points === true ? this.score += 23 : "";
+          return true;
         }
       }
     }
@@ -3935,14 +3948,14 @@ var Game = /*#__PURE__*/function () {
 
         if (obj instanceof Projectile) {
           if (obj.hit) {
-            this.remove(obj);
+            this.remove(obj, true);
             i--;
           } else if (obj.aimY < 0) {
-            this.remove(obj);
+            this.remove(obj, false);
             i--;
           } else if (obj.aimY > 550) {
             this.swish.play();
-            this.remove(obj);
+            this.remove(obj, true);
             i--;
           } else if (obj.drop) {
             obj.aimY += 15;
@@ -3953,14 +3966,14 @@ var Game = /*#__PURE__*/function () {
 
         if (obj instanceof Target) {
           if (obj.hit) {
-            this.remove(obj);
+            this.remove(obj, true);
             i--;
           } else if (obj.y < 0) {
             this.remove(obj);
             i--;
           } else if (obj.y > 550) {
             this.swish.play();
-            this.remove(obj);
+            this.remove(obj, true);
             i--;
           } else if (obj.drop) {
             obj.y += 15;
@@ -4793,9 +4806,14 @@ var Target = /*#__PURE__*/function () {
     this.gameOver = this.gameOver.bind(this);
     this.spriteSheet = new Image();
     this.spriteSheet.src = "./dist/assets/".concat(this.color, ".png");
+    this.pop = new Image();
+    this.pop.src = "./dist/assets/pop1.png";
     this.frame = 0;
     this.frameCount = 0;
     this.frameSet = this.frameSet.bind(this);
+    this.popFrame = 0;
+    this.popFrameCount = 0;
+    this.popFrameSet = this.popFrameSet.bind(this);
   }
 
   _createClass(Target, [{
@@ -4827,19 +4845,31 @@ var Target = /*#__PURE__*/function () {
         this.frame = this.frame === 0 ? 41 : 0;
         this.frameCount = 0;
       }
-    } // 
+    }
+  }, {
+    key: "popFrameSet",
+    value: function popFrameSet() {
+      this.popFrameCount += 0.2;
+
+      if (this.popFrameCount % 32 === 0) {
+        this.popFrame = this.popFrameCount * 32;
+      }
+    } //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 
   }, {
     key: "draw",
     value: function draw(context) {
-      this.frameSet(); // context.beginPath();
-      // context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      // context.fillStyle = this.color;
-      // context.fill();
-      //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+      if (!this.hit) {
+        this.frameSet();
+        context.drawImage(this.spriteSheet, this.frame, 0, 41, 41, this.x - 20, this.y - 20, 41, 41);
+      }
 
-      context.drawImage(this.spriteSheet, this.frame, 0, 41, 41, this.x - 20, this.y - 20, 41, 41); //next frame below
+      if (this.hit) {
+        this.popFrameSet();
+        context.drawImage(this.pop, this.popFrame, 0, 32, 32, this.x - 20, this.y - 20, 32, 32);
+      } //next frame below
       // context.drawImage(this.spriteSheet, 40, 0, 40, 40, this.x, this.y, 40, 40);
+
     }
   }]);
 
