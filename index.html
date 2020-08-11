@@ -45,44 +45,35 @@
 
         .fab, .far {
             font-weight: 400;
-            display: inline-grid;
+            /* display: inline-grid; */
             background-color: black;
         }
-
+        
         .fa-github:before {
             content: "\f09b";
             background-color: black;
+            color: red;
             padding-right: 30px;
             padding-left: 30px;
             cursor: pointer;
-          }
-
-        .fa-github:hover {
-            color: #04ad04;
         }
 
         .fa-linkedin-in:before {
             content: "\f0e1";
             background-color: black;
+            color: red;
             padding-right: 15px;
             padding-left: 23px;
             cursor: pointer;
         }
 
-        .fa-linkedin-in:hover {
-            color: #04ad04;
-        }
-
         .fa-angellist:before {
             content: "\f209";
             background-color: black;
+            color: red;
             padding-right: 25px;
             padding-left: 30px;
             cursor: pointer;
-        }
-
-        .fa-angellist:hover {
-            color: #04ad04;
         }
 
         .github-text {
@@ -164,7 +155,7 @@
         }
 
         #lebron {
-            margin-top: -9px;
+            margin-top: -11px;
             color: red;
             margin-bottom: 5px;
             background-color: black;
@@ -173,7 +164,7 @@
         }
 
         #lebron:hover {
-            margin-top: -9px;
+            margin-top: -11px;
             margin-bottom: 5px;
             color: white;
             background-color: black;
@@ -182,7 +173,7 @@
         }
 
          #lebron:active {
-            margin-top: -9px;
+            margin-top: -11px;
             margin-bottom: 5px;
             color: #04ad04;            
             background-color: black;
@@ -191,7 +182,7 @@
         }
         
         #steph {
-            margin-top: -9px;
+            margin-top: -11px;
             margin-bottom: 5px;
             color: red;
             background-color: black;
@@ -200,7 +191,7 @@
         }
 
         #steph:hover {
-            margin-top: -9px;
+            margin-top: -11px;
             margin-bottom: 5px;
             color: white;
             background-color: black;
@@ -209,7 +200,7 @@
         }
 
          #steph:active {
-            margin-top: -9px;
+            margin-top: -11px;
             margin-bottom: 5px;
             color: #04ad04;
             background-color: black;
@@ -305,9 +296,15 @@
     <div class='right-container'>
         <canvas id='canvas'></canvas>
         <div class='links'>
-            <i class="fab fa-github"><div class='github-text'>GitHub</div></i>
-            <i class="fab fa-linkedin-in"><div class='linkedin-text'>LinkedIn</div></i>
-            <i class="fab fa-angellist"><div class='angellist-text'>AngelList</div></i>
+            <a class='git-container' href="https://github.com/amendoza514">
+                <i class="fab fa-github"><div class='github-text'>GitHub</div></i>
+            </a>
+            <a class='linkedin-container' href="https://www.linkedin.com/in/alex-mendoza-aa4615b5/">
+                <i class="fab fa-linkedin-in"><div class='linkedin-text'>LinkedIn</div></i>
+            </a>
+            <a class='angel-container' href="https://angel.co/u/alexander-jordan-mendoza">
+                <i class="fab fa-angellist"><div class='angellist-text'>AngelList</div></i>
+            </a>
         </div>
     </div>
     <div class='menu-buttons'>
@@ -362,30 +359,6 @@
     </div>
 
     <script src='./dist/bundle.js'></script>
-    <!-- FIREBASE STARTS HERE -->
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
-    
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
-    
-    <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyB9YI2QL1Gnxhmo9GPHXJF7W9fKWvhwgSQ",
-            authDomain: "bubbleball-3c836.firebaseapp.com",
-            databaseURL: "https://bubbleball-3c836.firebaseio.com",
-            projectId: "bubbleball-3c836",
-            storageBucket: "bubbleball-3c836.appspot.com",
-            messagingSenderId: "997944157435",
-            appId: "1:997944157435:web:cc4823f7453e82589abc5e",
-            measurementId: "G-KDTQV4N93Z"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-    </script>
-    <!-- FIREBASE ENDS HERE -->
+
 </body>
 </html>
