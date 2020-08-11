@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bubble Ball</title>
+    <script src="https://kit.fontawesome.com/f2770180a0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style type="text/css">
     
@@ -25,8 +26,95 @@
             border: 4px solid white;
             background-color: gray;
             margin-left: 50px;
-            /* cursor: none; */
         }
+
+        .links {
+            border: 4px solid white;
+            width: 300px;
+            background-color: black;
+            margin-left: 50px;
+            margin-top: 10px;
+            color: white;
+            /* color: red; */
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 25px;
+        }
+
+        .fab, .far {
+            font-weight: 400;
+            display: inline-grid;
+            background-color: black;
+        }
+
+        .fa-github:before {
+            content: "\f09b";
+            background-color: black;
+            padding-right: 30px;
+            padding-left: 30px;
+            cursor: pointer;
+          }
+
+        .fa-github:hover {
+            color: #04ad04;
+        }
+
+        .fa-linkedin-in:before {
+            content: "\f0e1";
+            background-color: black;
+            padding-right: 15px;
+            padding-left: 23px;
+            cursor: pointer;
+        }
+
+        .fa-linkedin-in:hover {
+            color: #04ad04;
+        }
+
+        .fa-angellist:before {
+            content: "\f209";
+            background-color: black;
+            padding-right: 25px;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+
+        .fa-angellist:hover {
+            color: #04ad04;
+        }
+
+        .github-text {
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 9px;
+            padding-top: 8px;
+            color: white;
+        }
+
+        .linkedin-text {
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 9px;
+            padding-top: 8px;
+            color: white;
+        }
+
+        .angellist-text {
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 9px;
+            padding-top: 8px;
+            color: white;
+        }
+
         #score {
             margin-right: 10px;
             margin-left: 10px;
@@ -49,8 +137,8 @@
          #welcome {
             margin-right: 10px;
             margin-left: 10px;            
-            font-size: 8px;
-            height: 378px;
+            font-size: 9px;
+            height: 458px;
             width: 400px;
             border: 4px solid white;
             padding: 15px;
@@ -76,7 +164,7 @@
         }
 
         #lebron {
-            margin-top: -8px;
+            margin-top: -9px;
             color: red;
             margin-bottom: 5px;
             background-color: black;
@@ -85,7 +173,7 @@
         }
 
         #lebron:hover {
-            margin-top: -8px;
+            margin-top: -9px;
             margin-bottom: 5px;
             color: white;
             background-color: black;
@@ -94,7 +182,7 @@
         }
 
          #lebron:active {
-            margin-top: -8px;
+            margin-top: -9px;
             margin-bottom: 5px;
             color: #04ad04;            
             background-color: black;
@@ -103,7 +191,7 @@
         }
         
         #steph {
-            margin-top: -8px;
+            margin-top: -9px;
             margin-bottom: 5px;
             color: red;
             background-color: black;
@@ -112,7 +200,7 @@
         }
 
         #steph:hover {
-            margin-top: -8px;
+            margin-top: -9px;
             margin-bottom: 5px;
             color: white;
             background-color: black;
@@ -121,7 +209,7 @@
         }
 
          #steph:active {
-            margin-top: -8px;
+            margin-top: -9px;
             margin-bottom: 5px;
             color: #04ad04;
             background-color: black;
@@ -214,8 +302,14 @@
 </head>
 <body>
     </div>
-    <canvas id='canvas'></canvas>
-    
+    <div class='right-container'>
+        <canvas id='canvas'></canvas>
+        <div class='links'>
+            <i class="fab fa-github"><div class='github-text'>GitHub</div></i>
+            <i class="fab fa-linkedin-in"><div class='linkedin-text'>LinkedIn</div></i>
+            <i class="fab fa-angellist"><div class='angellist-text'>AngelList</div></i>
+        </div>
+    </div>
     <div class='menu-buttons'>
         <div id='score'>
             <span id='score-text' class="final-score">Bubble Ball!</span>
@@ -232,8 +326,8 @@
             the worlds largest completely isolated sports complex, known as... 
             <br/>
             <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            * The Orlando Bubble *
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            *** The Orlando Bubble ***
             <!-- <div class='emp-text'>"The Orlando Bubble"</div>. -->
             <br/>
             <br/>
@@ -266,6 +360,7 @@
             </div>
         <div id='final-score'> </div>
     </div>
+
     <script src='./dist/bundle.js'></script>
     <!-- FIREBASE STARTS HERE -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
