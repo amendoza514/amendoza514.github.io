@@ -3341,14 +3341,14 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.width = 320;
   canvas.height = 540;
   var lebronImg = new Image();
-  lebronImg.src = "./dist/assets/lebron3.png";
+  lebronImg.src = "./dist/assets/lebron.png";
 
   lebronImg.onload = function () {
     context.drawImage(lebronImg, 20, 217.5, 140, 100);
   };
 
   var steph = new Image();
-  steph.src = "./dist/assets/steph3.png";
+  steph.src = "./dist/assets/steph.png";
 
   steph.onload = function () {
     context.drawImage(steph, 165, 217.5, 140, 100);

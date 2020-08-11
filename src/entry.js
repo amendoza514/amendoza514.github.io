@@ -11,22 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.height = 540;
 
     let lebronImg = new Image();
-    lebronImg.src = `./dist/assets/lebron3.png`;
+    lebronImg.src = `./dist/assets/lebron.png`;
     lebronImg.onload = () => {
         context.drawImage(lebronImg, 20,  217.5, 140, 100);
     }
 
     let steph = new Image();
-    steph.src = `./dist/assets/steph3.png`;
+    steph.src = `./dist/assets/steph.png`;
     steph.onload = () => {
       context.drawImage(steph, 165, 217.5, 140, 100);
     }
+
 
     let logo = new Image();
     logo.src = `./dist/assets/nba2.png`;
     logo.onload = () => {
       context.drawImage(logo, 87, 208, 153, 100);
     };
+
 
     go();
 
