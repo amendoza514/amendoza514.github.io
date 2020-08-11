@@ -3420,11 +3420,7 @@ document.addEventListener("DOMContentLoaded", function () {
   context.lineWidth = 4;
   context.setLineDash([0, 0]);
   context.strokeStyle = "white";
-  context.stroke(); // context.beginPath();
-  // context.rect(16, 210, 290, 108);
-  // context.strokeStyle = 'gray';
-  // context.stroke()
-  //maybe change here for color player select?    
+  context.stroke(); //maybe change here for color player select?    
 
   context.beginPath();
   context.rect(16, 210, 290, 230);
@@ -3432,7 +3428,7 @@ document.addEventListener("DOMContentLoaded", function () {
   context.strokeStyle = 'white';
   context.stroke();
   var grd = context.createLinearGradient(0, 580, 0, 0);
-  grd.addColorStop(0, "black");
+  grd.addColorStop(0, "darkblue");
   grd.addColorStop(1, "lightblue");
   context.fillStyle = grd;
   context.lineWidth = 5;
@@ -4531,6 +4527,8 @@ var GameView = /*#__PURE__*/function () {
     key: "handlePlayer1",
     value: function handlePlayer1() {
       this.lebron.innerHTML = "* Lebron * ";
+      this.lebron.style.color = "#04ad04";
+      this.steph.style.color = "red";
       this.intros1 === false ? this.lebronIntro.play() : "";
       this.intros1 = true;
       this.steph.innerHTML = "Steph";
@@ -4542,6 +4540,8 @@ var GameView = /*#__PURE__*/function () {
     key: "handlePlayer2",
     value: function handlePlayer2() {
       this.steph.innerHTML = "* Steph *";
+      this.steph.style.color = "#04ad04";
+      this.lebron.style.color = "red";
       this.intros2 === false ? this.stephIntro.play() : "";
       this.intros2 = true;
       this.lebron.innerHTML = "Lebron";

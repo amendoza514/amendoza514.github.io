@@ -39,7 +39,6 @@ class GameView {
     this.popped = false;
     this.intros1 = false;
     this.intros2 = false;
-
   }
 
   setMusic() {
@@ -482,6 +481,8 @@ class GameView {
 
   handlePlayer1() {
     this.lebron.innerHTML = "* Lebron * ";
+    this.lebron.style.color = "#04ad04";
+    this.steph.style.color = "red";
     this.intros1 === false ? this.lebronIntro.play() : "";
     this.intros1 = true;
     this.steph.innerHTML = "Steph";
@@ -492,6 +493,8 @@ class GameView {
 
   handlePlayer2() {
     this.steph.innerHTML = "* Steph *";
+    this.steph.style.color = "#04ad04";
+    this.lebron.style.color = "red";
     this.intros2 === false ? this.stephIntro.play() : "";
     this.intros2 = true;
     this.lebron.innerHTML = "Lebron";

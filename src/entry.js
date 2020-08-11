@@ -22,13 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
       context.drawImage(steph, 165, 217.5, 140, 100);
     }
 
-
     let logo = new Image();
     logo.src = `./dist/assets/nba2.png`;
     logo.onload = () => {
       context.drawImage(logo, 87, 208, 153, 100);
     };
-
 
     go();
 
@@ -93,12 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
     context.strokeStyle = "white";
     context.stroke();
 
-    
-    // context.beginPath();
-    // context.rect(16, 210, 290, 108);
-    // context.strokeStyle = 'gray';
-    // context.stroke()
-
     //maybe change here for color player select?    
     context.beginPath();
     context.rect(16, 210, 290, 230);
@@ -107,12 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
     context.stroke();
     
     let grd = context.createLinearGradient(0, 580, 0, 0);
-    grd.addColorStop(0, "black");
+    grd.addColorStop(0, "darkblue");
     grd.addColorStop(1, "lightblue");
     context.fillStyle = grd;
     context.lineWidth = 5;
     context.fill();
     context.stroke();
+
     
     context.beginPath()
     context.moveTo(15, 323);
