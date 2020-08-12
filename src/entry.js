@@ -26,23 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
     logo.src = `./dist/assets/nba2.png`;
     logo.onload = () => {
       context.drawImage(logo, 87, 208, 153, 100);
+        // 
+                context.font = "10px 'Press Start 2P', cursive";
+                context.fillStyle = "white";
+                context.fillText("L.JAMES", 40, 348);  
+
+                       context.font = "10px 'Press Start 2P', cursive";
+                       context.fillStyle = "white";
+                       context.fillText("S.CURRY", 212, 348);  
     };
 
-      let lText = new Image();
-      lText.src = `./dist/assets/steph.png`;
-      lText.onload = () => {
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "white";
-        context.fillText("L.JAMES", 40, 348);   
-      };
+    //   let lText = new Image();
+    //   lText.src = `./dist/assets/steph.png`;
+    //   lText.onload = () => {
+    //     context.font = "10px 'Press Start 2P', cursive";
+    //     context.fillStyle = "white";
+    //     context.fillText("L.JAMES", 40, 348);   
+    //   };
 
-      let sText = new Image();
-      sText.src = `./dist/assets/steph.png`;
-      sText.onload = () => {
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "white";
-         context.fillText("S.CURRY", 212, 348);  
-      }; 
+    //   let sText = new Image();
+    //   sText.src = `./dist/assets/steph.png`;
+    //   sText.onload = () => {
+    //     context.font = "10px 'Press Start 2P', cursive";
+    //     context.fillStyle = "white";
+    //      context.fillText("S.CURRY", 212, 348);  
+    //   }; 
 
     go();
 
