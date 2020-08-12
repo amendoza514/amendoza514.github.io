@@ -26,31 +26,218 @@ document.addEventListener("DOMContentLoaded", function () {
     logo.src = `./dist/assets/nba2.png`;
     logo.onload = () => {
       context.drawImage(logo, 87, 208, 153, 100);
-        // 
-                context.font = "10px 'Press Start 2P', cursive";
-                context.fillStyle = "white";
-                context.fillText("L.JAMES", 40, 348);  
+        //Canvas font renders below 
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+        context.fillText("L.JAMES", 40, 348);  
 
-                       context.font = "10px 'Press Start 2P', cursive";
-                       context.fillStyle = "white";
-                       context.fillText("S.CURRY", 212, 348);  
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+        context.fillText("S.CURRY", 212, 348);  
+
+        //stat text w/ shadow precursor
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "black";
+        context.fillText("SPEED", 137, 367);   
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "yellow";
+        context.fillText("SPEED", 135, 365);   
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "black";
+        context.fillText("3 PTRS", 132, 387);  
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "yellow";
+        context.fillText("3 PTRS", 130, 385);  
+    
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "black";
+        context.fillText("DUNKS", 137, 407);  
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "yellow";
+        context.fillText("DUNKS", 135, 405);  
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "black";
+        context.fillText("DEF.", 146, 427);  
+
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "yellow";
+        context.fillText("DEF.", 144, 425);  
+
+        //lebron stats
+        context.beginPath();
+        context.moveTo(37, 361);
+        context.lineTo(117, 361);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(35, 359);
+        context.lineTo(115, 359);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(36, 359);
+        context.lineTo(105, 359);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(37, 381);
+        context.lineTo(117, 381);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(35, 379);
+        context.lineTo(115, 379);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+       context.beginPath();
+       context.moveTo(36, 379);
+       context.lineTo(95, 379);
+       context.lineWidth = 6;
+       context.strokeStyle = "green";
+       context.stroke();
+    
+        context.beginPath();
+        context.moveTo(37, 401);
+        context.lineTo(117, 401);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(35, 399);
+        context.lineTo(115, 399);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(36, 399);
+        context.lineTo(110, 399);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(37, 421);
+        context.lineTo(117, 421);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+    
+        context.beginPath();
+        context.moveTo(35, 419);
+        context.lineTo(115, 419);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(36, 419);
+        context.lineTo(95, 419);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        //curry stats
+        context.beginPath();
+        context.moveTo(207, 361);
+        context.lineTo(287, 361);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(205, 359);
+        context.lineTo(285, 359);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(206, 359);
+        context.lineTo(270, 359);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(207, 381);
+        context.lineTo(287, 381);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(205, 379);
+        context.lineTo(285, 379);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(206, 379);
+        context.lineTo(284, 379);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(207, 401);
+        context.lineTo(287, 401);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(205, 399);
+        context.lineTo(285, 399);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(206, 399);
+        context.lineTo(240, 399);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(207, 421);
+        context.lineTo(287, 421);
+        context.lineWidth = 7;
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(205, 419);
+        context.lineTo(285, 419);
+        context.lineWidth = 7;
+        context.strokeStyle = "white";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(206, 419);
+        context.lineTo(255, 419);
+        context.lineWidth = 6;
+        context.strokeStyle = "green";
+        context.stroke();
     };
-
-    //   let lText = new Image();
-    //   lText.src = `./dist/assets/steph.png`;
-    //   lText.onload = () => {
-    //     context.font = "10px 'Press Start 2P', cursive";
-    //     context.fillStyle = "white";
-    //     context.fillText("L.JAMES", 40, 348);   
-    //   };
-
-    //   let sText = new Image();
-    //   sText.src = `./dist/assets/steph.png`;
-    //   sText.onload = () => {
-    //     context.font = "10px 'Press Start 2P', cursive";
-    //     context.fillStyle = "white";
-    //      context.fillText("S.CURRY", 212, 348);  
-    //   }; 
 
     go();
 
@@ -138,213 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
     context.strokeStyle = 'white'
     context.stroke();
    
-    //player names 
-
-    // context.font = "10px 'Press Start 2P', cursive";
-    // context.fillStyle = "white";
-    // context.fillText("L.JAMES", 40, 348);    
-    
-    // context.font = "10px 'Press Start 2P', cursive";
-    // context.fillStyle = "white";
-    // context.fillText("S.CURRY", 212, 348);   
-
-    //stat text w/ shadow precursor
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "black";
-        context.fillText("SPEED", 137, 367);   
-
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "yellow";
-    context.fillText("SPEED", 135, 365);   
-
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "black";
-        context.fillText("3 PTRS", 132, 387);  
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "yellow";
-    context.fillText("3 PTRS", 130, 385);  
-    
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "black";
-        context.fillText("DUNKS", 137, 407);  
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "yellow";
-    context.fillText("DUNKS", 135, 405);  
-
-        context.font = "10px 'Press Start 2P', cursive";
-        context.fillStyle = "black";
-        context.fillText("DEF.", 146, 427);  
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "yellow";
-    context.fillText("DEF.", 144, 425);  
-
-    //lebron stats
-      context.beginPath();
-      context.moveTo(37, 361);
-      context.lineTo(117, 361);
-      context.lineWidth = 7;
-      context.strokeStyle = "black";
-      context.stroke();
-    context.beginPath();
-    context.moveTo(35, 359);
-    context.lineTo(115, 359);
-    context.lineWidth = 7;
-    context.strokeStyle = "white";
-    context.stroke();
-
-        context.beginPath();
-        context.moveTo(36, 359);
-        context.lineTo(105, 359);
-        context.lineWidth = 6;
-        context.strokeStyle = "green";
-        context.stroke();
-
-   context.beginPath();
-   context.moveTo(37, 381);
-   context.lineTo(117, 381);
-   context.lineWidth = 7;
-   context.strokeStyle = "black";
-   context.stroke();
-    context.beginPath();
-    context.moveTo(35, 379);
-    context.lineTo(115, 379);
-    context.lineWidth = 7;
-    context.strokeStyle = "white";
-    context.stroke();
-
-       context.beginPath();
-       context.moveTo(36, 379);
-       context.lineTo(95, 379);
-       context.lineWidth = 6;
-       context.strokeStyle = "green";
-       context.stroke();
-    
-    context.beginPath();
-    context.moveTo(37, 401);
-    context.lineTo(117, 401);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-
-     context.beginPath();
-     context.moveTo(35, 399);
-     context.lineTo(115, 399);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-       context.beginPath();
-       context.moveTo(36, 399);
-       context.lineTo(110, 399);
-       context.lineWidth = 6;
-       context.strokeStyle = "green";
-       context.stroke();
-
-    context.beginPath();
-    context.moveTo(37, 421);
-    context.lineTo(117, 421);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-    
-     context.beginPath();
-     context.moveTo(35, 419);
-     context.lineTo(115, 419);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-    context.beginPath();
-    context.moveTo(36, 419);
-    context.lineTo(95, 419);
-    context.lineWidth = 6;
-    context.strokeStyle = "green";
-    context.stroke();
-
-    //curry stats
-    context.beginPath();
-    context.moveTo(207, 361);
-    context.lineTo(287, 361);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-
-     context.beginPath();
-     context.moveTo(205, 359);
-     context.lineTo(285, 359);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-        context.beginPath();
-        context.moveTo(206, 359);
-        context.lineTo(270, 359);
-        context.lineWidth = 6;
-        context.strokeStyle = "green";
-        context.stroke();
-
-    context.beginPath();
-    context.moveTo(207, 381);
-    context.lineTo(287, 381);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-
-     context.beginPath();
-     context.moveTo(205, 379);
-     context.lineTo(285, 379);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-        context.beginPath();
-        context.moveTo(206, 379);
-        context.lineTo(284, 379);
-        context.lineWidth = 6;
-        context.strokeStyle = "green";
-        context.stroke();
-
-    context.beginPath();
-    context.moveTo(207, 401);
-    context.lineTo(287, 401);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-
-     context.beginPath();
-     context.moveTo(205, 399);
-     context.lineTo(285, 399);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-        context.beginPath();
-        context.moveTo(206, 399);
-        context.lineTo(240, 399);
-        context.lineWidth = 6;
-        context.strokeStyle = "green";
-        context.stroke();
-
-    context.beginPath();
-    context.moveTo(207, 421);
-    context.lineTo(287, 421);
-    context.lineWidth = 7;
-    context.strokeStyle = "black";
-    context.stroke();
-
-     context.beginPath();
-     context.moveTo(205, 419);
-     context.lineTo(285, 419);
-     context.lineWidth = 7;
-     context.strokeStyle = "white";
-     context.stroke();
-
-        context.beginPath();
-        context.moveTo(206, 419);
-        context.lineTo(255, 419);
-        context.lineWidth = 6;
-        context.strokeStyle = "green";
-        context.stroke();
+    //insert above prefetch below if necessary
 });
 
 function newGame() {
