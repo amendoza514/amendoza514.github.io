@@ -4,7 +4,7 @@
 
 # About
 
-*Bubble Ball!* was inspired by the NBA’s move to Disney’s Orlando campus for a restart to the NBA season and eventual playoffs (i.e. the “NBA Bubble”) in response to the 2020 COVID crisis. Design elements were also inspired by the classic "NBA Jam" arcade cabinets that players choose their favorite players.  Players must use the mouse to aim and fire a turret to destroy targets of like-color in order to prevent them from crossing  the 'half-court' and ending the game. 
+*Bubble Ball!* was inspired by the NBA’s move to Disney’s Orlando campus for a restart to the NBA season and eventual playoffs (i.e. the “NBA Bubble”) in response to the 2020 COVID crisis. Design elements were also inspired by the classic "NBA Jam" game cabinets in arcades throughout the 90's that let players choose from their favorite players.  Players must use the mouse to aim and fire a turret to destroy targets of like-color in order to prevent them from crossing  the 'half-court' and ending the game. 
 
 Players can target clusters of targets with the same color of the current projectile loaded (projectile previews are visible at the turret) to destroy multiple at the same time. Targets that are completely isolated from other targets as a result of a shot are rewarded as 'free throws' and dropped from the court for free points.
 
