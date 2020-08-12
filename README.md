@@ -16,8 +16,7 @@ Check out the [live demo](https://amendoza514.github.io/) if you are interested!
 
 ## Demo Gameplay
 
-![Screen Recording 2020-08-12 at 01 14 PM](https://user-images.githubusercontent.com/62665796/90070561-f1594f80-dca8-11ea-8e9c-c5c7d4f91f26.gif)
-
+![gameplay](https://user-images.githubusercontent.com/62665796/90072345-287d3000-dcac-11ea-9b3f-49d8514ecd70.gif)
 
 ## Features
 ### Collision Detection and Chain-Reaction Dynamic
