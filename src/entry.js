@@ -28,15 +28,21 @@ document.addEventListener("DOMContentLoaded", function () {
       context.drawImage(logo, 87, 208, 153, 100);
     };
 
-    // let font = new FontFace(
-    //   "Press Start 2P",
-    //   "url(https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap)");
+      let lText = new Image();
+      lText.src = `./dist/assets/steph.png`;
+      lText.onload = () => {
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+        context.fillText("L.JAMES", 40, 348);   
+      };
 
-    // font.load().then((font) => {
-    //     document.fonts.add(font);
-
-    //     console.log('Font Loaded')
-    });
+      let sText = new Image();
+      sText.src = `./dist/assets/steph.png`;
+      sText.onload = () => {
+        context.font = "10px 'Press Start 2P', cursive";
+        context.fillStyle = "white";
+         context.fillText("S.CURRY", 212, 348);  
+      }; 
 
     go();
 
@@ -126,13 +132,13 @@ document.addEventListener("DOMContentLoaded", function () {
    
     //player names 
 
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "white";
-    context.fillText("L.JAMES", 40, 348);    
+    // context.font = "10px 'Press Start 2P', cursive";
+    // context.fillStyle = "white";
+    // context.fillText("L.JAMES", 40, 348);    
     
-    context.font = "10px 'Press Start 2P', cursive";
-    context.fillStyle = "white";
-    context.fillText("S.CURRY", 212, 348);   
+    // context.font = "10px 'Press Start 2P', cursive";
+    // context.fillStyle = "white";
+    // context.fillText("S.CURRY", 212, 348);   
 
     //stat text w/ shadow precursor
         context.font = "10px 'Press Start 2P', cursive";
