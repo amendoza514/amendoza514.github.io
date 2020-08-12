@@ -1,6 +1,6 @@
 # Bubble Ball!
 
-[*Bubble Ball!*](https://amendoza514.github.io/) is an arcade-styled shooter/puzzle game that leverages varied custom collision detection patterns to reward accurate shot placement by players. No libraries (other than howler.js for reliable audio interactivity across browsers) were used in the creation of this Javascript and Canvas only project.
+*Bubble Ball!* (https://amendoza514.github.io/) is an arcade-styled shooter/puzzle game that leverages varied custom collision detection patterns to reward accurate shot placement by players. No libraries (other than howler.js for reliable audio interactivity across browsers) were used in the creation of this Javascript and Canvas only project.
 
 # About
 
