@@ -2,6 +2,8 @@
 
 *Bubble Ball!* (https://amendoza514.github.io/) is an arcade-styled shooter/puzzle game that leverages varied custom collision detection patterns to reward accurate shot placement by players. No libraries (other than howler.js for reliable audio interactivity across browsers) were used in the creation of this Javascript and Canvas only project.
 
+<img width="849" alt="Screen Shot 2020-08-12 at 1 08 28 PM" src="https://user-images.githubusercontent.com/62665796/90070783-45643400-dca9-11ea-9c97-04edca6fe3d4.png">
+
 # About
 
 *Bubble Ball!* was inspired by the NBA’s move to Disney’s Orlando campus for a restart to the NBA season and eventual playoffs (i.e. the “NBA Bubble”) in response to the 2020 COVID crisis. Design elements were also inspired by the classic "NBA Jam" game cabinets in arcades throughout the 90's that let players choose from their favorite NBA starters.  Players must use the mouse to aim and fire a turret to destroy targets of like-color in order to prevent them from crossing  the 'half-court' and ending the game. 
