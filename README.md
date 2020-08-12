@@ -12,3 +12,94 @@ Additionally, players can choose from "LeBron James" or "Steph Curry" player typ
 
 Check out the [live demo](https://amendoza514.github.io/) if you are interested!
 
+## Features
+### Collision Detection and Chain-Reaction Dynamic
+I chose to expand on basic 2D circle detection logic for my primary game mechanics, as I wanted to avoid leveraging any external libraries or resources. By isolating targets and projectiles into separate object types, I was able to register valid collisions in real time by checking object type, color, and distance from other surrounding objects (preventing self-generating targets of the same color from 'popping' on load). 
+
+    
+    getDistance(x1, y1, x2, y2) {
+	    const  xDist = x2 - x1;
+	    const  yDist = y2 - y1;
+	    return  Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+    }
+    
+    checkCollision() {
+	    let  currentShot = this.game.projectiles
+		    [this.game.projectiles.length - 1];
+        
+	    for (let  k = 0; k < this.game.projectiles.length - 1; k++) {
+	    if (this.game.projectiles[k].drop === true) {
+	    continue;
+	    }
+	    let  pX = currentShot.aimX;
+	    let  pY = currentShot.aimY;
+	    let  pRadius = currentShot.radius;
+	    let  tX = this.game.projectiles[k].aimX;
+	    let  tY = this.game.projectiles[k].aimY;
+	    let  tRadius = currentShot.radius;
+
+	    if (this.getDistance(pX, pY, tX, tY) < pRadius + tRadius) {
+		    currentShot.dx = 0;
+		    currentShot.dy = 0;
+		    currentShot.radius = 20;
+		    currentShot.aimX = this.approxX(pX, tX);
+		    currentShot.aimY = this.approxY(pY, tY);	
+		    currentShot.collided = true;
+		    this.game.reloaded = true;
+ 
+	    if (currentShot.color === this.game.projectiles[k].color) {
+		    if (this.andOneNumber === null) {
+			    this.andOne();
+		    }
+		    
+		    if (this.popped === false) {
+			    this.popped = true;
+			    this.pop.rate(this.soundType());
+			    this.pop.play();
+		    }
+		    currentShot.hit = true
+		    this.game.projectiles[k].hit = true;
+		    this.checkChain = true;
+		    }
+	    }}
+	    
+	    for (let  j = 0; j < this.game.targets.length; j++) {
+	    
+	    if (this.game.targets[j].drop === true) {
+		    continue;
+	    }
+	    if (this.getDistance(currentShot.aimX, currentShot.aimY, this.game.targets[j].x,this.game.targets[j].y) <
+	    currentShot.radius + this.game.targets[j].radius
+	    ) {
+		    currentShot.dx = 0;
+		    currentShot.dy = 0;
+		    currentShot.radius = 20;
+		    this.game.reloaded = true;
+		    currentShot.collided = true;
+		    currentShot.aimX = this.approxX(
+			    currentShot.aimX,
+			    this.game.targets[j].x
+		    );
+		    currentShot.aimY = this.approxY(
+			    currentShot.aimY,
+			    this.game.targets[j].y
+			);
+	       
+	    if (currentShot.color === this.game.targets[j].color) {
+	    if (this.andOneNumber === null) {
+		    this.andOne();
+	    }
+	    if (this.popped === false) {
+		    this.popped = true;
+		    this.pop.rate(this.soundType());
+		    this.pop.play();
+	    }
+	    currentShot.hit = true;
+	    this.game.targets[j].hit = true;
+	    this.checkChain = true;
+	    }}
+	  }
+	}
+
+Objects that have collided then get sent to a separate custom algorithm that allows for collisions to 'pop' surrounding targets/projectile based on valid location data and various collision related flags that now live in the targets/projectiles. These collisions and cluster chain-reaction checks are being rendered on every animation frame to allow for fluid gameplay.
+
