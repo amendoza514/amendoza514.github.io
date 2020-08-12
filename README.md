@@ -1,6 +1,6 @@
 # Bubble Ball!
 
-[*Bubble Ball!*](https://amendoza514.github.io/) is an arcade-styled shooter/puzzle game that leverages varied custom collision detection patterns to reward accurate shot placement by players
+[*Bubble Ball!*](https://amendoza514.github.io/) is an arcade-styled shooter/puzzle game that leverages varied custom collision detection patterns to reward accurate shot placement by players. No libraries (other than howler.js for reliable audio interactivity across browsers) were used in the creation of this Javascript and Canvas only project.
 
 # About
 
@@ -11,6 +11,8 @@ Players can target clusters of targets with the same color of the current projec
 Additionally, players can choose from "LeBron James" or "Steph Curry" player types that grant additional abilities. These abilities allow a user to utilize either a built in aiming reticle for more precise shooting (Curry), or the chance for *AND - 1* free target hits anywhere on the map following any successful shot (LeBron).
 
 Check out the [live demo](https://amendoza514.github.io/) if you are interested!
+
+
 
 ## Features
 ### Collision Detection and Chain-Reaction Dynamic
@@ -68,6 +70,7 @@ I chose to expand on basic 2D circle detection logic for my primary game mechani
 	    if (this.game.targets[j].drop === true) {
 		    continue;
 	    }
+	    
 	    if (this.getDistance(currentShot.aimX, currentShot.aimY, this.game.targets[j].x,this.game.targets[j].y) <
 	    currentShot.radius + this.game.targets[j].radius
 	    ) {
@@ -85,21 +88,74 @@ I chose to expand on basic 2D circle detection logic for my primary game mechani
 			    this.game.targets[j].y
 			);
 	       
-	    if (currentShot.color === this.game.targets[j].color) {
-	    if (this.andOneNumber === null) {
-		    this.andOne();
+		    if (currentShot.color === this.game.targets[j].color) {
+		    
+			    if (this.andOneNumber === null) {
+				    this.andOne();
+			    }
+		    
+			    if (this.popped === false) {
+				    this.popped = true;
+				    this.pop.rate(this.soundType());
+				    this.pop.play();
+			    }
+			    currentShot.hit = true;
+			    this.game.targets[j].hit = true;
+			    this.checkChain = true;
+			    }
+		    }   
 	    }
-	    if (this.popped === false) {
-		    this.popped = true;
-		    this.pop.rate(this.soundType());
-		    this.pop.play();
-	    }
-	    currentShot.hit = true;
-	    this.game.targets[j].hit = true;
-	    this.checkChain = true;
-	    }}
-	  }
 	}
 
 Objects that have collided then get sent to a separate custom algorithm that allows for collisions to 'pop' surrounding targets/projectile based on valid location data and various collision related flags that now live in the targets/projectiles. These collisions and cluster chain-reaction checks are being rendered on every animation frame to allow for fluid gameplay.
 
+### Turret Swivel and Projectile Fire Trajectory 
+In order to track turret movement and projectile fire I seeded live mouse position coordinates from the HTML Canvas element to influence subsequent repaints of the turret object [x, y]  endpoints, resulting in a rectangle canvas element that follows the players' mouse in real time. The turret then passes new Projectile objects with these coordinates and slope characteristics to render new projectiles in the correct travel path.
+
+Players that selected the *Steph Curry* ability can also utilize an extended version of the mouse tracking turret, which gives players a visual aim reticle to guide shot placement (represented by the *cheatX* and *cheatY* attributes below).
+
+    
+    swivelTurret(mousePosition) {
+	    this.dx = mousePosition[0] - 160;
+	    this.dy = 540 - mousePosition[1];
+	    let  swivel = Math.atan2(this.dy, this.dx) + Math.PI;
+	    let  hyp = Math.sqrt(this.dy ** 2 + this.dx ** 2);
+	    this.aimX = 160 - Math.cos(swivel) * 50;
+	    this.aimY = 540 + Math.sin(swivel) * 50;
+	    this.cheatX = 160 - Math.cos(swivel) * 550;
+	    this.cheatY = 540 + Math.sin(swivel) * 550;
+	    this.speedX = -Math.cos(swivel) * 12;
+	    this.speedY = Math.sin(swivel) * 12;
+    }
+    
+    fire() {
+        if (this.game.reloaded === true) {
+		    let  projectile = new  Projectile({
+			    game:  this.game,
+			    slope: [this.speedX, this.speedY],
+			    aimX:  this.aimX,
+			    aimY:  this.aimY,
+			    color:  this.shots[0],
+		    });
+    
+	    this.projectiles += 1;
+	    this.game.reloaded = false;
+	    this.game.addProjectiles(projectile);
+	    this.shots.shift();
+	    this.shots.push(this.randomColor());
+	    }
+    }
+    
+
+## Technologies Used
+
+ - JavaScript
+ - HTML Canvas
+ - SCSS / CSS
+ - howler.js
+
+## Future Implementations
+
+ - Firebase DB for global leaderboard / highscore element
+ - Improved 2D Raycasting element to have aim reticle 'bounce' off of walls and show more fluid projectile trajectory paths.
+ - Improved collision detection that results in fewer less dropped shots.
