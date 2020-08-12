@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
       context.drawImage(logo, 87, 208, 153, 100);
     };
 
+    let font = new FontFace(
+      "Press Start 2P",
+      "url(https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap)");
+
+    font.load().then((font) => {
+        document.fonts.add(font);
+
+        console.log('Font Loaded')
+    });
+
     go();
 
     //halfcourt semi
