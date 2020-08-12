@@ -4619,7 +4619,7 @@ var GameView = /*#__PURE__*/function () {
     key: "resetGame",
     value: function resetGame() {
       // window.location.href = "https://amendoza514.github.io/";
-      window.location.href = "http://127.0.0.1:5500/index.html"; //  this.reset = true
+      window.location.href = "https://amendoza514.github.io/"; //  this.reset = true
       //  cancelAnimationFrame(this.animation);
       //  this.animation = null;
       // this.game.intervals.forEach((interval) => clearInterval(interval));
