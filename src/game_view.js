@@ -79,8 +79,6 @@ class GameView {
       if (select <= 10) {
         validArr[randomNum].drop = true;
         this.and1.play();
-        // this.lebronAnd1.play();
-        // console.log('AND ONE');
       }
     }
   }
